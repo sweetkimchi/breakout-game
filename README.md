@@ -2,11 +2,11 @@
 
 This project implements the game of Breakout.
 
-Name: 
+Name: Ji Yun Hyo
 
 ### Timeline
 
-Start Date: 
+Start Date: January 23rd, 2021 
 
 Finish Date: 
 
@@ -17,7 +17,7 @@ Hours Spent:
 
 ### Running the Program
 
-Main class:
+Main class: 
 
 Data files needed: 
 

@@ -6,7 +6,7 @@ Name: Ji Yun Hyo
 
 ### Timeline
 
-Start Date: January 23rd, 2021 
+Start Date: January 22nd, 2021 @ 08:34PM
 
 Finish Date: 
 

@@ -63,9 +63,9 @@ missiles in all directions. Occasionally, based on some pre-determined probabili
 
 ## Class Ideas
 1. Entity - contains attributes common to all entities of the game
-2. Balls
+2. Ball
 3. Paddle
 4. Boss
-5. Blocks
+5. Block
 
 ## Resources Used

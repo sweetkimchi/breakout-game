@@ -67,5 +67,3 @@ missiles in all directions. Occasionally, based on some pre-determined probabili
 3. Paddle
 4. Boss
 5. Block
-
-## Resources Used

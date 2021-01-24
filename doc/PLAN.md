@@ -11,14 +11,11 @@ and unambiguous. It is also pleasing to see all the numbers drop each time the b
    bricks
 
 ## Paddle Ideas
-1. A paddle that can activate a shield against missiles fired by the bricks by pressing a button. 
-   The shield charges proportionally to the distance traveled by the paddle. However, when the shield 
-   is being used, the paddle does not charge the shield. If shield charge depletes while pressing the
-   key to activate the shield, it starts charging again as the paddle moves. Shield absorbs the missiles
-   and removes them from the game.
+1. The paddle can switch into missile shooting mode. It can always switch back into paddle mode at any time. 
+   However, during missile shooting mode, the paddle is not able to bounce the ball off itself. 
 2. Paddle gains "experience" as it destroys more blocks, eventually leveling up to become stronger. Stronger
-   is defined as longer (covers more area), balls deflected off the paddle does more damage to the bricks, and
-   it has more "lives" so it can take more damage before "dying."
+   is defined as longer (covers more area), balls deflected off the paddle do more damage to the bricks, and
+   the paddle has more "lives" so it can take more damage before "dying."
 
 ## Block Ideas
 1. Blocks that shoot missiles which can damage the paddle including a huge, powerful "Boss Block" for the final stage 
@@ -34,11 +31,7 @@ and unambiguous. It is also pleasing to see all the numbers drop each time the b
 4. Blocks will drop power-ups when damaged (not necesarily destroyed) by chance.
 
 ## Power-up Ideas
-1. Leveling up through experience. Each time a paddle successfully destroys a block, it gains experience
-proportional to the number of hits it took the destroy the block. Blocks with more lives give more experience.
-   When the experience reaches a certain point, the paddle levels up. Higher level means longer paddle and the ball
-   that bounces off the paddle now does more damage. Level is reset to the initial level
-   at the start of each stage. There will be a highest level the paddle can reach.
+1. Instant gain of a large amount of experience (used to level up the paddle).
    
 2. Bigger sized ball (x2 or x3) which makes it easier for the player to hit it with the paddle and more likely for the ball to hit
 the blocks.

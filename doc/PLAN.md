@@ -69,7 +69,7 @@ B <br />   B B <br />
 3. Final Stage - One HUGE "Boss Block" (to be named later) will face the paddle. Every once in a while, the Boss Block will fire
 missiles in all directions. Occasionally, based on some pre-determined probability, the Boss Block will drop power-up items when damaged.
 
-## B
+# B
 P
 
 ## Class Ideas

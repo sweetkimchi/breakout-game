@@ -59,18 +59,18 @@ the blocks.
 2. Middle Stage - Set of moving blocks that the player has to destroy. The blocks will start out in positions shown below and will be moving in all directions
 at various speeds. 
 
-B B<br />   B
-B <br />   B
-B <br />   B
-B <br />   B B <br />
-<br />
-&nbsp;P
+   B B<br />   B
+   B <br />   B
+   B <br />   B
+   B <br />   B B <br />
+   <br />
+   &nbsp;P
    
 3. Final Stage - One HUGE "Boss Block" (to be named later) will face the paddle. Imagine a HUGE block that fills up the screen. Every once in a while, the Boss Block will fire
 missiles in all directions. Occasionally, based on some pre-determined probability, the Boss Block will drop power-up items when damaged.
 
-<font size="10">  B <br />
-<font size="2"> P <br />
+   <font size="10">  B <br />
+   <font size="2"> P <br />
 
 ## Class Ideas
 1. Sprite - update()

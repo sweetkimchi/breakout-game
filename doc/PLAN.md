@@ -73,10 +73,10 @@ missiles in all directions. Occasionally, based on some pre-determined probabili
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P
 
 ## Class Ideas
-1. Sprite - contains attributes common to all entities of the game
-2. Ball
-3. Paddle
-4. Boss
-5. Block
-6. Missile
-7. GameWorld
+1. Sprite - update()
+2. Ball - getCenterX(), getCenterY()
+3. Paddle - changeMode()
+4. Boss - fire()
+5. Block - implode()
+6. Missile - checkCollide(Sprite sprite)
+7. GameWorld - initialize()

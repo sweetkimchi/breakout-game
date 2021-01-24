@@ -56,7 +56,7 @@ the blocks.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P
 
-2. Middle Stage - Set of moving blocks that the player has to destroy. The blocks will start out in positions shown below and will be moving in all directions
+2. Middle Stage - Set of moving blocks that the player has to destroy. The blocks will start out in positions shown below and will be moving in various directions
 at various speeds. 
 
    B B<br />   B

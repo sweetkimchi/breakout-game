@@ -70,6 +70,7 @@ at various speeds.
 missiles in all directions. Occasionally, based on some pre-determined probability, the Boss Block will drop power-up items when damaged.
 
    <font size="10">  B <br />
+   <br />
    <font size="2"> P <br />
 
 ## Class Ideas

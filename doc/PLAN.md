@@ -34,10 +34,10 @@ and unambiguous. It is also pleasing to see all the numbers drop each time the b
 4. Blocks will drop power-ups when damaged (not necesarily destroyed) by chance.
 
 ## Power-up Ideas
-Level-ups
 1. Leveling up through experience. Each time a paddle successfully destroys a block, it gains experience
 proportional to the number of hits it took the destroy the block. Blocks with more lives give more experience.
-   When the experience reaches a certain point, the paddle levels up. Level is reset to the initial level
+   When the experience reaches a certain point, the paddle levels up. Higher level means longer paddle and the ball
+   that bounces off the paddle now does more damage. Level is reset to the initial level
    at the start of each stage. There will be a highest level the paddle can reach.
    
 2. Bigger sized ball (x2 or x3) which makes it easier for the player to hit it with the paddle and more likely for the ball to hit
@@ -80,8 +80,10 @@ missiles in all directions. Occasionally, based on some pre-determined probabili
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P
 
 ## Class Ideas
-1. Entity - contains attributes common to all entities of the game
+1. Sprite - contains attributes common to all entities of the game
 2. Ball
 3. Paddle
 4. Boss
 5. Block
+6. Missile
+7. GameWorld

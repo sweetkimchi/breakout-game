@@ -22,7 +22,7 @@ and unambiguous. It is also pleasing to see all the numbers drop each time the b
 
 ## Block Ideas
 1. Blocks that shoot missiles which can damage the paddle including a huge, powerful "Boss Block" for the final stage 
-   that takes multiple shots to be taken down. I'm thinking of the last stage being a the "Boss Stage" where you'd have to 
+   that takes multiple shots to be taken down. I'm thinking of the last stage being the "Boss Stage" where you'd have to 
    destroy the boss.
 
 2. Number of hits required to destroy the block is indicated by the number written on the block. When
@@ -31,20 +31,20 @@ and unambiguous. It is also pleasing to see all the numbers drop each time the b
    
 3. Blocks that float around the map, making it harder for the player to aim the blocks.
 
+4. Blocks will drop power-ups when damaged (not necesarily destroyed) by chance.
+
 ## Power-up Ideas
 Level-ups
 1. Leveling up through experience. Each time a paddle successfully destroys a block, it gains experience
 proportional to the number of hits it took the destroy the block. Blocks with more lives give more experience.
    When the experience reaches a certain point, the paddle levels up. Level is reset to the initial level
    at the start of each stage. There will be a highest level the paddle can reach.
-
-
-Power-up charges can be charged up to two charges. Activating the power-ups at different charge levels will
-   have different abilities. Activating the power-up abilities discharges the power-up charge accordingly
    
-2. Charge 1: increases damage by 2x the current damage of the paddle for a pre-determined amount of time
+2. Bigger sized ball (x2 or x3) which makes it easier for the player to hit it with the paddle and more likely for the ball to hit
+the blocks.
 
-3. Charge 2: destroys all blocks on the ball's path (without bouncing off) for a pre-determined amount of time
+3. Destroys all blocks on the ball's path (without bouncing off) for a pre-determined amount of time. It still bounces
+ off the walls on the sides and the paddle.
 
 ## Cheat Key Ideas
 1. Invincibility - the paddle does not receive damage from missiles fired from blocks
@@ -55,11 +55,29 @@ Power-up charges can be charged up to two charges. Activating the power-ups at d
 
 ## Level Descriptions
 1. Initial Stage - An easy, tutorial-like stage to get the users accustomed to the game. Generous power-up
-   items. 
-2. Middle Stage - 
-3. Final Stage - One "Boss Block" (to be named later) will face the paddle. The Boss Block will fire
-missiles in all directions. Occasionally, based on some pre-determined probability,
-   the Boss Block will drop power-up items when damaged.
+   items. The blocks are stationary and are organized in a standard way. B represents the blocks and P represents the paddle.<br />
+   
+   
+   B B B B B B <br />   B B B B B B <br /> B B B B B B
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P
+
+2. Middle Stage - Set of moving blocks that the player has to destroy. The blocks will start out in positions shown below and will be moving in all directions
+at various speeds. 
+
+B B<br />   B
+B <br />   B
+B <br />   B
+B <br />   B B <br />
+<br />
+&nbsp;P
+   
+3. Final Stage - One HUGE "Boss Block" (to be named later) will face the paddle. Every once in a while, the Boss Block will fire
+missiles in all directions. Occasionally, based on some pre-determined probability, the Boss Block will drop power-up items when damaged.
+
+#&nbsp;&nbsp;&nbsp;&nbsp;B
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P
 
 ## Class Ideas
 1. Entity - contains attributes common to all entities of the game

@@ -21,7 +21,7 @@ Players can select between one of two paddles at the start of the game
    the damaged blocks will get additional damage over time.
 3. Paddles gain "experience" as they destroy more blocks, eventually leveling up to become stronger.
    Stronger is defined as the paddle becoming longer (covers more area) and their weapon of choice
-   (e.g. DoT damage or missiles） doing more damage to the blocks. Highest possible level is capped
+   (e.g. DoT damage or missiles) doing more damage to the blocks. Highest possible level is capped
    unless removed by the cheat key. Levels up are permanent even if a player loses a life or
    advances to the next round.
 

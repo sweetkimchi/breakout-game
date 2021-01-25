@@ -89,8 +89,8 @@ Players can select between one of two paddles at the start of the game
 
 1. Sprite - update()
 2. Ball - getCenterX(), getCenterY()
-3. Paddle - changeMode()
+3. Paddle - getExperience()
 4. Boss - fire()
 5. Block - implode()
-6. Missile - checkCollide(Sprite sprite)
+6. Missile - checkCollide()
 7. BreakoutApp - start()

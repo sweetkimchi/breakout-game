@@ -14,14 +14,16 @@
 
 ## Paddle Ideas
 
-Players can select one of two possible paddle choices at the start of the game
+Players can select between one of two paddles at the start of the game
 
 1. The paddle can shoot missiles, dealing damage to the blocks.
 2. The ball deflected off of the paddle does DoT(damage over time) damage to blocks. In other words,
    the damaged blocks will get additional damage over time.
-3. Paddles gain "experience" as it destroys more blocks, eventually leveling up to become stronger.
+3. Paddles gain "experience" as they destroy more blocks, eventually leveling up to become stronger.
    Stronger is defined as the paddle becoming longer (covers more area) and their weapon of choice
-   (e.g. DoT damage or missiles） do more damage to blocks.
+   (e.g. DoT damage or missiles） doing more damage to the blocks. Highest possible level is capped
+   unless removed by the cheat key. Levels up are permanent even if a player loses a life or
+   advances to the next round.
 
 ## Block Ideas
 
@@ -33,19 +35,20 @@ Players can select one of two possible paddle choices at the start of the game
    When the number reaches 0, the block is destroyed. Each level will have higher number of total
    hits required to destroy all blocks.
 
-3. Blocks that float around the map, making it harder for the player to aim the blocks.
+3. Blocks that float around the map, making it harder for the player to hit the blocks.
 
 4. Blocks will drop power-ups when damaged (not necesarily destroyed) by chance.
 
 ## Power-up Ideas
 
-1. Instant gain of a large amount of experience (used to level up the paddle).
+1. Instant gain of a large amount of experience (used to level up the paddles).
 
 2. Bigger sized ball (x2 or x3) which makes it easier for the player to hit it with the paddle and
    more likely for the ball to hit the blocks.
 
-3. An indestructible layer of blocks forms at the bottom of the map for a period of time. During
-   this time, the ball cannot cause the player to lose a life.
+3. An indestructible layer of blocks forms at the bottom of the map for a certain period of time.
+   During this time, the ball cannot fall through the indestructible layer and cause the player to
+   lose a life.
 
 ## Cheat Key Ideas
 
@@ -53,7 +56,8 @@ Players can select one of two possible paddle choices at the start of the game
 2. Clearing the current level
 3. Instantly leveling up the paddle. Repeated use also allowed
 4. Infinite lives to play the game
-5. Remove the highest level restriction
+5. Removes the highest level restriction: the paddle can level up infinitely beyond the original
+   level cap
 
 ## Level Descriptions
 

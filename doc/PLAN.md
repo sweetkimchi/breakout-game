@@ -94,3 +94,5 @@ Players can select between one of two paddles at the start of the game
 5. Block - implode()
 6. Missile - checkCollide()
 7. BreakoutApp - start()
+8. DotPaddle - dotDamage()
+9. MissilePaddle - fire()

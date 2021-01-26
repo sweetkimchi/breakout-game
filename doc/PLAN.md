@@ -96,3 +96,5 @@ Players can select between one of two paddles at the start of the game
 7. BreakoutApp - start()
 8. DotPaddle - dotDamage()
 9. MissilePaddle - fire()
+10. Levels - currentLevel()
+11. PowerUp - giveExperience()

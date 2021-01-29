@@ -22,17 +22,16 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
-
-
-public class BreakoutApp extends Application{
+public class BreakoutApp extends Application {
 
   public static final String TITLE = "Example JavaFX";
-  public static final int SIZE = 400;
+  public static final int SIZE = 1000;
   public static final int FRAMES_PER_SECOND = 60;
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-  public static final Paint BACKGROUND = Color.AZURE;
+  public static final Paint BACKGROUND = Color.CADETBLUE;
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final String BOUNCER_IMAGE = "ball.gif";
+  public static final String PADDLE_IMAGE = "325-Breakout-Tiles.png";
+  public static final String BALL_IMAGE = "339-Breakout-Tiles.png";
   public static final int BOUNCER_SPEED = 30;
   public static final Paint MOVER_COLOR = Color.PLUM;
   public static final int MOVER_SIZE = 50;
@@ -40,6 +39,7 @@ public class BreakoutApp extends Application{
   public static final Paint GROWER_COLOR = Color.BISQUE;
   public static final double GROWER_RATE = 1.1;
   public static final int GROWER_SIZE = 50;
+
 
   private Scene myScene;
   private ImageView myPaddle;
@@ -55,38 +55,66 @@ public class BreakoutApp extends Application{
     Timeline animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
+    //starts the game
     animation.play();
   }
 
-  public Scene setupGame(int width, int height,Paint background){
+  public Scene setupGame(int width, int height, Paint background) {
 
     // create one top level collection to organize the things in the scene
     Group root = new Group();
     // make some shapes and set their properties
-    Image image = new Image(
-        Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(BOUNCER_IMAGE)));
+    Image paddle_image = new Image(
+        Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(PADDLE_IMAGE)));
+
+    Image ball_image = new Image(
+        Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(BALL_IMAGE)));
 
     for (int i = 0; i < 1; i++) {
-      ImageView bouncer = new ImageView(image);
-      TreeMap<String, Integer> bouncer_tree = new TreeMap<>();
-      bouncer_tree.put("x", 1);
-      bouncer_tree.put("y", 1);
-      bouncer.setX(width / 2 - bouncer.getBoundsInLocal().getWidth() / 2);
-      bouncer.setY(height / 2 - bouncer.getBoundsInLocal().getHeight() / 2);
-      bouncer.setFitHeight(i * 3 + 10);
-      bouncer.setFitWidth(i * 3 + 10);
-      root.getChildren().add(bouncer);
+      ImageView ball = new ImageView(ball_image);
+      TreeMap<String, Integer> ball_tree = new TreeMap<>();
+      ball_tree.put("x", 1);
+      ball_tree.put("y", 1);
+      ball.setX(ball.getBoundsInLocal().getWidth());
+      ball.setY(ball.getBoundsInLocal().getHeight());
+      ball.setFitHeight(ball.getBoundsInLocal().getHeight() / 5);
+      ball.setFitWidth(ball.getBoundsInLocal().getWidth()/ 5);
+      root.getChildren().add(ball);
+
+      // create a place to see the shapes
+
     }
 
-    // create a place to see the shapes
-    return new Scene(root, width, height, background);
+
+      myPaddle = new ImageView(paddle_image);
+      myPaddle.setX(200);
+      myPaddle.setY(600);
+      myPaddle.setFitHeight(myPaddle.getBoundsInLocal().getHeight() / 5);
+      myPaddle.setFitWidth(myPaddle.getBoundsInLocal().getWidth() / 5);
+      root.getChildren().add(myPaddle);
+
+      // create a place to see the shapes
+    Scene scene = new Scene(root, width, height, background);
+
+    scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
+
+    return scene;
   }
 
-  public void step(double delay){
-
+  private void step(double elapsedTime) {
+    System.out.println("fwae");
   }
 
-  public static void main(String[] args){
+  private void handleKeyInput(KeyCode code) {
+    switch (code) {
+      case RIGHT -> myPaddle.setX(myPaddle.getX() + MOVER_SPEED);
+      case LEFT -> myPaddle.setX(myPaddle.getX() - MOVER_SPEED);
+//      case UP -> myPaddle.setY(myPaddle.getY() - MOVER_SPEED);
+//      case DOWN -> myPaddle.setY(myPaddle.getY() + MOVER_SPEED);
+    }
+  }
+
+  public static void main(String[] args) {
     launch(args);
   }
 }

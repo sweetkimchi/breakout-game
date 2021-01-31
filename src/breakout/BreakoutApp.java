@@ -40,7 +40,6 @@ public class BreakoutApp extends Application {
   public static final String BALL_IMAGE = "339" + postFix;
 
 
-
   public static final int BOUNCER_SPEED = 30;
   public static final Paint MOVER_COLOR = Color.PLUM;
   public static final int MOVER_SIZE = 50;
@@ -51,7 +50,7 @@ public class BreakoutApp extends Application {
 
   private int velX = 0;
   private int velY = 0;
-  private int x = SIZE/2 - 30;
+  private int x = SIZE / 2 - 30;
   private int y = SIZE - 50;
   private Scene scene_set_up_game;
   private Scene scene_start;
@@ -61,7 +60,6 @@ public class BreakoutApp extends Application {
   private String[] image_strings;
   private Sprite[] player;
   private Pane root;
-
 
 
   private ArrayList<String> image_files;
@@ -116,13 +114,13 @@ public class BreakoutApp extends Application {
     image_files.add(TILE_IMAGE);
 
     //what I need to do here is that I need to make a method in Sprite for each object and
-    Sprite dum = new Block(10 + 1 * (SIZE/15), 50 * 1 + 100, 50, 50, image_files.get(1));
+    Sprite dum = new Block(10 + 1 * (SIZE / 15), 50 * 1 + 100, 50, 50, image_files.get(1));
     //add image
 
     //makes sprite objects and images
-    for(int col = 0; col < 15; col++){
-      for(int row = 0; row < 5; row++){
-        Block block = new Block(10 + col * (SIZE/15), 50 * row + 100, 50, 50, image_files.get(1));
+    for (int col = 0; col < 15; col++) {
+      for (int row = 0; row < 5; row++) {
+        Block block = new Block(10 + col * (SIZE / 15), 50 * row + 100, 50, 50, image_files.get(1));
         block.upload_image_files();
         root.getChildren().add(block.getImageView());
         blockMap.add(block);
@@ -130,28 +128,28 @@ public class BreakoutApp extends Application {
     }
 
     //make a ball and store in ArrayList
-    Ball ball = new Ball(SIZE/2, SIZE - 100, 20, 20, BALL_IMAGE);
+    Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE);
     ball.upload_image_files();
     root.getChildren().add(ball.getImageView());
     System.out.println(spriteMap.size());
     ballMap.add(ball);
 
-
-    myPaddle = new Rectangle(SIZE/2, SIZE - 100, 150,
+    myPaddle = new Rectangle(SIZE / 2, SIZE - 100, 150,
         20);
     Image image_baby = new Image(
-        Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(image_files.get(0))));
+        Objects.requireNonNull(
+            this.getClass().getClassLoader().getResourceAsStream(image_files.get(0))));
 
     myPaddle.setFill(new ImagePattern(image_baby));
     root.getChildren().add(myPaddle);
 
-      // create a place to see the shapes
+    // create a place to see the shapes
     handleKeyInput(scene_set_up_game);
 
     return scene_set_up_game;
   }
 
-  private void animationSetUp(){
+  private void animationSetUp() {
     KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), event -> step(SECOND_DELAY));
     Timeline animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
@@ -160,12 +158,12 @@ public class BreakoutApp extends Application {
     animation.play();
   }
 
-  private void step(double delay){
+  private void step(double delay) {
     int index = 1;
 
   }
 
-  private void initializeMap(){
+  private void initializeMap() {
     spriteMap = new ArrayList<Sprite>();
     ballMap = new ArrayList<Ball>();
     blockMap = new ArrayList<Block>();
@@ -223,40 +221,40 @@ public class BreakoutApp extends Application {
 
         //update everything
         updateAllSprites();
-      //  System.out.println("check");
+        //  System.out.println("check");
       }
     };
     animation.start();
   }
 
-  private void updateAllSprites(){
-    for(Sprite sprite : spriteMap){
+  private void updateAllSprites() {
+    for (Sprite sprite : spriteMap) {
       sprite.update(SECOND_DELAY);
     }
-    for(Block block : blockMap){
+    for (Block block : blockMap) {
       block.update(SECOND_DELAY);
     }
-    for(Ball ball : ballMap){
+    for (Ball ball : ballMap) {
       ball.update(SECOND_DELAY);
     }
-    for(Boss boss : bossMap){
+    for (Boss boss : bossMap) {
       boss.update(SECOND_DELAY);
     }
-    for(Missile missile : missileMap){
+    for (Missile missile : missileMap) {
       missile.update(SECOND_DELAY);
     }
-    for(DotPaddle dotPaddle : dotPaddleMap){
+    for (DotPaddle dotPaddle : dotPaddleMap) {
       dotPaddle.update(SECOND_DELAY);
     }
-    for(PowerUp powerUp : powerUpsMap){
+    for (PowerUp powerUp : powerUpsMap) {
       powerUp.update(SECOND_DELAY);
     }
-    for(MissilePaddle missilePaddle : missilePaddleMap){
+    for (MissilePaddle missilePaddle : missilePaddleMap) {
       missilePaddle.update(SECOND_DELAY);
     }
   }
 
-  public void shoot(Sprite sprite){
+  public void shoot(Sprite sprite) {
 
   }
 

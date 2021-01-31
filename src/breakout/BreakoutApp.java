@@ -3,9 +3,11 @@ package breakout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -34,7 +36,7 @@ public class BreakoutApp extends Application {
   //image files
   private static final String postFix = "-Breakout-Tiles.png";
   public static final String PADDLE_IMAGE = "325" + postFix;
-  public static final String TILE_IMAGE = "220" + postFix;
+  public static final String TILE_IMAGE = "221" + postFix;
   public static final String BALL_IMAGE = "339" + postFix;
 
 
@@ -58,19 +60,20 @@ public class BreakoutApp extends Application {
   private Rectangle myPaddle;
   private String[] image_strings;
   private Sprite[] player;
+  private Pane root;
 
 
 
   private ArrayList<String> image_files;
   //list storing pointers to respective object
   private List<Sprite> spriteMap;
-//  private List<Block> blockMap;
-//  private List<Ball> ballMap;
-//  private List<DotPaddle> dotPaddleMap;
-//  private List<Missile> missileMap;
-//  private List<MissilePaddle> missilePaddleMap;
-//  private List<PowerUp> powerUpsMap;
-//  private List<Boss> bossMap;
+  private List<Block> blockMap;
+  private List<Ball> ballMap;
+  private List<DotPaddle> dotPaddleMap;
+  private List<Missile> missileMap;
+  private List<MissilePaddle> missilePaddleMap;
+  private List<PowerUp> powerUpsMap;
+  private List<Boss> bossMap;
 
   @Override
   public void start(Stage stage) throws Exception {
@@ -82,6 +85,8 @@ public class BreakoutApp extends Application {
     stage.setTitle(TITLE);
     stage.show();
     stage.requestFocus();
+//
+//    animationSetUp();
 
 //    //cool effect
 //    for(int i = 1; i < 10000 * spriteMap.size(); i++){
@@ -100,7 +105,7 @@ public class BreakoutApp extends Application {
   public Scene setupGame(int width, int height, Paint background) throws InterruptedException {
 
     // create one top level collection to organize the things in the scene
-    Group root = new Group();
+    root = new Pane();
     scene_set_up_game = new Scene(root, width, height, background);
 
     //constructors
@@ -125,11 +130,11 @@ public class BreakoutApp extends Application {
     }
 
     //make a ball and store in ArrayList
-    Sprite ball = new Ball(SIZE/2, SIZE - 100, 20, 20, BALL_IMAGE);
+    Ball ball = new Ball(SIZE/2, SIZE - 100, 20, 20, BALL_IMAGE);
     ball.upload_image_files();
     root.getChildren().add(ball.getImageView());
     System.out.println(spriteMap.size());
-    spriteMap.add(ball);
+    ballMap.add(ball);
 
     for(Sprite sprite : spriteMap){
       System.out.println(sprite);
@@ -159,18 +164,19 @@ public class BreakoutApp extends Application {
   }
 
   private void step(double delay){
-    System.out.println("okay");
+    int index = 1;
+
   }
 
   private void initializeMap(){
     spriteMap = new ArrayList<Sprite>();
-//    ballMap = new ArrayList<Ball>();
-//    blockMap = new ArrayList<Block>();
-//    dotPaddleMap = new ArrayList<DotPaddle>();
-//    missileMap = new ArrayList<Missile>();
-//    missilePaddleMap = new ArrayList<MissilePaddle>();
-//    powerUpsMap = new ArrayList<PowerUp>();
-//    bossMap = new ArrayList<Boss>();
+    ballMap = new ArrayList<Ball>();
+    blockMap = new ArrayList<Block>();
+    dotPaddleMap = new ArrayList<DotPaddle>();
+    missileMap = new ArrayList<Missile>();
+    missilePaddleMap = new ArrayList<MissilePaddle>();
+    powerUpsMap = new ArrayList<PowerUp>();
+    bossMap = new ArrayList<Boss>();
   }
 
 
@@ -217,10 +223,14 @@ public class BreakoutApp extends Application {
         myPaddle.setX(x);
         y += velY;
         myPaddle.setY(y);
-        for(Sprite sprite : spriteMap){
-          sprite.update(sprite.getImageView());
-        }
 
+        //update everything
+        for(Sprite sprite : spriteMap){
+          sprite.update(SECOND_DELAY);
+        }
+        for(Ball ball : ballMap){
+          ball.update(SECOND_DELAY);
+        }
       //  System.out.println("check");
       }
     };

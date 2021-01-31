@@ -5,11 +5,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Sprite extends Rectangle {
-  private static Image image;
-  private static String IMAGE;
+  private Image image;
+  private String IMAGE;
   private int index;
 
-  private static ImageView imageView;
+  private ImageView imageView;
   public Sprite(){
     super();
   }
@@ -28,11 +28,11 @@ public class Sprite extends Rectangle {
   }
 
   public ImageView upload_image_files(){
-    imageView.setImage(image);
-    imageView.setFitWidth(width);
-    imageView.setFitHeight(height);
-    imageView.setX(this.getX());
-    imageView.setY(this.getY());
+    this.imageView.setImage(this.image);
+    this.imageView.setFitWidth(width);
+    this.imageView.setFitHeight(height);
+    this.imageView.setX(this.getX());
+    this.imageView.setY(this.getY());
     return imageView;
   }
 
@@ -48,8 +48,7 @@ public class Sprite extends Rectangle {
     imageView.setImage(null);
   }
 
-  public void update(ImageView spriteImageView){
-    System.out.println(this);
-    imageView.setX(imageView.getX() + 100);
+  public void update(double elapsedTime){
+    this.getImageView().setX(this.getImageView().getX() - 30 * elapsedTime);
   }
 }

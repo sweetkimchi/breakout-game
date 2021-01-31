@@ -11,10 +11,9 @@ public class Ball extends Sprite{
     imageView = setImageView(IMAGE);
     index = 0;
   }
-
-  public void update(){
-
-      imageView.setX(index * 2);
-      index++;
-  }
+//
+//  public void update(){
+//
+//    this.getImageView().setX(this.getImageView().getX() - 30 * 0.05);
+//  }
 }

@@ -25,14 +25,16 @@ public class BreakoutApp extends Application {
   public static final int SIZE = 1000;
   public static final int FRAMES_PER_SECOND = 60;
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-  public static final Paint BACKGROUND = Color.CADETBLUE;
+  public static final Paint BACKGROUND = Color.GREENYELLOW;
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
 
   //image files
   private static final String postFix = "-Breakout-Tiles.png";
   public static final String PADDLE_IMAGE = "325" + postFix;
-  public static final String TILE_IMAGE = "221" + postFix;
+  public static final String TILE_IMAGE = "100" + postFix;
   public static final String BALL_IMAGE = "339" + postFix;
+  public static final String BOSS_IMAGE = "000" + postFix;
+  public static final String BACKGROUND_IMAGE = "400" + postFix;
 
 
   public static final int BOUNCER_SPEED = 30;
@@ -50,7 +52,7 @@ public class BreakoutApp extends Application {
   private Scene scene_set_up_game;
   private Scene scene_start;
   private ArrayList<ImageView> image_view;
-  private ImageView myBouncer;
+  private ImageView myBackGround;
   private Rectangle myPaddle;
   private String[] image_strings;
   private Sprite[] player;
@@ -85,6 +87,11 @@ public class BreakoutApp extends Application {
     // create one top level collection to organize the things in the scene
     root = new Pane();
     scene_set_up_game = new Scene(root, width, height, background);
+    myBackGround = new ImageView(
+        new Image(getClass().getClassLoader().getResourceAsStream(BACKGROUND_IMAGE)));
+    myBackGround.setFitWidth(SIZE);
+    myBackGround.setFitHeight(SIZE);
+    root.getChildren().add(myBackGround);
 
     //constructors
     image_strings = new String[10];
@@ -94,18 +101,38 @@ public class BreakoutApp extends Application {
     image_files.add(TILE_IMAGE);
 
     //what I need to do here is that I need to make a method in Sprite for each object and
-    Sprite dum = new Block(10 + 1 * (SIZE / 15), 50 * 1 + 100, 50, 50, image_files.get(1));
-    //add image
+    /*
+    ROW COL TYPE IMAGE
+     */
 
     //makes sprite objects and images
+    //LEVEL 1
+//    for (int col = 0; col < 10; col++) {
+//      for (int row = 0; row < 5; row++) {
+//        Block block = new Block(10 + col * (SIZE / 10), 80 * row + 100, 65, 20, image_files.get(1), "block");
+//        block.upload_image_files();
+//        root.getChildren().add(block.getImageView());
+//        blockMap.add(block);
+//      }
+//    }
+
+    //LEVEL 2
     for (int col = 0; col < 10; col++) {
-      for (int row = 0; row < 5; row++) {
-        Block block = new Block(10 + col * (SIZE / 10), 80 * row + 100, 60, 20, image_files.get(1));
+      for (int row = 0; row < 3; row++) {
+        Block block = new Block(200 + (SIZE / 10) * col + row * (SIZE / 10),
+            100 * row + 100 + col * 60, 80, 20, image_files.get(1), "block", 15);
+
         block.upload_image_files();
         root.getChildren().add(block.getImageView());
         blockMap.add(block);
       }
     }
+
+    //LEVEL3
+//    Boss boss = new Boss(200, 100, 600, 600, BOSS_IMAGE, "boss", 10000);
+//    boss.upload_image_files();
+//    root.getChildren().add(boss.getImageView());
+//    bossMap.add(boss);
 
     //make a ball and store in ArrayList
     Ball ball = new Ball(SIZE / 2, SIZE - 100, 15, 15, BALL_IMAGE);
@@ -194,28 +221,28 @@ public class BreakoutApp extends Application {
 
   private void updateAllSprites() {
     for (Sprite sprite : spriteMap) {
-      sprite.update(SECOND_DELAY, myPaddle, blockMap);
+      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
     }
     for (Block block : blockMap) {
-      block.update(SECOND_DELAY, myPaddle, blockMap);
+      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
     }
     for (Ball ball : ballMap) {
-      ball.update(SECOND_DELAY, myPaddle, blockMap);
+      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
     }
     for (Boss boss : bossMap) {
-      boss.update(SECOND_DELAY, myPaddle, blockMap);
+      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
     }
     for (Missile missile : missileMap) {
-      missile.update(SECOND_DELAY, myPaddle, blockMap);
+      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
     }
     for (DotPaddle dotPaddle : dotPaddleMap) {
-      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap);
+      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
     }
     for (PowerUp powerUp : powerUpsMap) {
-      powerUp.update(SECOND_DELAY, myPaddle, blockMap);
+      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
     }
     for (MissilePaddle missilePaddle : missilePaddleMap) {
-      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap);
+      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
     }
   }
 

@@ -27,7 +27,7 @@ public class Sprite extends Rectangle {
     this.IMAGE = IMAGE;
     className = type;
     setImageView(this.IMAGE);
-    this.speed = 600;
+    this.speed = 400;
     xDirection = 1;
     yDirection = 1;
   }
@@ -63,42 +63,53 @@ public class Sprite extends Rectangle {
     imageView.setImage(null);
   }
 
-  public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks) {
+  public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss) {
     if (getClassName().equals("ball")) {
       this.getImageView()
           .setX(this.getImageView().getX() - this.speed * elapsedTime * this.xDirection);
       this.getImageView()
           .setY(this.getImageView().getY() - this.speed * elapsedTime * this.yDirection);
     } else if (getClassName().equals("block")) {
-      //this.getImageView().setX(this.getImageView().getX() + this.speed * this.xDirection * elapsedTime);
+      if (Math.random() < 0.005) {
+        xDirection *= -1;
+      }
+      this.getImageView()
+          .setX(this.getImageView().getX() + this.speed * this.xDirection * elapsedTime);
+    } else if (getClassName().equals("boss")) {
+      if (Math.random() < 0.005) {
+        xDirection *= -1;
+      }
+      this.getImageView()
+          .setX(this.getImageView().getX() + this.speed * this.xDirection * elapsedTime);
     }
-    checkBoundary(myPaddle, blocks);
+    checkBoundary(myPaddle, blocks, boss);
   }
 
-  public void checkBoundary(Rectangle myPaddle, List<Block> blocks) {
+  public void checkBoundary(Rectangle myPaddle, List<Block> blocks, List<Boss> boss) {
     double xPos = this.getImageView().getX();
     double yPos = this.getImageView().getY();
     checkX(xPos);
     checkY(yPos, myPaddle);
-    checkCollision(xPos, yPos, myPaddle, blocks);
+    checkCollision(blocks, boss);
   }
 
   private void checkX(double xPos) {
-    if (xPos <= 0 || xPos >= 1000) {
+    if (this.getImageView().getBoundsInParent().getMinX() <= 10
+        || this.getImageView().getBoundsInParent().getMaxX() >= 1000) {
       this.xDirection *= -1;
     }
   }
 
   private void checkY(double yPos, Rectangle myPaddle) {
-    if (yPos <= 0 || yPos >= 1000 || this.imageView.getBoundsInParent()
+    if (this.getImageView().getBoundsInParent().getMinY() <= 0
+        || this.getImageView().getBoundsInParent().getMaxY() >= 950 || this.imageView
+        .getBoundsInParent()
         .intersects(myPaddle.getBoundsInParent())) {
       this.yDirection *= -1;
     }
   }
 
-  private void checkCollision(double xPos, double yPos, Rectangle myPaddle, List<Block> blocks) {
-    double xBoundary = this.imageView.getBoundsInLocal().getWidth() / 2;
-    double yBoundary = this.imageView.getBoundsInLocal().getWidth() / 2;
+  private void checkBlockCollision(List<Block> blocks) {
     for (Block block : blocks) {
       double xBlockBoundaryMax = block.getBoundsInLocal().getWidth();
       double yBlockBoundary = block.getBoundsInLocal().getHeight();
@@ -119,42 +130,41 @@ public class Sprite extends Rectangle {
             this.yDirection *= -1;
           }
         }
+
+        //DEDUCT LIVES WHEN HIT
+        block.lives--;
+        System.out.println(block.lives);
+        if (block.lives <= 0) {
+          block.getImageView().setImage(null);
+          blocks.remove(block);
+        }
       }
 
-//      if(this.getClassName().equals("ball") && this.imageView.getBoundsInParent().intersects(block.getImageView().getBoundsInParent())){
-////        System.out.println("XPos: " + block.getX());
-////        System.out.println("YPos: " + block.getY());
-//        boolean top = false;
-//        boolean bottom = false;
-//        boolean left = false;
-//        boolean right = false;
-//
-//
-//        if(yPos - yBoundary - (block.getY() - yBlockBoundary) > -1 && this.yDirection == 1){
-//          bottom = true;
-//          System.out.println("hit from bottom");
-//        }
-//        if(yPos - yBoundary - (block.getY() - yBlockBoundary) < 1 && this.yDirection == -1){
-//          top = true;
-//          System.out.println("hit from up");
-//        }
-//        if(xPos - xBoundary - (block.getX() - xBlockBoundary) < 1 && this.xDirection == 1){
-//          left = true;
-//          System.out.println("Hit from left");
-//        }
-//        //ball coming from right
-//        if(xPos - xBoundary - (block.getX() - xBlockBoundary) > -1 && this.xDirection == -1){
-//          right = true;
-//          System.out.println("hit from right");
-//        }
-//        //ball coming from bottom
-//        if (top || bottom){
-//            this.yDirection *= -1;
-////        }else if(left || right){
-//          this.xDirection *= -1;
-
     }
+  }
 
+  private void checkBossCollision(List<Boss> boss) {
+    for (Boss boss_block : boss) {
+      double xBlockBoundaryMax = boss_block.getBoundsInLocal().getWidth();
+      double yBlockBoundary = boss_block.getBoundsInLocal().getHeight();
+      if (this.getClassName().equals("ball") && boss_block.getImageView().getBoundsInParent()
+          .intersects(this.getImageView().getBoundsInParent())) {
+        if (this.getClassName().equals("ball") && boss_block.getImageView().getBoundsInParent()
+            .intersects(this.getImageView().getBoundsInParent())) {
+          if (this.getImageView().getBoundsInParent().getMinY() >= boss_block.getImageView()
+              .getBoundsInParent().getMinY()
+              && this.getImageView().getBoundsInParent().getMaxY() <= boss_block.getImageView()
+              .getBoundsInParent().getMaxY()) {
+            this.yDirection *= -1;
+          }
+        }
+      }
+    }
+  }
+
+  private void checkCollision(List<Block> blocks, List<Boss> boss) {
+    checkBlockCollision(blocks);
+    checkBossCollision(boss);
   }
 }
 

@@ -15,6 +15,7 @@ public class Sprite extends Rectangle {
   private int xDirection;
   private int yDirection;
   private int speed;
+  private boolean move;
 
   private ImageView imageView;
 
@@ -27,9 +28,10 @@ public class Sprite extends Rectangle {
     this.IMAGE = IMAGE;
     className = type;
     setImageView(this.IMAGE);
-    this.speed = 400;
+    this.speed = 300;
     xDirection = 1;
     yDirection = 1;
+    this.move = move;
   }
 
   public ImageView setImageView(String IMAGE) {
@@ -63,6 +65,7 @@ public class Sprite extends Rectangle {
     imageView.setImage(null);
   }
 
+
   public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss) {
     if (getClassName().equals("ball")) {
       this.getImageView()
@@ -94,19 +97,39 @@ public class Sprite extends Rectangle {
   }
 
   private void checkX(double xPos) {
-    if (this.getImageView().getBoundsInParent().getMinX() <= 10
-        || this.getImageView().getBoundsInParent().getMaxX() >= 1000) {
-      this.xDirection *= -1;
+    if(this.getClassName().equals("block") || this.getClassName().equals("boss")) {
+      if (this.getImageView().getBoundsInParent().getMinX() <= 10) {
+        this.xDirection = 1;
+      } else if (this.getImageView().getBoundsInParent().getMaxX() >= 980) {
+        this.xDirection = -1;
+      }
+      //THIS IS VERY IMPORTANT - NEEDED IN ORDER TO FIX THE BUG WHERE THE BLOCKS GET TRAPPED AT THE EDGES
+    }else {
+      if(this.getImageView().getBoundsInParent().getMinX() <= 10 || this.getImageView().getBoundsInParent().getMaxX() >= 980){
+        this.xDirection *= -1;
+      }
     }
   }
 
   private void checkY(double yPos, Rectangle myPaddle) {
-    if (this.getImageView().getBoundsInParent().getMinY() <= 0
-        || this.getImageView().getBoundsInParent().getMaxY() >= 950 || this.imageView
-        .getBoundsInParent()
-        .intersects(myPaddle.getBoundsInParent())) {
+    if (this.getImageView().getBoundsInParent().getMinY() <= 0) {
       this.yDirection *= -1;
     }
+    if( this.getClassName().equals("ball") && this.getImageView().getBoundsInParent().getMaxY() >= 1000 || this.imageView
+        .getBoundsInParent()
+        .intersects(myPaddle.getBoundsInParent())){
+        this.yDirection *= -1;
+        System.out.println(this.getImageView().getBoundsInParent().getMinX());
+        System.out.println(myPaddle.getX() + myPaddle.getWidth()/2);
+        if(this.getImageView().getBoundsInParent().getCenterX() < myPaddle.getX() + myPaddle.getWidth()/2){
+          this.xDirection = 1;
+        }
+        else{
+          this.xDirection = -1;
+        }
+    }
+
+
   }
 
   private void checkBlockCollision(List<Block> blocks) {
@@ -133,7 +156,10 @@ public class Sprite extends Rectangle {
 
         //DEDUCT LIVES WHEN HIT
         block.lives--;
-        System.out.println(block.lives);
+      //  System.out.println(block.lives);
+        if(block.lives <= 5){
+          block.getImageView().setImage(new Image(getClass().getClassLoader().getResourceAsStream("110-Breakout-Tiles.png")));
+        }
         if (block.lives <= 0) {
           block.getImageView().setImage(null);
           blocks.remove(block);

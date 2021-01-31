@@ -31,22 +31,14 @@ public class BreakoutApp extends Application {
   //image files
   private static final String postFix = "-Breakout-Tiles.png";
   public static final String PADDLE_IMAGE = "325" + postFix;
-  public static final String TILE_IMAGE = "100" + postFix;
+  public static final String TILE_IMAGE = "102" + postFix;
+  public static final String BROKEN_TILE_IMAGE = "110" + postFix;
   public static final String BALL_IMAGE = "339" + postFix;
   public static final String BOSS_IMAGE = "000" + postFix;
   public static final String BACKGROUND_IMAGE = "400" + postFix;
 
-
-  public static final int BOUNCER_SPEED = 30;
-  public static final Paint MOVER_COLOR = Color.PLUM;
-  public static final int MOVER_SIZE = 50;
-  public static final int MOVER_SPEED = 5;
-  public static final Paint GROWER_COLOR = Color.BISQUE;
-  public static final double GROWER_RATE = 1.1;
-  public static final int GROWER_SIZE = 50;
-
-  private int velX = 0;
-  private int velY = 0;
+  private int xPaddleVelocity = 0;
+  private int yPaddleVelocity = 0;
   private int x = SIZE / 2 - 30;
   private int y = SIZE - 50;
   private Scene scene_set_up_game;
@@ -109,7 +101,7 @@ public class BreakoutApp extends Application {
     //LEVEL 1
 //    for (int col = 0; col < 10; col++) {
 //      for (int row = 0; row < 5; row++) {
-//        Block block = new Block(10 + col * (SIZE / 10), 80 * row + 100, 65, 20, image_files.get(1), "block");
+//        Block block = new Block(10 + col * (SIZE / 10), 80 * row + 100, 80, 20, image_files.get(1), "block", 10);
 //        block.upload_image_files();
 //        root.getChildren().add(block.getImageView());
 //        blockMap.add(block);
@@ -120,7 +112,7 @@ public class BreakoutApp extends Application {
     for (int col = 0; col < 10; col++) {
       for (int row = 0; row < 3; row++) {
         Block block = new Block(200 + (SIZE / 10) * col + row * (SIZE / 10),
-            100 * row + 100 + col * 60, 80, 20, image_files.get(1), "block", 15);
+            100 * row + 100 + col * 60, 80, 20, image_files.get(1), "block", 10);
 
         block.upload_image_files();
         root.getChildren().add(block.getImageView());
@@ -135,7 +127,7 @@ public class BreakoutApp extends Application {
 //    bossMap.add(boss);
 
     //make a ball and store in ArrayList
-    Ball ball = new Ball(SIZE / 2, SIZE - 100, 15, 15, BALL_IMAGE);
+    Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE, "ball");
     ball.upload_image_files();
     root.getChildren().add(ball.getImageView());
     System.out.println(spriteMap.size());
@@ -174,13 +166,13 @@ public class BreakoutApp extends Application {
       @Override
       public void handle(KeyEvent event) {
         if (event.getCode() == KeyCode.LEFT) {
-          setVelX(-9);
+          setxPaddleVelocity(-9);
         }
 //        if (event.getCode() == KeyCode.DOWN) {
 //          setVelY(9);
 //        }
         if (event.getCode() == KeyCode.RIGHT) {
-          setVelX(9);
+          setxPaddleVelocity(9);
         }
 //        if (event.getCode() == KeyCode.UP) {
 //          setVelY(-9);
@@ -191,13 +183,13 @@ public class BreakoutApp extends Application {
       @Override
       public void handle(KeyEvent event) {
         if (event.getCode() == KeyCode.LEFT) {
-          setVelX(0);
+          setxPaddleVelocity(0);
         }
 //        if (event.getCode() == KeyCode.DOWN) {
 //          setVelY(0);
 //        }
         if (event.getCode() == KeyCode.RIGHT) {
-          setVelX(0);
+          setxPaddleVelocity(0);
         }
 //        if (event.getCode() == KeyCode.UP) {
 //          setVelY(0);
@@ -208,9 +200,9 @@ public class BreakoutApp extends Application {
     AnimationTimer animation = new AnimationTimer() {
       @Override
       public void handle(long now) {
-        x += velX;
+        x += xPaddleVelocity;
         myPaddle.setX(x);
-        y += velY;
+        y += yPaddleVelocity;
         myPaddle.setY(y);
         updateAllSprites();
       }
@@ -250,12 +242,12 @@ public class BreakoutApp extends Application {
 
   }
 
-  public void setVelX(int velX) {
-    this.velX = velX;
+  public void setxPaddleVelocity(int xPaddleVelocity) {
+    this.xPaddleVelocity = xPaddleVelocity;
   }
 
-  public void setVelY(int velY) {
-    this.velY = velY;
+  public void setyPaddleVelocity(int yPaddleVelocity) {
+    this.yPaddleVelocity = yPaddleVelocity;
   }
 
   public static void main(String[] args) {

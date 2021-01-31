@@ -4,6 +4,8 @@ This project implements the game of Breakout.
 
 Name: Ji Yun Hyo
 
+###Please Note: 24-Exnteion Requested and Granted by Professor Duvall.
+
 ### Timeline
 
 Start Date: January 22nd, 2021 @ 08:34PM
@@ -21,14 +23,17 @@ Hours Spent:
 5. [Ball Image](https://www.google.com/search?q=brick+breaker+ball+png&tbm=isch&hl=en&sa=X&ved=2ahUKEwjotreSq73uAhVL6VMKHWA4C-EQrNwCKAJ6BQgBELAB&biw=2545&bih=1272#imgrc=HIMr7i97XrxHqM)
 6. [Breakout Tile Set 2](https://opengameart.org/content/ui-pack)
 7. [Smooth Movement](https://www.youtube.com/watch?v=L5GJ-i_6uGQ)
+
 ### Running the Program
 
 Main class: BreakoutApp.java
 
-Data files needed: 
+Data files needed: All the png files under folder 'data'
 
 Key/Mouse inputs:
 1. Space - shoot missiles
+2. LEFT - move paddle to left
+3. RIGHT - move paddle to right
 
 Cheat keys:
 

@@ -7,8 +7,8 @@ public class Ball extends Sprite{
   private ImageView imageView;
   private String className;
   private int index;
-  public Ball(int xCoord, int yCoord, int width, int height, String IMAGE){
-    super(xCoord, yCoord, width, height, IMAGE, "ball");
+  public Ball(int xCoord, int yCoord, int width, int height, String IMAGE, String type){
+    super(xCoord, yCoord, width, height, IMAGE, type);
     imageView = setImageView(IMAGE);
     index = 0;
   }

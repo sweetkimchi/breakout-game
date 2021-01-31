@@ -98,9 +98,9 @@ public class BreakoutApp extends Application {
     //add image
 
     //makes sprite objects and images
-    for (int col = 0; col < 15; col++) {
+    for (int col = 0; col < 10; col++) {
       for (int row = 0; row < 5; row++) {
-        Block block = new Block(10 + col * (SIZE / 15), 50 * row + 100, 50, 50, image_files.get(1));
+        Block block = new Block(10 + col * (SIZE / 10), 80 * row + 100, 60, 20, image_files.get(1));
         block.upload_image_files();
         root.getChildren().add(block.getImageView());
         blockMap.add(block);
@@ -108,7 +108,7 @@ public class BreakoutApp extends Application {
     }
 
     //make a ball and store in ArrayList
-    Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE);
+    Ball ball = new Ball(SIZE / 2, SIZE - 100, 15, 15, BALL_IMAGE);
     ball.upload_image_files();
     root.getChildren().add(ball.getImageView());
     System.out.println(spriteMap.size());
@@ -149,15 +149,15 @@ public class BreakoutApp extends Application {
         if (event.getCode() == KeyCode.LEFT) {
           setVelX(-9);
         }
-        if (event.getCode() == KeyCode.DOWN) {
-          setVelY(9);
-        }
+//        if (event.getCode() == KeyCode.DOWN) {
+//          setVelY(9);
+//        }
         if (event.getCode() == KeyCode.RIGHT) {
           setVelX(9);
         }
-        if (event.getCode() == KeyCode.UP) {
-          setVelY(-9);
-        }
+//        if (event.getCode() == KeyCode.UP) {
+//          setVelY(-9);
+//        }
       }
     });
     scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -166,15 +166,15 @@ public class BreakoutApp extends Application {
         if (event.getCode() == KeyCode.LEFT) {
           setVelX(0);
         }
-        if (event.getCode() == KeyCode.DOWN) {
-          setVelY(0);
-        }
+//        if (event.getCode() == KeyCode.DOWN) {
+//          setVelY(0);
+//        }
         if (event.getCode() == KeyCode.RIGHT) {
           setVelX(0);
         }
-        if (event.getCode() == KeyCode.UP) {
-          setVelY(0);
-        }
+//        if (event.getCode() == KeyCode.UP) {
+//          setVelY(0);
+//        }
       }
     });
 

@@ -3,16 +3,12 @@ package breakout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,7 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 
 public class BreakoutApp extends Application {
@@ -77,27 +72,12 @@ public class BreakoutApp extends Application {
   public void start(Stage stage) throws Exception {
 
     //initialize maps
-    initializeMap();
+    initializeMaps();
     scene_start = setupGame(SIZE, SIZE, BACKGROUND);
     stage.setScene(scene_start);
     stage.setTitle(TITLE);
     stage.show();
     stage.requestFocus();
-//
-//    animationSetUp();
-
-//    //cool effect
-//    for(int i = 1; i < 10000 * spriteMap.size(); i++){
-//      if(i % 10000 == 0){
-//        Sprite sprite = spriteMap.get(10000 / i);
-//        sprite.upload_image_files();
-//      }
-//      else if(i % 20000 == 0){
-//        Sprite sprite = spriteMap.get(20000 / i);
-//        sprite.upload_image_files();
-//      }
-//      TimeUnit.MILLISECONDS.sleep(1);
-//    }
   }
 
   public Scene setupGame(int width, int height, Paint background) throws InterruptedException {
@@ -134,6 +114,7 @@ public class BreakoutApp extends Application {
     System.out.println(spriteMap.size());
     ballMap.add(ball);
 
+    //create Paddle
     myPaddle = new Rectangle(SIZE / 2, SIZE - 100, 150,
         20);
     Image image_baby = new Image(
@@ -149,21 +130,7 @@ public class BreakoutApp extends Application {
     return scene_set_up_game;
   }
 
-  private void animationSetUp() {
-    KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), event -> step(SECOND_DELAY));
-    Timeline animation = new Timeline();
-    animation.setCycleCount(Timeline.INDEFINITE);
-    animation.getKeyFrames().add(frame);
-    //starts the game
-    animation.play();
-  }
-
-  private void step(double delay) {
-    int index = 1;
-
-  }
-
-  private void initializeMap() {
+  private void initializeMaps() {
     spriteMap = new ArrayList<Sprite>();
     ballMap = new ArrayList<Ball>();
     blockMap = new ArrayList<Block>();
@@ -218,39 +185,37 @@ public class BreakoutApp extends Application {
         myPaddle.setX(x);
         y += velY;
         myPaddle.setY(y);
-
-        //update everything
         updateAllSprites();
-        //  System.out.println("check");
       }
     };
     animation.start();
   }
 
+
   private void updateAllSprites() {
     for (Sprite sprite : spriteMap) {
-      sprite.update(SECOND_DELAY);
+      sprite.update(SECOND_DELAY, myPaddle, blockMap);
     }
     for (Block block : blockMap) {
-      block.update(SECOND_DELAY);
+      block.update(SECOND_DELAY, myPaddle, blockMap);
     }
     for (Ball ball : ballMap) {
-      ball.update(SECOND_DELAY);
+      ball.update(SECOND_DELAY, myPaddle, blockMap);
     }
     for (Boss boss : bossMap) {
-      boss.update(SECOND_DELAY);
+      boss.update(SECOND_DELAY, myPaddle, blockMap);
     }
     for (Missile missile : missileMap) {
-      missile.update(SECOND_DELAY);
+      missile.update(SECOND_DELAY, myPaddle, blockMap);
     }
     for (DotPaddle dotPaddle : dotPaddleMap) {
-      dotPaddle.update(SECOND_DELAY);
+      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap);
     }
     for (PowerUp powerUp : powerUpsMap) {
-      powerUp.update(SECOND_DELAY);
+      powerUp.update(SECOND_DELAY, myPaddle, blockMap);
     }
     for (MissilePaddle missilePaddle : missilePaddleMap) {
-      missilePaddle.update(SECOND_DELAY);
+      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap);
     }
   }
 

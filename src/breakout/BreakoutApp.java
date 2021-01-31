@@ -1,8 +1,15 @@
 package breakout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -40,18 +47,30 @@ public class BreakoutApp extends Application {
   public static final double GROWER_RATE = 1.1;
   public static final int GROWER_SIZE = 50;
 
-
+  private int velX = 0;
+  private int velY = 0;
+  private int x = SIZE/2;
+  private int y = 800;
   private Scene myScene;
   private ImageView myPaddle;
   private ImageView myBouncer;
+  private List<Sprite> map;
+  private Rectangle myGrower;
+  private String[] image_strings;
+  private Image[] sprite_images;
+  private Sprite[] player;
 
   @Override
   public void start(Stage stage) throws Exception {
+
+    map = new ArrayList<Sprite>();
     myScene = setupGame(SIZE, SIZE, BACKGROUND);
     stage.setScene(myScene);
     stage.setTitle(TITLE);
     stage.show();
-    KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step(SECOND_DELAY));
+    stage.requestFocus();
+
+    KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), event -> step(SECOND_DELAY));
     Timeline animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
     animation.getKeyFrames().add(frame);
@@ -63,55 +82,86 @@ public class BreakoutApp extends Application {
 
     // create one top level collection to organize the things in the scene
     Group root = new Group();
-    // make some shapes and set their properties
-    Image paddle_image = new Image(
-        Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(PADDLE_IMAGE)));
+    image_strings = new String[10];
+    image_strings[0] = PADDLE_IMAGE;
+    sprite_images = new Image[10];
+    sprite_images[0] = new Image(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(PADDLE_IMAGE)));
 
-    Image ball_image = new Image(
-        Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(BALL_IMAGE)));
+//    player = new Sprite(100, 100, 300, 500, sprite_images[0]);
+//
+//    myGrower = new Rectangle(300, 500, 10,
+//        10);
 
-    for (int i = 0; i < 1; i++) {
-      ImageView ball = new ImageView(ball_image);
-      TreeMap<String, Integer> ball_tree = new TreeMap<>();
-      ball_tree.put("x", 1);
-      ball_tree.put("y", 1);
-      ball.setX(ball.getBoundsInLocal().getWidth());
-      ball.setY(ball.getBoundsInLocal().getHeight());
-      ball.setFitHeight(ball.getBoundsInLocal().getHeight() / 5);
-      ball.setFitWidth(ball.getBoundsInLocal().getWidth()/ 5);
-      root.getChildren().add(ball);
-
-      // create a place to see the shapes
-
-    }
-
-
-      myPaddle = new ImageView(paddle_image);
-      myPaddle.setX(200);
-      myPaddle.setY(600);
-      myPaddle.setFitHeight(myPaddle.getBoundsInLocal().getHeight() / 5);
-      myPaddle.setFitWidth(myPaddle.getBoundsInLocal().getWidth() / 5);
-      root.getChildren().add(myPaddle);
+    myGrower = new Rectangle(SIZE/2, SIZE - 100, 150,
+        20);
+    myGrower.setFill(new ImagePattern(sprite_images[0]));
+    root.getChildren().add(myGrower);
 
       // create a place to see the shapes
     Scene scene = new Scene(root, width, height, background);
-
-    scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
+    handleKeyInput(scene);
 
     return scene;
   }
 
   private void step(double elapsedTime) {
-    System.out.println("fwae");
+
   }
 
-  private void handleKeyInput(KeyCode code) {
-    switch (code) {
-      case RIGHT -> myPaddle.setX(myPaddle.getX() + MOVER_SPEED);
-      case LEFT -> myPaddle.setX(myPaddle.getX() - MOVER_SPEED);
-//      case UP -> myPaddle.setY(myPaddle.getY() - MOVER_SPEED);
-//      case DOWN -> myPaddle.setY(myPaddle.getY() + MOVER_SPEED);
-    }
+  private void handleKeyInput(Scene scene) {
+    scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+      @Override
+      public void handle(KeyEvent event) {
+        if (event.getCode() == KeyCode.LEFT) {
+          setVelX(-9);
+        }
+        if (event.getCode() == KeyCode.DOWN) {
+          setVelY(9);
+        }
+        if (event.getCode() == KeyCode.RIGHT) {
+          setVelX(9);
+        }
+        if (event.getCode() == KeyCode.UP) {
+          setVelY(-9);
+        }
+      }
+    });
+    scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+      @Override
+      public void handle(KeyEvent event) {
+        if (event.getCode() == KeyCode.LEFT) {
+          setVelX(0);
+        }
+        if (event.getCode() == KeyCode.DOWN) {
+          setVelY(0);
+        }
+        if (event.getCode() == KeyCode.RIGHT) {
+          setVelX(0);
+        }
+        if (event.getCode() == KeyCode.UP) {
+          setVelY(0);
+        }
+      }
+    });
+
+    AnimationTimer animation = new AnimationTimer() {
+      @Override
+      public void handle(long now) {
+        x += velX;
+        myGrower.setX(x);
+        y += velY;
+        myGrower.setY(y);
+      }
+    };
+    animation.start();
+  }
+
+  public void setVelX(int velX) {
+    this.velX = velX;
+  }
+
+  public void setVelY(int velY) {
+    this.velY = velY;
   }
 
   public static void main(String[] args) {

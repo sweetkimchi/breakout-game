@@ -20,7 +20,7 @@ Hours Spent:
 4. [Breakout Tile Set](https://opengameart.org/content/breakout-brick-breaker-tile-set-free)
 5. [Ball Image](https://www.google.com/search?q=brick+breaker+ball+png&tbm=isch&hl=en&sa=X&ved=2ahUKEwjotreSq73uAhVL6VMKHWA4C-EQrNwCKAJ6BQgBELAB&biw=2545&bih=1272#imgrc=HIMr7i97XrxHqM)
 6. [Breakout Tile Set 2](https://opengameart.org/content/ui-pack)
-
+7. [Smooth Movement](https://www.youtube.com/watch?v=L5GJ-i_6uGQ)
 ### Running the Program
 
 Main class: BreakoutApp.java

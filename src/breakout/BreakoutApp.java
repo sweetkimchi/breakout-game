@@ -122,10 +122,10 @@ public class BreakoutApp extends Application {
     //makes sprite objects and images
     for(int col = 0; col < 15; col++){
       for(int row = 0; row < 5; row++){
-        Sprite sprite = new Sprite(10 + col * (SIZE/15), 50 * row + 100, 50, 50, image_files.get(1));
-        sprite.upload_image_files();
-        root.getChildren().add(sprite.getImageView());
-        spriteMap.add(sprite);
+        Block block = new Block(10 + col * (SIZE/15), 50 * row + 100, 50, 50, image_files.get(1));
+        block.upload_image_files();
+        root.getChildren().add(block.getImageView());
+        blockMap.add(block);
       }
     }
 
@@ -136,9 +136,6 @@ public class BreakoutApp extends Application {
     System.out.println(spriteMap.size());
     ballMap.add(ball);
 
-    for(Sprite sprite : spriteMap){
-      System.out.println(sprite);
-    }
 
     myPaddle = new Rectangle(SIZE/2, SIZE - 100, 150,
         20);
@@ -225,16 +222,38 @@ public class BreakoutApp extends Application {
         myPaddle.setY(y);
 
         //update everything
-        for(Sprite sprite : spriteMap){
-          sprite.update(SECOND_DELAY);
-        }
-        for(Ball ball : ballMap){
-          ball.update(SECOND_DELAY);
-        }
+        updateAllSprites();
       //  System.out.println("check");
       }
     };
     animation.start();
+  }
+
+  private void updateAllSprites(){
+    for(Sprite sprite : spriteMap){
+      sprite.update(SECOND_DELAY);
+    }
+    for(Block block : blockMap){
+      block.update(SECOND_DELAY);
+    }
+    for(Ball ball : ballMap){
+      ball.update(SECOND_DELAY);
+    }
+    for(Boss boss : bossMap){
+      boss.update(SECOND_DELAY);
+    }
+    for(Missile missile : missileMap){
+      missile.update(SECOND_DELAY);
+    }
+    for(DotPaddle dotPaddle : dotPaddleMap){
+      dotPaddle.update(SECOND_DELAY);
+    }
+    for(PowerUp powerUp : powerUpsMap){
+      powerUp.update(SECOND_DELAY);
+    }
+    for(MissilePaddle missilePaddle : missilePaddleMap){
+      missilePaddle.update(SECOND_DELAY);
+    }
   }
 
   public void shoot(Sprite sprite){

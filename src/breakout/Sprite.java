@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 public class Sprite extends Rectangle {
   private Image image;
   private String IMAGE;
+  private String className;
   private int index;
 
   private ImageView imageView;
@@ -14,9 +15,10 @@ public class Sprite extends Rectangle {
     super();
   }
 
-  public Sprite(int xCoord, int yCoord, int width, int height, String IMAGE){
+  public Sprite(int xCoord, int yCoord, int width, int height ,String IMAGE, String type){
       super(xCoord, yCoord, width, height);
       this.IMAGE = IMAGE;
+      className = type;
       setImageView(this.IMAGE);
       index = 0;
   }
@@ -40,6 +42,10 @@ public class Sprite extends Rectangle {
 
   }
 
+  private String getClassName(){
+    return this.className;
+  }
+
   public ImageView getImageView(){
     return imageView;
   }
@@ -49,6 +55,11 @@ public class Sprite extends Rectangle {
   }
 
   public void update(double elapsedTime){
-    this.getImageView().setX(this.getImageView().getX() - 30 * elapsedTime);
+    if(getClassName().equals("ball")){
+      this.getImageView().setX(this.getImageView().getX() - 30 * elapsedTime);
+    }
+    else if(getClassName().equals("block")){
+      this.getImageView().setX(this.getImageView().getX() + 20 * elapsedTime);
+    }
   }
 }

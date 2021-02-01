@@ -25,7 +25,8 @@ public class Sprite extends Rectangle {
     super();
   }
 
-  public Sprite(int xCoord, int yCoord, int width, int height, String FULL_HEALTH_IMAGE, String LOW_HEALTH_IMAGE, String type) {
+  public Sprite(int xCoord, int yCoord, int width, int height, String FULL_HEALTH_IMAGE,
+      String LOW_HEALTH_IMAGE, String type) {
     super(xCoord, yCoord, width, height);
     this.IMAGE = FULL_HEALTH_IMAGE;
     className = type;
@@ -130,36 +131,35 @@ public class Sprite extends Rectangle {
       this.yDirection *= -1;
       if (this.getImageView().getBoundsInParent().getCenterX()
           < myPaddle.getX() + myPaddle.getWidth() / 2) {
-          handlePaddleDeflection(0);
+        handlePaddleDeflection(0);
       } else {
         handlePaddleDeflection(1);
       }
     }
     if (this.getClassName().equals("ball")
         && this.getImageView().getBoundsInParent().getMaxY() >= 1000) {
-        alive = false;
+      alive = false;
     }
 
 
   }
 
-  private void handlePaddleDeflection(int num){
-    if(num == 0){
+  private void handlePaddleDeflection(int num) {
+    if (num == 0) {
       this.xDirection = 1;
-    }else{
+    } else {
       this.xDirection = -1;
     }
 
   }
 
-  public boolean deadOrAlive(){
+  public boolean deadOrAlive() {
     return alive;
   }
 
-  public String getLowHealthImage(){
+  public String getLowHealthImage() {
     return this.LOW_HEALTH_IMAGE;
   }
-
 
 
   private void checkBlockCollision(List<Block> blocks, List<Missile> missile) {
@@ -201,7 +201,8 @@ public class Sprite extends Rectangle {
 
   private void checkBossCollision(List<Boss> boss, List<Missile> missile) {
     for (Boss boss_block : boss) {
-      if ((this.getClassName().equals("ball") || this.getClassName().equals("missile")) && boss_block
+      if ((this.getClassName().equals("ball") || this.getClassName().equals("missile"))
+          && boss_block
           .getImageView().getBoundsInParent()
           .intersects(this.getImageView().getBoundsInParent())) {
         if (boss_block.getImageView().getBoundsInParent()

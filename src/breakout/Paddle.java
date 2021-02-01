@@ -5,11 +5,14 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-public class Paddle extends Sprite{
+public class Paddle extends Sprite {
+
   public int lives;
-  private Rectangle myPaddle;
+  private final Rectangle myPaddle;
   public int experience;
-  public Paddle(int xCoord, int yCoord, int width, int height, String IMAGE, int lives, Rectangle myPaddle){
+
+  public Paddle(int xCoord, int yCoord, int width, int height, String IMAGE, int lives,
+      Rectangle myPaddle) {
     super(xCoord, yCoord, width, height, IMAGE, "", "paddle");
     lives = 3;
     this.myPaddle = myPaddle;
@@ -21,11 +24,11 @@ public class Paddle extends Sprite{
     experience = 0;
   }
 
-  public Rectangle getRectangle(){
+  public Rectangle getRectangle() {
     return this.myPaddle;
   }
 
-  public int getExperience(){
+  public int getExperience() {
     return experience;
   }
 }

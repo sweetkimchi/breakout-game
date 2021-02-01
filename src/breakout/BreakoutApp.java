@@ -35,7 +35,7 @@ public class BreakoutApp extends Application {
   public static final String BACKGROUND_IMAGE = "400" + postFix;
   public static final String MISSILE_IMAGE = "346" + postFix;
   private int xPaddleVelocity = 0;
-  private int yPaddleVelocity = 0;
+  private final int yPaddleVelocity = 0;
   private int x = SIZE / 2 - 30;
   private int y = SIZE - 50;
   private int amount_missiles = 50;
@@ -103,9 +103,9 @@ public class BreakoutApp extends Application {
   }
 
   private void displayStartingText() {
-    missileLeft = displayText(50, 50, "Missiles Left: " + Integer.toString(amount_missiles), 20,
+    missileLeft = displayText(50, 50, "Missiles Left: " + amount_missiles, 20,
         Color.GREENYELLOW);
-    livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + Integer.toString(number_of_lives), 20,
+    livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + number_of_lives, 20,
         Color.GREENYELLOW);
     Text credit = displayText(50, 950, "Breakout v1.0\nby Jiyun Hyo", 15, Color.GREENYELLOW);
     Text currentLevelText = displayText(460, 50, "Level " + currentLevel, 30, Color.GOLD);
@@ -315,7 +315,7 @@ public class BreakoutApp extends Application {
     }
   }
 
-  private void loadStationaryBlockLevels(ArrayList<String> levelDescriptionsFromFile){
+  private void loadStationaryBlockLevels(ArrayList<String> levelDescriptionsFromFile) {
     for (int row = 0; row < Integer.parseInt(levelDescriptionsFromFile.get(1)); row++) {
       for (int column = 0; column < Integer.parseInt(levelDescriptionsFromFile.get(2));
           column++) {
@@ -335,7 +335,8 @@ public class BreakoutApp extends Application {
       }
     }
   }
-  private void loadMovingBlockLevels(ArrayList<String> levelDescriptionsFromFile){
+
+  private void loadMovingBlockLevels(ArrayList<String> levelDescriptionsFromFile) {
     for (int col = 0; col < Integer.parseInt(levelDescriptionsFromFile.get(1)); col++) {
       for (int row = 0; row < Integer.parseInt(levelDescriptionsFromFile.get(2)); row++) {
         Block block = new Block(
@@ -357,7 +358,7 @@ public class BreakoutApp extends Application {
     }
   }
 
-  private void loadBossLevels(ArrayList<String> levelDescriptionsFromFile){
+  private void loadBossLevels(ArrayList<String> levelDescriptionsFromFile) {
     Boss boss = new Boss(Integer.parseInt(levelDescriptionsFromFile.get(1)),
         Integer.parseInt(levelDescriptionsFromFile.get(2)),
         Integer.parseInt(levelDescriptionsFromFile.get(3)),

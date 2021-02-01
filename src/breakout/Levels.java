@@ -11,17 +11,19 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class Levels {
-  private int currentLevel;
+
+  private final int currentLevel;
   public static final String TITLE = "Example JavaFX";
   public static final Paint BACKGROUND = Color.WHITE;
-  private Stage stage;
-  private int SIZE = 1000;
-  public Levels(int currentLevel, Stage stage){
+  private final Stage stage;
+  private final int SIZE = 1000;
+
+  public Levels(int currentLevel, Stage stage) {
     this.currentLevel = currentLevel;
     this.stage = stage;
   }
 
-  public void launchLevel(int currentLevel){
+  public void launchLevel(int currentLevel) {
     BreakoutApp breakout = new BreakoutApp();
     Scene scene = breakout.setupGame(SIZE, SIZE, stage, currentLevel);
     stage.setScene(scene);

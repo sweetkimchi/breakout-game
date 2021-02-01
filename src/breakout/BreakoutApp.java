@@ -51,7 +51,6 @@ public class BreakoutApp extends Application {
   private ImageView myBackGround;
   private Rectangle myPaddle;
   private String[] image_strings;
-  private Sprite[] player;
   private Pane root;
   private AnimationTimer animation;
   private boolean paused = false;
@@ -61,6 +60,7 @@ public class BreakoutApp extends Application {
   private Text livesLeft;
   private Text loseMessage;
   private Text credit;
+  private Text pauseMessage;
 
 
   private ArrayList<String> image_files;
@@ -75,7 +75,7 @@ public class BreakoutApp extends Application {
   private List<Boss> bossMap;
 
   @Override
-  public void start(Stage stage){
+  public void start(Stage stage) {
 
     //initialize maps
     scene_start = setupGame(SIZE, SIZE, BACKGROUND, stage);
@@ -86,34 +86,14 @@ public class BreakoutApp extends Application {
   }
 
 
-  public Scene setupGame(int width, int height, Paint background, Stage stage){
+  public Scene setupGame(int width, int height, Paint background, Stage stage) {
 
     // create one top level collection to organize the things in the scene
     root = new Pane();
     scene_set_up = new Scene(root, width, height, null);
-    myBackGround = new ImageView(
-        new Image(getClass().getClassLoader().getResourceAsStream(BACKGROUND_IMAGE)));
-    myBackGround.setFitWidth(SIZE);
-    myBackGround.setFitHeight(SIZE);
-    root.getChildren().add(myBackGround);
-
+    setBackgroundImage();
     initializeMaps();
-
-    //constructors
-    image_strings = new String[10];
-    image_strings[0] = MISSILE_PADDLE_IMAGE;
-    image_files = new ArrayList<>();
-    image_files.add(MISSILE_PADDLE_IMAGE);
-    image_files.add(TILE_IMAGE);
-
-    //DISPLAY TEXT
-    missileLeft = displayText(50, 50, "Missiles Left: " + Integer.toString(amount_missiles), 20, Color.GOLD);
-    livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + Integer.toString(number_of_lives), 20, Color.GOLD);
-    credit = displayText(50, 950, "Breakout v1.0\nby Jiyun Hyo", 15, Color.GREENYELLOW);
-    //what I need to do here is that I need to make a method in Sprite for each object and
-    /*
-    ROW COL TYPE IMAGE
-     */
+    displayStartingText();
 
     //MAKE MISSILES
     //makes sprite objects and images
@@ -131,7 +111,7 @@ public class BreakoutApp extends Application {
     for (int col = 0; col < 10; col++) {
       for (int row = 0; row < 3; row++) {
         Block block = new Block(200 + (SIZE / 10) * col + row * (SIZE / 10),
-            100 * row + 100 + col * 60, 80, 20, image_files.get(1), "block", 3);
+            100 * row + 100 + col * 60, 80, 20, TILE_IMAGE, "block", 3);
 
         block.upload_image_files();
         root.getChildren().add(block.getImageView());
@@ -144,26 +124,43 @@ public class BreakoutApp extends Application {
 //    boss.upload_image_files();
 //    root.getChildren().add(boss.getImageView());
 //    bossMap.add(boss);
+    makeBall();
+    makePaddle();
+    handleKeyInput(scene_set_up, stage);
+    runAnimation();
+    return scene_set_up;
+  }
 
-    //make a ball and store in ArrayList
+  private void setBackgroundImage(){
+    myBackGround = new ImageView(
+        new Image(getClass().getClassLoader().getResourceAsStream(BACKGROUND_IMAGE)));
+    myBackGround.setFitWidth(SIZE);
+    myBackGround.setFitHeight(SIZE);
+    root.getChildren().add(myBackGround);
+  }
+
+  private void displayStartingText(){
+    missileLeft = displayText(50, 50, "Missiles Left: " + Integer.toString(amount_missiles), 20,
+        Color.GREENYELLOW);
+    livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + Integer.toString(number_of_lives), 20,
+        Color.GREENYELLOW);
+    credit = displayText(50, 950, "Breakout v1.0\nby Jiyun Hyo", 15, Color.GREENYELLOW);
+  }
+
+  private void makeBall(){
     Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE, "ball", number_of_lives);
     ball.upload_image_files();
     root.getChildren().add(ball.getImageView());
     ballMap.add(ball);
+  }
 
+  private void makePaddle(){
     myPaddle = new Rectangle(x, y, 150, 20);
     //create Paddle
     MissilePaddle missilePaddle = new MissilePaddle(x, y, 150,
         20, MISSILE_PADDLE_IMAGE, 3, myPaddle);
 
-
-
     root.getChildren().add(missilePaddle.getRectangle());
-
-    // create a place to see the shapes
-    handleKeyInput(scene_set_up, stage);
-
-    return scene_set_up;
   }
 
   public void initializeMaps() {
@@ -177,13 +174,13 @@ public class BreakoutApp extends Application {
     bossMap = new ArrayList<Boss>();
   }
 
-  private void updateText(){
+  private void updateText() {
     missileLeft.setText("Missiles Left: " + amount_missiles);
     livesLeft.setText("Lives Left: " + number_of_lives);
     //  root.getChildren().add(missileLeft);
   }
 
-  private void handlePaddleVelocity(KeyEvent event){
+  private void handlePaddleVelocity(KeyEvent event) {
     if (event.getCode() == KeyCode.LEFT) {
       setxPaddleVelocity(-9);
     }
@@ -192,25 +189,30 @@ public class BreakoutApp extends Application {
     }
   }
 
-  private void handleShortCuts(KeyEvent event, Stage stage){
-    if (event.getCode() == KeyCode.R){
+  private void handleShortCuts(KeyEvent event, Stage stage) {
+    if (event.getCode() == KeyCode.R) {
       cleanUpAndRestart(stage);
     }
-    if (event.getCode() == KeyCode.P){
+    if (event.getCode() == KeyCode.P) {
+
       pause();
     }
   }
 
-  private void handleCheatCode(KeyEvent event){
-    if (event.getCode() == KeyCode.L){
+  private void handleCheatCode(KeyEvent event) {
+    if (event.getCode() == KeyCode.L) {
+      if(number_of_lives == 0 && paused){
+        paused = false;
+      }
       number_of_lives++;
+      loseMessage.setVisible(false);
     }
-    if (event.getCode() == KeyCode.M){
+    if (event.getCode() == KeyCode.M) {
       amount_missiles += 10;
     }
   }
 
-  private Text displayText(int xCoord, int yCoord, String message, int fontSize, Color color){
+  private Text displayText(int xCoord, int yCoord, String message, int fontSize, Color color) {
     Text text = new Text();
     text.setX(xCoord);
     text.setY(yCoord);
@@ -226,44 +228,29 @@ public class BreakoutApp extends Application {
     scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
       @Override
       public void handle(KeyEvent event) {
-        if (event.getCode() != null){
+        if (event.getCode() != null && !paused) {
           animation.start();
         }
         handlePaddleVelocity(event);
         handleShortCuts(event, stage);
         handleCheatCode(event);
+        handleShoot(event);
 
-        if (event.getCode() == KeyCode.SPACE) {
-          if(amount_missiles > 0){
-            amount_missiles--;
-            for(int i = 0; i <= 1; i++){
-              Missile missile = new Missile((int) myPaddle.getX() + (int) (myPaddle.getWidth() - 10) * i, (int) myPaddle.getY() , 3, 10, MISSILE_IMAGE);
-              missile.upload_image_files();
-              missileMap.add(missile);
-              root.getChildren().add(missile.getImageView());
-            }
-          }
-        }
       }
     });
     scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
       @Override
       public void handle(KeyEvent event) {
-        if ((event.getCode() == KeyCode.LEFT) || (event.getCode() == KeyCode.RIGHT)){
-          for(int i = 0; i < 2; i++){
+        if ((event.getCode() == KeyCode.LEFT) || (event.getCode() == KeyCode.RIGHT)) {
+          for (int i = 0; i < 2; i++) {
             xPaddleVelocity = 0;
           }
         }
-//        if (event.getCode() == KeyCode.DOWN) {
-//          setVelY(0);
-//        }
-
-//        if (event.getCode() == KeyCode.UP) {
-//          setVelY(0);
-//        }
       }
     });
+  }
 
+  private void runAnimation(){
     animation = new AnimationTimer() {
       @Override
       public void handle(long now) {
@@ -278,13 +265,16 @@ public class BreakoutApp extends Application {
     };
   }
 
-  private void checkGameStatus(){
-    if(blockMap.isEmpty() && bossMap.isEmpty()){
+  private void checkGameStatus() {
+    if (!paused && pauseMessage != null){
+      pauseMessage.setVisible(false);
+    }
+    if (blockMap.isEmpty() && bossMap.isEmpty()) {
       animation.stop();
-      winMessage = displayText(150, 500, "YOU WON!!", 100, Color.OLIVEDRAB);
+      winMessage = displayText(300, 500, "YOU WON!!", 100, Color.GREENYELLOW);
       root.getChildren().add(winMessage);
     }
-    if(!ballMap.get(0).deadOrAlive()){
+    if (!ballMap.get(0).deadOrAlive()) {
       number_of_lives--;
       updateText();
       ballMap.get(0).getImageView().setImage(null);
@@ -295,24 +285,29 @@ public class BreakoutApp extends Application {
       ballMap.add(ball);
       animation.stop();
     }
-    if(number_of_lives <= 0){
+    if (number_of_lives <= 0 && !paused) {
       animation.stop();
-      loseMessage = displayText(600, 950, "YOU LOST!! Click 'R' to Restart", 25, Color.WHITE);
+      paused = true;
+      loseMessage = displayText(600, 850,
+          "YOU LOST!!\nClick 'R' to Restart\nClick 'L' to Re-load Lives", 25, Color.GREENYELLOW);
+
     }
   }
 
-  private void cleanUpAndRestart(Stage stage){
+  private void cleanUpAndRestart(Stage stage) {
     Levels level = new Levels(currentLevel, stage);
     level.launchLevel();
     animation.stop();
   }
 
-  private void pause(){
-    if(!paused){
+  private void pause() {
+    if (!paused) {
       animation.stop();
+      pauseMessage = displayText(300, 400, "PAUSED\n\nPress 'P' to Continue",50,Color.GOLD);
       paused = true;
-    }else{
+    } else {
       animation.start();
+      pauseMessage.setVisible(false);
       paused = false;
     }
   }
@@ -345,8 +340,20 @@ public class BreakoutApp extends Application {
     }
   }
 
-  public void shoot(Sprite sprite) {
-
+  public void handleShoot(KeyEvent event) {
+    if (event.getCode() == KeyCode.SPACE) {
+      if (amount_missiles > 0) {
+        amount_missiles--;
+        for (int i = 0; i <= 1; i++) {
+          Missile missile = new Missile(
+              (int) myPaddle.getX() + (int) (myPaddle.getWidth() - 10) * i,
+              (int) myPaddle.getY(), 3, 10, MISSILE_IMAGE);
+          missile.upload_image_files();
+          missileMap.add(missile);
+          root.getChildren().add(missile.getImageView());
+        }
+      }
+    }
   }
 
   public void setxPaddleVelocity(int xPaddleVelocity) {

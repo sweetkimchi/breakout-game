@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 public class Paddle extends Sprite{
   public int lives;
   private Rectangle myPaddle;
+  public int experience;
   public Paddle(int xCoord, int yCoord, int width, int height, String IMAGE, int lives, Rectangle myPaddle){
     super(xCoord, yCoord, width, height, IMAGE, "paddle");
     lives = 3;
@@ -17,9 +18,14 @@ public class Paddle extends Sprite{
             this.getClass().getClassLoader().getResourceAsStream(IMAGE)));
 
     myPaddle.setFill(new ImagePattern(paddle_image));
+    experience = 0;
   }
 
   public Rectangle getRectangle(){
     return this.myPaddle;
+  }
+
+  public int getExperience(){
+    return experience;
   }
 }

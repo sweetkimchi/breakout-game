@@ -160,12 +160,6 @@ public class Sprite extends Rectangle {
       if ((this.getClassName().equals("ball") || this.getClassName().equals("missile")) && block
           .getImageView().getBoundsInParent()
           .intersects(this.getImageView().getBoundsInParent())) {
-//        if (this.getImageView().getBoundsInParent().getMinX() >= block.getImageView()
-//            .getBoundsInParent().getMinX()
-//            && this.getImageView().getBoundsInParent().getMaxX() <= block.getImageView()
-//            .getBoundsInParent().getMaxX()) {
-//          this.xDirection *= -1;
-//        }
         if (block.getImageView().getBoundsInParent()
             .intersects(this.getImageView().getBoundsInParent())) {
           if (this.getClassName().equals("missile")) {
@@ -182,7 +176,6 @@ public class Sprite extends Rectangle {
 
         //DEDUCT LIVES WHEN HIT
         block.lives--;
-        //  System.out.println(block.lives);
         if (block.lives <= 5) {
           block.getImageView().setImage(
               new Image(Objects.requireNonNull(
@@ -202,12 +195,6 @@ public class Sprite extends Rectangle {
       if ((this.getClassName().equals("ball") || this.getClassName().equals("missile")) && boss_block
           .getImageView().getBoundsInParent()
           .intersects(this.getImageView().getBoundsInParent())) {
-//        if (this.getImageView().getBoundsInParent().getMinX() >= block.getImageView()
-//            .getBoundsInParent().getMinX()
-//            && this.getImageView().getBoundsInParent().getMaxX() <= block.getImageView()
-//            .getBoundsInParent().getMaxX()) {
-//          this.xDirection *= -1;
-//        }
         if (boss_block.getImageView().getBoundsInParent()
             .intersects(this.getImageView().getBoundsInParent())) {
           if (this.getClassName().equals("missile")) {

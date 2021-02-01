@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -30,6 +31,7 @@ public class BreakoutApp extends Application {
   //image files
   private static final String postFix = "-Breakout-Tiles.png";
   public static final String MISSILE_PADDLE_IMAGE = "325" + postFix;
+  public static final String FAST_PADDLE_IMAGE = "310" + postFix;
   public static final String BALL_IMAGE = "340" + postFix;
   public static final String POWERFUL_BALL = "402" + postFix;
   public static final String BACKGROUND_IMAGE = "400" + postFix;
@@ -54,6 +56,7 @@ public class BreakoutApp extends Application {
   private Text loseMessage;
   private Text pauseMessage;
   private Stage myStage;
+  private int paddleSpeed = 9;
 
 
   private ArrayList<String> image_files;
@@ -90,7 +93,7 @@ public class BreakoutApp extends Application {
     displayStartingText();
     loadLevelFromFile(currentLevel, stage);
     makeBall();
-    makePaddle();
+    createPaddle(MISSILE_PADDLE_IMAGE, x, y);
     handleKeyInput(scene_set_up, stage);
     runAnimation();
     return scene_set_up;
@@ -120,11 +123,11 @@ public class BreakoutApp extends Application {
     ballMap.add(ball);
   }
 
-  private void makePaddle() {
-    myPaddle = new Rectangle(x, y, 150, 20);
+  private void createPaddle(String IMAGE_FILE, int xCoord, int yCoord) {
+    myPaddle = new Rectangle(xCoord, yCoord, 150, 20);
     //create Paddle
-    MissilePaddle missilePaddle = new MissilePaddle(x, y, 150,
-        20, MISSILE_PADDLE_IMAGE, 3, myPaddle);
+    MissilePaddle missilePaddle = new MissilePaddle(xCoord, yCoord, 150,
+        20, IMAGE_FILE, 3, myPaddle);
     missilePaddleMap.add(missilePaddle);
     root.getChildren().add(missilePaddle.getRectangle());
   }
@@ -148,10 +151,10 @@ public class BreakoutApp extends Application {
 
   private void handlePaddleVelocity(KeyEvent event) {
     if (event.getCode() == KeyCode.LEFT) {
-      setxPaddleVelocity(-9);
+      setxPaddleVelocity(-paddleSpeed);
     }
     if (event.getCode() == KeyCode.RIGHT) {
-      setxPaddleVelocity(9);
+      setxPaddleVelocity(paddleSpeed);
     }
   }
 
@@ -253,7 +256,7 @@ public class BreakoutApp extends Application {
           e.printStackTrace();
         }
         handleCheatCode(event, stage);
-        handleShoot(event);
+        gameControlKeys(event);
         determineCurrentLevelFromFile(event, stage);
 
       }
@@ -278,6 +281,7 @@ public class BreakoutApp extends Application {
         updateAllSprites();
         updateText();
         checkGameStatus();
+        checkPaddleSpeed();
       }
     };
   }
@@ -313,9 +317,10 @@ public class BreakoutApp extends Application {
       animation.stop();
       paused = true;
       loseMessage = displayText(600, 850,
-          "YOU LOST!!\nClick 'R' to Restart\nClick 'L' to Re-load Lives", 25, Color.GREENYELLOW);
+          "YOU LOST!!\nPress 'R' to Restart\nPress 'L' to Re-load Lives", 25, Color.GREENYELLOW);
 
     }
+
   }
 
   private void cleanUpAndRestart(Stage stage) throws FileNotFoundException {
@@ -439,7 +444,7 @@ public class BreakoutApp extends Application {
     }
   }
 
-  public void handleShoot(KeyEvent event) {
+  public void gameControlKeys(KeyEvent event) {
     if (event.getCode() == KeyCode.SPACE) {
       if (amount_missiles > 0) {
         amount_missiles--;
@@ -452,9 +457,25 @@ public class BreakoutApp extends Application {
           root.getChildren().add(missile.getImageView());
         }
       }
+    } if (event.getCode() == KeyCode.N) {
+          paddleSpeed+=1;
+      }
+      if (event.getCode() == KeyCode.B && paddleSpeed > 9) {
+        paddleSpeed -= 1;
+
+     }
+    }
+  private void checkPaddleSpeed(){
+    if(paddleSpeed > 9){
+      myPaddle.setFill(new ImagePattern(new Image(
+          Objects.requireNonNull(
+              this.getClass().getClassLoader().getResourceAsStream(FAST_PADDLE_IMAGE)))));
+    }else{
+      myPaddle.setFill(new ImagePattern(new Image(
+          Objects.requireNonNull(
+              this.getClass().getClassLoader().getResourceAsStream(MISSILE_PADDLE_IMAGE)))));
     }
   }
-
   public void setxPaddleVelocity(int xPaddleVelocity) {
     this.xPaddleVelocity = xPaddleVelocity;
   }

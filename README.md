@@ -16,6 +16,8 @@ Hours Spent: ~30 hours
 
 ### Resources Used
 
+All image files are under 'data' folder. All txt files containing level information on project main page.
+
 1. [JavaFX Game: Space Invaders (for Beginners)](https://www.youtube.com/watch?v=FVo1fm52hz0&list=PL4h6ypqTi3RTIoPa_Qz3haEo3OXJQqOwc&index=5)
 2. [JavaFX Animation](https://zetcode.com/gui/javafx/animation/#:~:text=AnimationTimer%20is%20the%20most%20simple,every%20frame%20of%20the%20animation.&text=Timeline%20is%20the%20most%20complex%20tool%20for%20doing%20high%2Dlevel%20animations.)
 3. [Java Inner Classes](https://www.tutorialspoint.com/java/java_innerclasses.htm)
@@ -28,6 +30,7 @@ Hours Spent: ~30 hours
 10. [JFrame Documentation](https://docs.oracle.com/javase/10/docs/api/javax/swing/JFrame.html)
 11. [Ball Image](https://pngtree.com/freepng/red-energy-ball-pokiehl_3996999.html)
 12. [Java File Read](https://www.w3schools.com/java/java_files_read.asp)
+13. [Splash Screen](https://www.youtube.com/watch?v=x-vlOrUBxjc)
 
 ### Running the Program
 
@@ -57,10 +60,58 @@ Cheat keys:
 
 Assumptions or Simplifications:
 I decided not to implement the DotPaddle (but left it for possible future implementations on my own
-just for fun).
+just for fun). I also decided not to implement the invincibility cheat code because it felt very redudant
+with "get lives" cheat code. I also decided not to implement the "indestructible layer of blocks" Power-up
+because when I did implement it, the game was super boring. I wanted the game to be fun and engaging.
+I also wanted to be of decent quality that I would want to play it from time to time. 
 
-Known Bugs: None.
+Known Bugs: No bugs but lags a little when too many sprites are created all at once.
 
 Extra credit: Not sure what this is.
 
-### Impressions
+### Game Desgin
+I spent a lot of time trying to get rid of things that made the game not enjoyable to play. I researched
+a specific way of implementing the paddle velocity that would result in much smoother paddle movement. I 
+also tried different implementations to make sure that the paddle bounces the ball off at different angles
+depending on where on the paddle the ball hits. I tried my best to make the game look pleaseing to look at.
+UI/UX is key for gaming experience. As an avid gamer and an investor in a e-sports startup, I hold high standards
+when it comes to gaming experience. So even though I knew I wouldn't be graded on how "smooth" or enjoyable the 
+game is, I couldn't resist but to try to make the experience as good as possible.
+
+I created a BreakoutAPP class that handles everything that is displayed on the screen. BreakoutApp
+keeps track of all revelant "game data" such as lists that contain all sprites that are created in the game. 
+It also handles most of the graphics (e.g. splash screen, game screen). For managing the sprites, I considered many options when it came to how I would structure all different parts of the project. I considered
+just using one class to reprsent all sprites. However, I decided in the end that I would create one class
+for each sprite I would add. And all of these classes would extend the Sprite class which handles all the 
+operations such as different sprites colliding, initializing the objects that inherit this class, and removing
+sprites from the map once they are dead or consumed. I found that this improved readability and prevented
+me from having to write duplicate code. Although I tried my best to simplify duplicate codes, for version 3.0,
+I do want to try to improve the cleanniess of the code. Right now, there are too many variables declared as
+private at the top of BreakoutApp and Srite classes. I also want to look for ways to improve the overall
+experience of the game. I realized that the game lags a little bit when too many sprites are produced 
+on the screen at the same time.
+
+### Extra Features
+Like I stated earlier, the primary thought when designing and building this app was that the game
+needs to be fun. When I implemented some stuff and found that it was really no fun (I know because
+I'm an avid game player), I decided to get rid of the features: invincibility (game became too boring because I didn't
+even have to move my paddle to win), paddle leveling up (power ups usually
+leveled up the paddle so fast that "experience" was needless and not fun), displaying number of hits
+required to destroy the block, dot paddle (you couldn't even "see" that the dot paddle was doing dot damage). I ended up adding a lot of extra features such as the 'pause' key, super-ball that goes through the blocks,
+keys to increase/decrease paddle speed, key to add more missiles, keys to increase/decrease size of the paddles, 
+switching brick images when it has low health, switching paddle image when it becomes faster.
+
+One last thing I thought interesting was that I actually made selecting images for the blocks possible through
+the parameter I feed in the program from my level#.txt files. The numbering system for all my image files start with
+numbers. I saved the postfix so that when I get fed in a image number as one of the parameters, I can just add the
+postfix and load the image on the brick. So it is so much easier to load/change/renew images. 
+
+### Impression
+To be honest, there are so many more things I want to do to improve this current app. I now know what design
+works better and what implementation results in "smoother" experience. I made a lot mistakes when implementing
+this game such as duplicating code, too many variables, and etc. However, following Professor Duvall's guidance
+such as make the code as readable as possible really helped me see ways in which I can make the code more
+readable to the future readers. I wish I had spent more time making the code readable, so next time I will
+certainly do that. And because I know what things work now, I am sure I can come up with a much better design for
+future projects. There were also times when I had to choose the "dirty" code design because for unknown reasons,
+some clean code made the gaming experience a little bad (e.g. slowing down the game, laggy, etc).

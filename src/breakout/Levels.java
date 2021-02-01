@@ -46,9 +46,7 @@ public class Levels {
     while (myReader.hasNext()) {
       String data = myReader.next();
       parameters.add(data);
-      System.out.println(data);
     }
-    System.out.println(parameters.size());
     myReader.close();
     return parameters;
   }

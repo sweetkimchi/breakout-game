@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
@@ -39,8 +40,9 @@ public class BreakoutApp extends Application {
   public static final String MISSILE_PADDLE_IMAGE = "325" + postFix;
   public static final String TILE_IMAGE = "102" + postFix;
   public static final String BROKEN_TILE_IMAGE = "110" + postFix;
-  public static final String BALL_IMAGE = "339" + postFix;
+  public static final String BALL_IMAGE = "340" + postFix;
   public static final String BOSS_IMAGE = "000" + postFix;
+  public static final String POWERFUL_BALL ="402" + postFix;
   public static final String BACKGROUND_IMAGE = "400" + postFix;
   public static final String MISSILE_IMAGE = "346" + postFix;
   private String paddleType = "missilepaddle";
@@ -184,7 +186,25 @@ public class BreakoutApp extends Application {
     if (event.getCode() == KeyCode.M) {
       amount_missiles += 10;
     }
+    //make ball bigger and able to go through bricks (stronger damage)
+    if (event.getCode() == KeyCode.F){
+      ballMap.get(0).getImageView().setFitWidth(ballMap.get(0).getImageView().getFitWidth() + 10);
+      ballMap.get(0).getImageView().setFitHeight(ballMap.get(0).getImageView().getFitHeight() + 10);
+      if(ballMap.get(0).getImageView().getFitHeight() >= 30){
+        ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
+            getClass().getClassLoader().getResourceAsStream(POWERFUL_BALL))));
+      }
+    }
+    //decrease ball size and weaker (lower damage)
+    if (event.getCode() == KeyCode.D){
 
+      ballMap.get(0).getImageView().setFitWidth(ballMap.get(0).getImageView().getFitWidth() - 10);
+      ballMap.get(0).getImageView().setFitHeight(ballMap.get(0).getImageView().getFitHeight() - 10);
+      if(ballMap.get(0).getImageView().getFitHeight() <= 20){
+        ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
+            getClass().getClassLoader().getResourceAsStream(BALL_IMAGE))));
+      }
+    }
   }
 
   private void handleNumberInput(KeyEvent event, Stage stage){

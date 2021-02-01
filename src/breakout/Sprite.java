@@ -15,14 +15,11 @@ public class Sprite extends Rectangle {
   private int xDirection;
   private int yDirection;
   private int speed;
-  private int amount_missile;
   private ImageView imageView;
-  private int number_of_lives;
   private int xCoord;
   private int yCoord;
   private boolean alive = true;
   private String LOW_HEALTH_IMAGE;
-  private int currentLevel;
 
   public Sprite() {
     super();
@@ -33,7 +30,7 @@ public class Sprite extends Rectangle {
     this.IMAGE = FULL_HEALTH_IMAGE;
     className = type;
     setImageView(this.IMAGE);
-    this.speed = 300;
+    this.speed = 400;
 
     //necessary set up to ensure the paddle's movement is smooth
     xDirection = 1;
@@ -42,7 +39,6 @@ public class Sprite extends Rectangle {
     this.yCoord = yCoord;
     this.LOW_HEALTH_IMAGE = LOW_HEALTH_IMAGE;
     this.upload_image_files();
-    this.number_of_lives = 3;
   }
 
   public ImageView setImageView(String IMAGE) {
@@ -134,9 +130,9 @@ public class Sprite extends Rectangle {
       this.yDirection *= -1;
       if (this.getImageView().getBoundsInParent().getCenterX()
           < myPaddle.getX() + myPaddle.getWidth() / 2) {
-        this.xDirection = 1;
+          handlePaddleDeflection(0);
       } else {
-        this.xDirection = -1;
+        handlePaddleDeflection(1);
       }
     }
     if (this.getClassName().equals("ball")
@@ -144,6 +140,15 @@ public class Sprite extends Rectangle {
         alive = false;
     }
 
+
+  }
+
+  private void handlePaddleDeflection(int num){
+    if(num == 0){
+      this.xDirection = 1;
+    }else{
+      this.xDirection = -1;
+    }
 
   }
 

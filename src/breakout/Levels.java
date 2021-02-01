@@ -2,7 +2,6 @@ package breakout;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.scene.Scene;
@@ -12,9 +11,9 @@ import javafx.stage.Stage;
 
 public class Levels {
 
-  private final int currentLevel;
   public static final String TITLE = "Example JavaFX";
   public static final Paint BACKGROUND = Color.WHITE;
+  private final int currentLevel;
   private final Stage stage;
   private final int SIZE = 1000;
 
@@ -45,8 +44,9 @@ public class Levels {
     }
     while (true) {
       assert myReader != null;
-      if (!myReader.hasNext())
+      if (!myReader.hasNext()) {
         break;
+      }
       String data = myReader.next();
       parameters.add(data);
     }

@@ -1,7 +1,5 @@
 package breakout;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
 public class DotPaddle extends Paddle {

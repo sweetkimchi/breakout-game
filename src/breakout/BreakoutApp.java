@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -36,12 +36,12 @@ public class BreakoutApp extends Application {
   public static final String POWERFUL_BALL = "402" + postFix;
   public static final String BACKGROUND_IMAGE = "400" + postFix;
   public static final String MISSILE_IMAGE = "346" + postFix;
-  private int xPaddleVelocity = 0;
   private final int yPaddleVelocity = 0;
+  private int xPaddleVelocity = 0;
   private int x = SIZE / 2 - 30;
   private int y = SIZE - 50;
   private int amount_missiles = 50;
-  private int numberOfLives = 3;
+  private final int numberOfLives = 3;
   private Scene scene_set_up;
   private Scene scene_start;
   private ImageView myBackGround;
@@ -70,6 +70,10 @@ public class BreakoutApp extends Application {
   private List<PowerUp> powerUpsMap;
   private List<Boss> bossMap;
 
+  public static void main(String[] args) {
+    launch(args);
+  }
+
   @Override
   public void start(Stage stage) {
 
@@ -81,7 +85,6 @@ public class BreakoutApp extends Application {
     stage.show();
     stage.requestFocus();
   }
-
 
   public Scene setupGame(int width, int height, Stage stage, int currentLevel) {
     // create one top level collection to organize the things in the scene
@@ -188,13 +191,13 @@ public class BreakoutApp extends Application {
       setBallImage(-10);
     }
 
-    if (event.getCode() == KeyCode.G){
+    if (event.getCode() == KeyCode.G) {
       myPaddle.setWidth(myPaddle.getWidth() * 1.2);
     }
-    if (event.getCode() == KeyCode.V){
+    if (event.getCode() == KeyCode.V) {
       myPaddle.setWidth(myPaddle.getWidth() / 1.2);
     }
-    if (event.getCode() == KeyCode.Y && blockMap.isEmpty() && bossMap.isEmpty()){
+    if (event.getCode() == KeyCode.Y && blockMap.isEmpty() && bossMap.isEmpty()) {
       currentLevel++;
       try {
         cleanUpAndRestart(stage);
@@ -205,20 +208,21 @@ public class BreakoutApp extends Application {
   }
 
   private void setBallImage(int increment) {
-    if(ballMap.get(0).getImageView().getFitHeight() > 15 || increment > 0){
-      ballMap.get(0).getImageView().setFitWidth(ballMap.get(0).getImageView().getFitWidth() + increment);
-      ballMap.get(0).getImageView().setFitHeight(ballMap.get(0).getImageView().getFitHeight() + increment);
+    if (ballMap.get(0).getImageView().getFitHeight() > 15 || increment > 0) {
+      ballMap.get(0).getImageView()
+          .setFitWidth(ballMap.get(0).getImageView().getFitWidth() + increment);
+      ballMap.get(0).getImageView()
+          .setFitHeight(ballMap.get(0).getImageView().getFitHeight() + increment);
       if (ballMap.get(0).getImageView().getFitHeight() > 20) {
         ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
             getClass().getClassLoader().getResourceAsStream(POWERFUL_BALL))));
-      }else{
+      } else {
         ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
             getClass().getClassLoader().getResourceAsStream(BALL_IMAGE))));
       }
     }
 
   }
-
 
   private void determineCurrentLevelFromFile(KeyEvent event, Stage stage) {
     try {
@@ -240,7 +244,6 @@ public class BreakoutApp extends Application {
     root.getChildren().add(text);
     return text;
   }
-
 
   private void handleKeyInput(Scene scene, Stage stage) {
     scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -299,7 +302,8 @@ public class BreakoutApp extends Application {
     }
     if (blockMap.isEmpty() && bossMap.isEmpty()) {
       animation.stop();
-      winMessage = displayText(300, 500, "YOU WON!!\n Press 'Y' to go to next level", 50, Color.GREENYELLOW);
+      winMessage = displayText(300, 500, "YOU WON!!\n Press 'Y' to go to next level", 50,
+          Color.GREENYELLOW);
       root.getChildren().add(winMessage);
     }
     if (!ballMap.get(0).deadOrAlive()) {
@@ -341,7 +345,6 @@ public class BreakoutApp extends Application {
       loadBossLevels(levelDescriptionsFromFile);
     }
   }
-
 
   //not refactorable but is necessary because each template is unique and I want to save them
   //as "maps" in possibly future versions
@@ -416,31 +419,43 @@ public class BreakoutApp extends Application {
     }
   }
 
-
   private void updateAllSprites() {
     for (Sprite sprite : spriteMap) {
-      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel, root, ballMap.get(0) , missilePaddleMap);
+      sprite
+          .update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel,
+              root, ballMap.get(0), missilePaddleMap);
     }
     for (Block block : blockMap) {
-      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0), missilePaddleMap);
+      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel,
+          root, ballMap.get(0), missilePaddleMap);
     }
     for (Ball ball : ballMap) {
-      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap,powerUpsMap, currentLevel, root, ballMap.get(0),missilePaddleMap);
+      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel,
+          root, ballMap.get(0), missilePaddleMap);
     }
     for (Boss boss : bossMap) {
-      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0),missilePaddleMap);
+      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel,
+          root, ballMap.get(0), missilePaddleMap);
     }
     for (Missile missile : missileMap) {
-      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0),missilePaddleMap);
+      missile
+          .update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel,
+              root, ballMap.get(0), missilePaddleMap);
     }
     for (DotPaddle dotPaddle : dotPaddleMap) {
-      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0),missilePaddleMap);
+      dotPaddle
+          .update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel,
+              root, ballMap.get(0), missilePaddleMap);
     }
     for (PowerUp powerUp : powerUpsMap) {
-      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0),missilePaddleMap);
+      powerUp
+          .update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel,
+              root, ballMap.get(0), missilePaddleMap);
     }
     for (MissilePaddle missilePaddle : missilePaddleMap) {
-      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0),missilePaddleMap);
+      missilePaddle
+          .update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel,
+              root, ballMap.get(0), missilePaddleMap);
     }
   }
 
@@ -457,30 +472,29 @@ public class BreakoutApp extends Application {
           root.getChildren().add(missile.getImageView());
         }
       }
-    } if (event.getCode() == KeyCode.N && paddleSpeed < 18) {
-          paddleSpeed+=4;
-      }
-      if (event.getCode() == KeyCode.B && paddleSpeed > 9) {
-        paddleSpeed -= 1;
-
-     }
     }
-  private void checkPaddleSpeed(){
-    if(paddleSpeed > 9){
+    if (event.getCode() == KeyCode.N && paddleSpeed < 18) {
+      paddleSpeed += 4;
+    }
+    if (event.getCode() == KeyCode.B && paddleSpeed > 9) {
+      paddleSpeed -= 1;
+
+    }
+  }
+
+  private void checkPaddleSpeed() {
+    if (paddleSpeed > 9) {
       myPaddle.setFill(new ImagePattern(new Image(
           Objects.requireNonNull(
               this.getClass().getClassLoader().getResourceAsStream(FAST_PADDLE_IMAGE)))));
-    }else{
+    } else {
       myPaddle.setFill(new ImagePattern(new Image(
           Objects.requireNonNull(
               this.getClass().getClassLoader().getResourceAsStream(MISSILE_PADDLE_IMAGE)))));
     }
   }
+
   public void setxPaddleVelocity(int xPaddleVelocity) {
     this.xPaddleVelocity = xPaddleVelocity;
-  }
-
-  public static void main(String[] args) {
-    launch(args);
   }
 }

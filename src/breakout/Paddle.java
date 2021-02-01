@@ -7,8 +7,8 @@ import javafx.scene.shape.Rectangle;
 
 public class Paddle extends Sprite {
 
-  public int lives;
   private final Rectangle myPaddle;
+  public int lives;
   public int experience;
 
   public Paddle(int xCoord, int yCoord, int width, int height, String IMAGE, int lives,

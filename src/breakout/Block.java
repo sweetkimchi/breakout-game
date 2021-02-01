@@ -1,12 +1,10 @@
 package breakout;
 
-import javafx.scene.image.Image;
-
 public class Block extends Sprite {
 
+  private final String LOW_HEALTH_IMAGE;
   public int lives;
   private boolean move;
-  private final String LOW_HEALTH_IMAGE;
 
   public Block(int xCoord, int yCoord, int width, int height, String FULL_HEALTH_IMAGE,
       String LOW_HEALTH_IMAGE, String type, int lives) {

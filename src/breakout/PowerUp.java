@@ -1,10 +1,8 @@
 package breakout;
 
-import javafx.scene.image.Image;
-
 public class PowerUp extends Sprite {
 
-  private String IMAGE;
+  private final String IMAGE;
 
   public PowerUp(int xCoord, int yCoord, int width, int height, String IMAGE,
       String LOW_HEALTH_IMAGE, String type) {
@@ -12,7 +10,7 @@ public class PowerUp extends Sprite {
     this.IMAGE = IMAGE;
   }
 
-  public String getIMAGE(){
+  public String getIMAGE() {
     return this.IMAGE;
   }
 

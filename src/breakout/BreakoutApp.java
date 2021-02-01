@@ -46,7 +46,7 @@ public class BreakoutApp extends Application {
   private int x = SIZE / 2 - 30;
   private int y = SIZE - 50;
   private int amount_missiles = 50;
-  private int number_of_lives = 4;
+  private int number_of_lives = 1;
   private Scene scene_set_up;
   private Scene scene_start;
   private ArrayList<ImageView> image_view;
@@ -108,8 +108,8 @@ public class BreakoutApp extends Application {
     image_files.add(TILE_IMAGE);
 
     //DISPLAY TEXT
-    missileLeft = displayText(50, 50, "Missiles Left: " + Integer.toString(amount_missiles), 30);
-    livesLeft = displayText(SIZE - 100, 50, "Lives Left: " + Integer.toString(number_of_lives), 30);
+    missileLeft = displayText(50, 50, "Missiles Left: " + Integer.toString(amount_missiles), 30, Color.GOLD);
+    livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + Integer.toString(number_of_lives), 30, Color.GOLD);
 
     //what I need to do here is that I need to make a method in Sprite for each object and
     /*
@@ -128,11 +128,11 @@ public class BreakoutApp extends Application {
 //      }
 //    }
 
-    //LEVEL 2
+//    LEVEL 2
     for (int col = 0; col < 10; col++) {
       for (int row = 0; row < 3; row++) {
         Block block = new Block(200 + (SIZE / 10) * col + row * (SIZE / 10),
-            100 * row + 100 + col * 60, 80, 20, image_files.get(1), "block", 1);
+            100 * row + 100 + col * 60, 80, 20, image_files.get(1), "block", 3);
 
         block.upload_image_files();
         root.getChildren().add(block.getImageView());
@@ -147,15 +147,14 @@ public class BreakoutApp extends Application {
 //    bossMap.add(boss);
 
     //make a ball and store in ArrayList
-    Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE, "ball");
+    Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE, "ball", number_of_lives);
     ball.upload_image_files();
     root.getChildren().add(ball.getImageView());
-    System.out.println(spriteMap.size());
     ballMap.add(ball);
 
-    myPaddle = new Rectangle(SIZE / 2, SIZE - 100, 150, 20);
+    myPaddle = new Rectangle(x, y, 150, 20);
     //create Paddle
-    Paddle paddle = new Paddle(SIZE / 2, SIZE - 100, 150,
+    Paddle paddle = new Paddle(x, y, 150,
         20, image_files.get(0), 3, myPaddle);
 
 
@@ -180,7 +179,8 @@ public class BreakoutApp extends Application {
   }
 
   private void updateText(){
-    missileLeft.setText("Missiles Left: " + Integer.toString(amount_missiles));
+    missileLeft.setText("Missiles Left: " + amount_missiles);
+    livesLeft.setText("Lives Left: " + number_of_lives);
     //  root.getChildren().add(missileLeft);
   }
 
@@ -204,16 +204,19 @@ public class BreakoutApp extends Application {
 
   private void handleCheatCode(KeyEvent event){
     if (event.getCode() == KeyCode.L){
+      number_of_lives++;
+    }
+    if (event.getCode() == KeyCode.M){
       amount_missiles += 10;
     }
   }
 
-  private Text displayText(int xCoord, int yCoord, String message, int fontSize){
+  private Text displayText(int xCoord, int yCoord, String message, int fontSize, Color color){
     Text text = new Text();
     text.setX(xCoord);
     text.setY(yCoord);
     text.setText(message);
-    text.setFill(Color.GOLD);
+    text.setFill(color);
     text.setFont(new Font("SansSerif", fontSize));
     root.getChildren().add(text);
     return text;
@@ -277,10 +280,25 @@ public class BreakoutApp extends Application {
   }
 
   private void checkGameStatus(){
-    if(blockMap.isEmpty()){
+    if(blockMap.isEmpty() && bossMap.isEmpty()){
       animation.stop();
-      winMessage = displayText(150, 500, "YOU WON!!", 100);
+      winMessage = displayText(150, 500, "YOU WON!!", 100, Color.OLIVEDRAB);
       root.getChildren().add(winMessage);
+    }
+    if(!ballMap.get(0).deadOrAlive()){
+      number_of_lives--;
+      updateText();
+      ballMap.get(0).getImageView().setImage(null);
+      ballMap.remove(0);
+      Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE, "ball", number_of_lives);
+      ball.upload_image_files();
+      root.getChildren().add(ball.getImageView());
+      ballMap.add(ball);
+      animation.stop();
+    }
+    if(number_of_lives <= 0){
+      animation.stop();
+      loseMessage = displayText(600, 950, "YOU LOST!! Click 'R' to Restart", 25, Color.WHITE);
     }
   }
 

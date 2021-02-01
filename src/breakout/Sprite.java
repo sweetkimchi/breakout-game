@@ -18,6 +18,9 @@ public class Sprite extends Rectangle {
   private int amount_missile;
   private ImageView imageView;
   private int number_of_lives;
+  private int xCoord;
+  private int yCoord;
+  private boolean alive = true;
 
   public Sprite() {
     super();
@@ -31,6 +34,8 @@ public class Sprite extends Rectangle {
     this.speed = 300;
     xDirection = 1;
     yDirection = 1;
+    this.xCoord = xCoord;
+    this.yCoord = yCoord;
     this.upload_image_files();
     this.number_of_lives = 3;
   }
@@ -45,13 +50,9 @@ public class Sprite extends Rectangle {
     this.imageView.setImage(this.image);
     this.imageView.setFitWidth(this.getWidth());
     this.imageView.setFitHeight(this.getHeight());
-    this.imageView.setX(this.getX());
-    this.imageView.setY(this.getY());
+    this.imageView.setX(xCoord);
+    this.imageView.setY(yCoord);
     return imageView;
-  }
-
-  private void setFill() {
-
   }
 
   private String getClassName() {
@@ -72,6 +73,10 @@ public class Sprite extends Rectangle {
     if (getClassName().equals("missile")) {
       this.getImageView()
           .setY(this.getImageView().getY() - this.speed * 2 * elapsedTime);
+    }
+    if (getClassName().equals("powerup")) {
+      this.getImageView()
+          .setY(this.getImageView().getY() + this.speed * 2 * elapsedTime);
     }
     if (getClassName().equals("ball")) {
       this.getImageView()
@@ -136,11 +141,17 @@ public class Sprite extends Rectangle {
     }
     if (this.getClassName().equals("ball")
         && this.getImageView().getBoundsInParent().getMaxY() >= 1000) {
-
+        alive = false;
     }
 
 
   }
+
+  public boolean deadOrAlive(){
+    return alive;
+  }
+
+
 
   private void checkBlockCollision(List<Block> blocks, List<Missile> missile) {
     for (Block block : blocks) {
@@ -186,14 +197,23 @@ public class Sprite extends Rectangle {
     }
   }
 
-  private void checkBossCollision(List<Boss> boss) {
+  private void checkBossCollision(List<Boss> boss, List<Missile> missile) {
     for (Boss boss_block : boss) {
-      double xBlockBoundaryMax = boss_block.getBoundsInLocal().getWidth();
-      double yBlockBoundary = boss_block.getBoundsInLocal().getHeight();
-      if (this.getClassName().equals("ball") && boss_block.getImageView().getBoundsInParent()
+      if ((this.getClassName().equals("ball") || this.getClassName().equals("missile")) && boss_block
+          .getImageView().getBoundsInParent()
           .intersects(this.getImageView().getBoundsInParent())) {
-        if (this.getClassName().equals("ball") && boss_block.getImageView().getBoundsInParent()
+//        if (this.getImageView().getBoundsInParent().getMinX() >= block.getImageView()
+//            .getBoundsInParent().getMinX()
+//            && this.getImageView().getBoundsInParent().getMaxX() <= block.getImageView()
+//            .getBoundsInParent().getMaxX()) {
+//          this.xDirection *= -1;
+//        }
+        if (boss_block.getImageView().getBoundsInParent()
             .intersects(this.getImageView().getBoundsInParent())) {
+          if (this.getClassName().equals("missile")) {
+            this.getImageView().setImage(null);
+            missile.remove(this);
+          }
           if (this.getImageView().getBoundsInParent().getMinY() >= boss_block.getImageView()
               .getBoundsInParent().getMinY()
               && this.getImageView().getBoundsInParent().getMaxY() <= boss_block.getImageView()
@@ -201,13 +221,21 @@ public class Sprite extends Rectangle {
             this.yDirection *= -1;
           }
         }
+
+        //DEDUCT LIVES WHEN HIT
+        boss_block.lives--;
+        //  System.out.println(block.lives);
+        if (boss_block.lives <= 0) {
+          boss_block.getImageView().setImage(null);
+          boss.remove(boss_block);
+        }
       }
     }
   }
 
   private void checkCollision(List<Block> blocks, List<Boss> boss, List<Missile> missile) {
     checkBlockCollision(blocks, missile);
-    checkBossCollision(boss);
+    checkBossCollision(boss, missile);
   }
 }
 

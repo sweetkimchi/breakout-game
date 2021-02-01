@@ -1,5 +1,14 @@
 package breakout;
 
+/**
+ * Levels class
+ *
+ * Manage creating and switching levels of the game
+ *
+ * @author Ji Yun Hyo
+ *
+ */
+
 import java.awt.BorderLayout;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -23,6 +32,7 @@ import javafx.stage.Stage;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
 
 
 public class BreakoutApp extends Application {

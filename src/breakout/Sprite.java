@@ -221,7 +221,8 @@ public class Sprite extends Rectangle {
     }
   }
 
-  private void checkBossCollision(List<Boss> boss, List<Missile> missile) {
+  private void checkBossCollision(List<Boss> boss, List<Missile> missile,
+      List<PowerUp> powerUps) {
     for (Boss boss_block : boss) {
       if ((this.getClassName().equals("ball") || this.getClassName().equals("missile"))
           && boss_block
@@ -232,6 +233,7 @@ public class Sprite extends Rectangle {
           if (this.getClassName().equals("missile")) {
             this.getImageView().setImage(null);
             missile.remove(this);
+            createPowerUps(powerUps, (int) boss_block.getX() + (int) boss_block.getWidth()/2, (int) boss_block.getY() + (int) boss_block.getHeight());
           }
           if (this.getImageView().getBoundsInParent().getMinY() >= boss_block.getImageView()
               .getBoundsInParent().getMinY()
@@ -255,7 +257,7 @@ public class Sprite extends Rectangle {
   private void checkCollision(List<Block> blocks, List<Boss> boss, List<Missile> missile,
       List<PowerUp> powerUps, Rectangle myPaddle) {
     checkBlockCollision(blocks, missile, powerUps);
-    checkBossCollision(boss, missile);
+    checkBossCollision(boss, missile, powerUps);
     checkPowerUpCollision(powerUps, myPaddle);
   }
 

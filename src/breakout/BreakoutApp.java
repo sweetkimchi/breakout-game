@@ -364,7 +364,7 @@ public class BreakoutApp extends Application {
         Integer.parseInt(levelDescriptionsFromFile.get(3)),
         Integer.parseInt(levelDescriptionsFromFile.get(4)),
         levelDescriptionsFromFile.get(5) + postFix, "boss",
-        Integer.parseInt(levelDescriptionsFromFile.get(5)));
+        Integer.parseInt(levelDescriptionsFromFile.get(6)));
     boss.upload_image_files();
     root.getChildren().add(boss.getImageView());
     bossMap.add(boss);

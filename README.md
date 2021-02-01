@@ -89,7 +89,15 @@ me from having to write duplicate code. Although I tried my best to simplify dup
 I do want to try to improve the cleanniess of the code. Right now, there are too many variables declared as
 private at the top of BreakoutApp and Srite classes. I also want to look for ways to improve the overall
 experience of the game. I realized that the game lags a little bit when too many sprites are produced 
-on the screen at the same time.
+on the screen at the same time. 
+
+On a separte note, I tried my best to follow the SRP. I tried my best to ensure that each method is commpleting
+one specific task and when I thought that the method was doing more than one thing AND that future additions of 
+features would complicate the method, I refactored the method. I hope the method descriptions are descriptive enough.
+
+Lastly, it was necessary to check collision (inside Sprite class) of blocks and other things separately in order to adhere to different
+conditions each sprite was subject to. I might need to do some more research to better implement this but
+I could not find a better solution. 
 
 ### Extra Features
 Like I stated earlier, the primary thought when designing and building this app was that the game

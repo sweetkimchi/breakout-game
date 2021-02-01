@@ -82,7 +82,6 @@ public class BreakoutApp extends Application {
 
   private static void displaySplashScreen() {
     JFrame jFrame = new JFrame();
-
     jFrame.setTitle("Breakout Game");
     jFrame.setSize(400, 600);
 //    jFrame.setLocationRelativeTo(null);

@@ -21,14 +21,15 @@ public class Sprite extends Rectangle {
   private int xCoord;
   private int yCoord;
   private boolean alive = true;
+  private String LOW_HEALTH_IMAGE;
 
   public Sprite() {
     super();
   }
 
-  public Sprite(int xCoord, int yCoord, int width, int height, String IMAGE, String type) {
+  public Sprite(int xCoord, int yCoord, int width, int height, String FULL_HEALTH_IMAGE, String LOW_HEALTH_IMAGE, String type) {
     super(xCoord, yCoord, width, height);
-    this.IMAGE = IMAGE;
+    this.IMAGE = FULL_HEALTH_IMAGE;
     className = type;
     setImageView(this.IMAGE);
     this.speed = 300;
@@ -36,6 +37,7 @@ public class Sprite extends Rectangle {
     yDirection = 1;
     this.xCoord = xCoord;
     this.yCoord = yCoord;
+    this.LOW_HEALTH_IMAGE = LOW_HEALTH_IMAGE;
     this.upload_image_files();
     this.number_of_lives = 3;
   }
@@ -151,6 +153,10 @@ public class Sprite extends Rectangle {
     return alive;
   }
 
+  public String getLowHealthImage(){
+    return this.LOW_HEALTH_IMAGE;
+  }
+
 
 
   private void checkBlockCollision(List<Block> blocks, List<Missile> missile) {
@@ -179,7 +185,7 @@ public class Sprite extends Rectangle {
         if (block.lives <= 5) {
           block.getImageView().setImage(
               new Image(Objects.requireNonNull(
-                  getClass().getClassLoader().getResourceAsStream("110-Breakout-Tiles.png"))));
+                  getClass().getClassLoader().getResourceAsStream(block.getLowHealthImage()))));
         }
         if (block.lives <= 0) {
           block.getImageView().setImage(null);

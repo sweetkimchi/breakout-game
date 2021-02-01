@@ -111,7 +111,7 @@ public class BreakoutApp extends Application {
     for (int col = 0; col < 10; col++) {
       for (int row = 0; row < 3; row++) {
         Block block = new Block(200 + (SIZE / 10) * col + row * (SIZE / 10),
-            100 * row + 100 + col * 60, 80, 20, TILE_IMAGE, "block", 3);
+            100 * row + 100 + col * 60, 80, 20, TILE_IMAGE, BROKEN_TILE_IMAGE,"block", 5);
 
         block.upload_image_files();
         root.getChildren().add(block.getImageView());
@@ -254,15 +254,19 @@ public class BreakoutApp extends Application {
     animation = new AnimationTimer() {
       @Override
       public void handle(long now) {
-        x += xPaddleVelocity;
-        myPaddle.setX(x);
-        y += yPaddleVelocity;
-        myPaddle.setY(y);
+        updatePaddleVelocity();
         updateAllSprites();
         updateText();
         checkGameStatus();
       }
     };
+  }
+
+  private void updatePaddleVelocity(){
+    x += xPaddleVelocity;
+    myPaddle.setX(x);
+    y += yPaddleVelocity;
+    myPaddle.setY(y);
   }
 
   private void checkGameStatus() {

@@ -10,7 +10,7 @@ public class Paddle extends Sprite{
   private Rectangle myPaddle;
   public int experience;
   public Paddle(int xCoord, int yCoord, int width, int height, String IMAGE, int lives, Rectangle myPaddle){
-    super(xCoord, yCoord, width, height, IMAGE, "paddle");
+    super(xCoord, yCoord, width, height, IMAGE, "", "paddle");
     lives = 3;
     this.myPaddle = myPaddle;
     Image paddle_image = new Image(

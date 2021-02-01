@@ -61,6 +61,7 @@ public class BreakoutApp extends Application {
   private Text loseMessage;
   private Text credit;
   private Text pauseMessage;
+  private Text currentLevelText;
 
 
   private ArrayList<String> image_files;
@@ -98,28 +99,30 @@ public class BreakoutApp extends Application {
     //MAKE MISSILES
     //makes sprite objects and images
     //LEVEL 1
-//    for (int col = 0; col < 10; col++) {
-//      for (int row = 0; row < 5; row++) {
-//        Block block = new Block(10 + col * (SIZE / 10), 80 * row + 100, 80, 20, image_files.get(1), "block", 10);
-//        block.upload_image_files();
-//        root.getChildren().add(block.getImageView());
-//        blockMap.add(block);
-//      }
-//    }
-
-//    LEVEL 2
-    for (int col = 0; col < 10; col++) {
-      for (int row = 0; row < 3; row++) {
-        Block block = new Block(200 + (SIZE / 10) * col + row * (SIZE / 10),
-            100 * row + 100 + col * 60, 80, 20, TILE_IMAGE, BROKEN_TILE_IMAGE,"block", 5);
-
+    // 1 10 5 10 80 100 80 20 102 0 10 (ten total)
+    //col row3rd and 4th are constants for y coordinate, width, height, prefix of image,
+    for (int row = 0; row < 10; row++) {
+      for (int column = 0; column < 5; column++) {
+        Block block = new Block(10 + row * (SIZE / 10), 80 * column + 100, 80, 20, TILE_IMAGE, BROKEN_TILE_IMAGE,"block", 10);
         block.upload_image_files();
         root.getChildren().add(block.getImageView());
         blockMap.add(block);
       }
     }
 
+    //LEVEL 1
+    //1 10 5 10 80 100 80 20 102 0 10 (ten total)
+    //col row3rd and 4th are constants for y coordinate, width, height, prefix of image,
+//    LEVEL 2
+//    2 10 3 200 0
+    //row col row col
     //LEVEL3
+//    //3 1 1 200 100 600 600 000 1 10000 (ten total)
+
+
+
+    //LEVEL3
+    //3 1 1 200 100 600 600 000 1 10000 (ten total)
 //    Boss boss = new Boss(200, 100, 600, 600, BOSS_IMAGE, "boss", 10000);
 //    boss.upload_image_files();
 //    root.getChildren().add(boss.getImageView());
@@ -145,6 +148,7 @@ public class BreakoutApp extends Application {
     livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + Integer.toString(number_of_lives), 20,
         Color.GREENYELLOW);
     credit = displayText(50, 950, "Breakout v1.0\nby Jiyun Hyo", 15, Color.GREENYELLOW);
+    currentLevelText = displayText(460, 50, "Level " + currentLevel, 30,Color.GOLD);
   }
 
   private void makeBall(){
@@ -300,8 +304,19 @@ public class BreakoutApp extends Application {
 
   private void cleanUpAndRestart(Stage stage) {
     Levels level = new Levels(currentLevel, stage);
-    level.launchLevel();
+    level.launchLevel(currentLevel);
     animation.stop();
+  }
+
+  private void loadLevelFromFile(){
+    //LEVEL 1
+    // 1 10 5 10 80 100 80 20 102 0 10 (ten total)
+    //col row3rd and 4th are constants for y coordinate, width, height, prefix of image,
+//    LEVEL 2
+//  2 10 3 200 0
+    //row col row col
+    //LEVEL3
+    //3 1 1 200 100 600 600 000 1 10000 (ten total)
   }
 
   private void pause() {

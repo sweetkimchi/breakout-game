@@ -33,6 +33,8 @@ public class Sprite extends Rectangle {
     className = type;
     setImageView(this.IMAGE);
     this.speed = 300;
+
+    //necessary set up to ensure the paddle's movement is smooth
     xDirection = 1;
     yDirection = 1;
     this.xCoord = xCoord;
@@ -64,11 +66,6 @@ public class Sprite extends Rectangle {
   public ImageView getImageView() {
     return imageView;
   }
-
-  public void remove() {
-    imageView.setImage(null);
-  }
-
 
   public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
       List<Missile> missile) {

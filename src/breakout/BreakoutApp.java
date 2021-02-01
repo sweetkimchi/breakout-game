@@ -1,5 +1,6 @@
 package breakout;
 
+import java.awt.BorderLayout;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 
 public class BreakoutApp extends Application {
@@ -43,7 +47,7 @@ public class BreakoutApp extends Application {
   private int amount_missiles = 50;
   private final int numberOfLives = 3;
   private Scene scene_set_up;
-  private Scene scene_start;
+  private Scene startScene;
   private ImageView myBackGround;
   private Rectangle myPaddle;
   private Pane root;
@@ -71,16 +75,34 @@ public class BreakoutApp extends Application {
   private List<Boss> bossMap;
 
   public static void main(String[] args) {
+    displaySplashScreen();
     launch(args);
+
+  }
+
+  private static void displaySplashScreen() {
+    JFrame jFrame = new JFrame();
+
+    jFrame.setTitle("Breakout Game");
+    jFrame.setSize(400, 500);
+//    jFrame.setLocationRelativeTo(null);
+    jFrame.add(new JLabel(
+        "<html><h1 style=\"color:blue;\">Basic Abilities</h1><p>LEFT - move left<br> RIGHT - move right <br> SPACE - shoot missiles <br> N - increase speed of paddle by 4 <br> B - return to default paddle speed <h1 style=\"color:Red;\">Settings </h1><p>R - restart game left<br> P - pause right <h1 style=\"color:green;\">Cheat Code</h1> L - add one life <br> M - 10 more missiles <br> F - make ball bigger and go through blocks <br> D - decrease ball size <br> G - level up paddle/no level up limit <br> V - decrease size of paddle </html>",
+        SwingConstants.CENTER), BorderLayout.CENTER);
+
+    jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    jFrame.setVisible(true);
+
   }
 
   @Override
   public void start(Stage stage) {
 
     //initialize maps
+
     myStage = stage;
-    scene_start = setupGame(SIZE, SIZE, stage, 1);
-    stage.setScene(scene_start);
+    startScene = setupGame(SIZE, SIZE, stage, 1);
+    stage.setScene(startScene);
     stage.setTitle(TITLE);
     stage.show();
     stage.requestFocus();
@@ -103,11 +125,13 @@ public class BreakoutApp extends Application {
   }
 
   private void setBackgroundImage() {
+
     myBackGround = new ImageView(
         new Image(getClass().getClassLoader().getResourceAsStream(BACKGROUND_IMAGE)));
     myBackGround.setFitWidth(SIZE);
     myBackGround.setFitHeight(SIZE);
     root.getChildren().add(myBackGround);
+
   }
 
   private void displayStartingText() {
@@ -477,7 +501,7 @@ public class BreakoutApp extends Application {
       paddleSpeed += 4;
     }
     if (event.getCode() == KeyCode.B && paddleSpeed > 9) {
-      paddleSpeed -= 1;
+      paddleSpeed = 9;
 
     }
   }

@@ -27,7 +27,7 @@ public class Sprite extends Rectangle {
   private int paddleLevel;
   private final double powerUPProbability = 0.05;
   private final double changeDirectionProbability = 0.005;
-  private final double missileProbability = 0.03;
+  private final double missileProbability = 0.1;
   private List<MissilePaddle> missilePaddles;
 
   public Sprite() {

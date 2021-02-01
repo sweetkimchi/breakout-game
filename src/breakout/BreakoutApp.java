@@ -41,7 +41,7 @@ public class BreakoutApp extends Application {
   private int x = SIZE / 2 - 30;
   private int y = SIZE - 50;
   private int amount_missiles = 50;
-  private int number_of_lives = 1;
+  private int numberOfLives = 3;
   private Scene scene_set_up;
   private Scene scene_start;
   private ImageView myBackGround;
@@ -110,14 +110,14 @@ public class BreakoutApp extends Application {
   private void displayStartingText() {
     missileLeft = displayText(50, 50, "Missiles Left: " + amount_missiles, 20,
         Color.GREENYELLOW);
-    livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + number_of_lives, 20,
+    livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + numberOfLives, 20,
         Color.GREENYELLOW);
-    Text credit = displayText(50, 950, "Breakout v1.0\nby Jiyun Hyo", 15, Color.GREENYELLOW);
+    Text credit = displayText(50, 950, "Breakout v2.0\nby Jiyun Hyo", 15, Color.GREENYELLOW);
     Text currentLevelText = displayText(460, 50, "Level " + currentLevel, 30, Color.GOLD);
   }
 
   private void makeBall() {
-    Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE, "ball", number_of_lives);
+    Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE, "ball", numberOfLives);
     ball.upload_image_files();
     root.getChildren().add(ball.getImageView());
     ballMap.add(ball);
@@ -145,7 +145,7 @@ public class BreakoutApp extends Application {
 
   private void updateText() {
     missileLeft.setText("Missiles Left: " + amount_missiles);
-    livesLeft.setText("Lives Left: " + number_of_lives);
+    livesLeft.setText("Lives Left: " + missilePaddleMap.get(0).lives);
     //  root.getChildren().add(missileLeft);
   }
 
@@ -170,10 +170,10 @@ public class BreakoutApp extends Application {
 
   private void handleCheatCode(KeyEvent event, Stage stage) {
     if (event.getCode() == KeyCode.L) {
-      if (number_of_lives == 0 && paused) {
+      if (missilePaddleMap.get(0).lives == 0 && paused) {
         paused = false;
       }
-      number_of_lives++;
+      missilePaddleMap.get(0).lives++;
       loseMessage.setVisible(false);
     }
     if (event.getCode() == KeyCode.M) {
@@ -303,17 +303,17 @@ public class BreakoutApp extends Application {
       root.getChildren().add(winMessage);
     }
     if (!ballMap.get(0).deadOrAlive()) {
-      number_of_lives--;
+      missilePaddleMap.get(0).lives--;
       updateText();
       ballMap.get(0).getImageView().setImage(null);
       ballMap.remove(0);
-      Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE, "ball", number_of_lives);
+      Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE, "ball", numberOfLives);
       ball.upload_image_files();
       root.getChildren().add(ball.getImageView());
       ballMap.add(ball);
       animation.stop();
     }
-    if (number_of_lives <= 0 && !paused) {
+    if (missilePaddleMap.get(0).lives <= 0 && !paused) {
       animation.stop();
       paused = true;
       loseMessage = displayText(600, 850,
@@ -419,28 +419,28 @@ public class BreakoutApp extends Application {
 
   private void updateAllSprites() {
     for (Sprite sprite : spriteMap) {
-      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel, root, ballMap.get(0));
+      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel, root, ballMap.get(0) , missilePaddleMap);
     }
     for (Block block : blockMap) {
-      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
+      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0), missilePaddleMap);
     }
     for (Ball ball : ballMap) {
-      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap,powerUpsMap, currentLevel, root, ballMap.get(0));
+      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap,powerUpsMap, currentLevel, root, ballMap.get(0),missilePaddleMap);
     }
     for (Boss boss : bossMap) {
-      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
+      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0),missilePaddleMap);
     }
     for (Missile missile : missileMap) {
-      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
+      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0),missilePaddleMap);
     }
     for (DotPaddle dotPaddle : dotPaddleMap) {
-      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
+      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0),missilePaddleMap);
     }
     for (PowerUp powerUp : powerUpsMap) {
-      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
+      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0),missilePaddleMap);
     }
     for (MissilePaddle missilePaddle : missilePaddleMap) {
-      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
+      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0),missilePaddleMap);
     }
   }
 
@@ -451,14 +451,14 @@ public class BreakoutApp extends Application {
         for (int i = 0; i <= 1; i++) {
           Missile missile = new Missile(
               (int) myPaddle.getX() + (int) (myPaddle.getWidth() - 10) * i,
-              (int) myPaddle.getY(), 3, 10, MISSILE_IMAGE);
+              (int) myPaddle.getY(), 6, 20, MISSILE_IMAGE);
           missile.upload_image_files();
           missileMap.add(missile);
           root.getChildren().add(missile.getImageView());
         }
       }
-    } if (event.getCode() == KeyCode.N) {
-          paddleSpeed+=1;
+    } if (event.getCode() == KeyCode.N && paddleSpeed < 18) {
+          paddleSpeed+=4;
       }
       if (event.getCode() == KeyCode.B && paddleSpeed > 9) {
         paddleSpeed -= 1;

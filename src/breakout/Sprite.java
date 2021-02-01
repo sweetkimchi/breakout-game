@@ -11,18 +11,23 @@ public class Sprite extends Rectangle {
   private Image image;
   private String IMAGE;
   private String className;
-  private int xDirection;
-  private int yDirection;
+  private double xDirection;
+  private double yDirection;
   private int speed;
   private ImageView imageView;
   private int xCoord;
   private int yCoord;
-  private boolean alive = true;
+  public boolean alive = true;
   private String LOW_HEALTH_IMAGE;
   private String LEVEL_UP_POWER_UP = "344-Breakout-Tiles.png";
   private String BIGGER_SIZED_BALL = "403-Breakout-Tiles.png";
+  private String MISSILE_IMAGE = "346-Breakout-Tiles.png";
   private Pane root;
   private int paddleLevel;
+  private double powerUPProbability = 0.05;
+  private double changeDirectionProbability = 0.005;
+  private double missileProbability = 0.03;
+  private List<MissilePaddle> missilePaddles;
 
   public Sprite() {
     super();
@@ -69,8 +74,9 @@ public class Sprite extends Rectangle {
   }
 
   public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
-      List<Missile> missile, List<PowerUp> powerUps, int currentLevel, Pane root, Ball ball) {
+      List<Missile> missileMap, List<PowerUp> powerUps, int currentLevel, Pane root, Ball ball, List<MissilePaddle> missilePaddles) {
     this.root = root;
+    this.missilePaddles = missilePaddles;
     if (getClassName().equals("missile")) {
       this.getImageView()
           .setY(this.getImageView().getY() - this.speed * 2 * elapsedTime);
@@ -85,19 +91,19 @@ public class Sprite extends Rectangle {
       this.getImageView()
           .setY(this.getImageView().getY() - this.speed * elapsedTime * this.yDirection);
     } else if (getClassName().equals("block") && currentLevel > 1) {
-      if (Math.random() < 0.005) {
+      if (Math.random() < changeDirectionProbability) {
         xDirection *= -1;
       }
       this.getImageView()
           .setX(this.getImageView().getX() + this.speed * this.xDirection * elapsedTime);
     } else if (getClassName().equals("boss")) {
-      if (Math.random() < 0.005) {
+      if (Math.random() < changeDirectionProbability) {
         xDirection *= -1;
       }
       this.getImageView()
           .setX(this.getImageView().getX() + this.speed * this.xDirection * elapsedTime);
     }
-    checkBoundary(myPaddle, blocks, boss, missile, powerUps, ball);
+    checkBoundary(myPaddle, blocks, boss, missileMap, powerUps, ball);
   }
 
   public void checkBoundary(Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
@@ -135,9 +141,9 @@ public class Sprite extends Rectangle {
       this.yDirection *= -1;
       if (this.getImageView().getBoundsInParent().getCenterX()
           < myPaddle.getX() + myPaddle.getWidth() / 2) {
-        handlePaddleDeflection(0);
+        handlePaddleDeflection(0, myPaddle.getX() + myPaddle.getWidth() / 2, this.getImageView().getBoundsInParent().getCenterX());
       } else {
-        handlePaddleDeflection(1);
+        handlePaddleDeflection(1,myPaddle.getX() + myPaddle.getWidth() / 2, this.getImageView().getBoundsInParent().getCenterX()) ;
       }
     }
     if (this.getClassName().equals("ball")
@@ -151,11 +157,11 @@ public class Sprite extends Rectangle {
 
   }
 
-  private void handlePaddleDeflection(int num) {
+  private void handlePaddleDeflection(int num, double centerOfPaddle, double centerOfBall) {
     if (num == 0) {
-      this.xDirection = 1;
+      this.xDirection = 1 + Math.abs(centerOfBall - centerOfPaddle) / 100;
     } else {
-      this.xDirection = -1;
+      this.xDirection = -1 - Math.abs(centerOfBall - centerOfPaddle) / 100;
     }
 
   }
@@ -168,19 +174,28 @@ public class Sprite extends Rectangle {
     return this.LOW_HEALTH_IMAGE;
   }
 
-  public List<PowerUp> createPowerUps(List<PowerUp> powerUps, int xCoord, int yCoord){
+  public List<PowerUp> createPowerUpsAndMissiles(List<PowerUp> powerUps, int xCoord, int yCoord,
+      List<Missile> missileMap){
     double probability = Math.random();
-    if (probability < 0.10) {
+    if (probability < powerUPProbability) {
       PowerUp powerUp = new PowerUp(xCoord, yCoord, 30, 30, LEVEL_UP_POWER_UP, "", "powerup");
       powerUp.upload_image_files();
       powerUps.add(powerUp);
       root.getChildren().add(powerUp.getImageView());
 
-    }else if(probability < 0.20){
+    }else if(probability < powerUPProbability * 2){
       PowerUp powerUp = new PowerUp(xCoord, yCoord, 30, 30, BIGGER_SIZED_BALL, "", "powerup");
       powerUp.upload_image_files();
       powerUps.add(powerUp);
       root.getChildren().add(powerUp.getImageView());
+    }
+    probability = Math.random();
+    if (probability < missileProbability) {
+      PowerUp powerUp = new PowerUp((int) (xCoord + 500 * probability), yCoord, 12, 40, MISSILE_IMAGE, "", "missile");
+      powerUp.upload_image_files();
+      powerUps.add(powerUp);
+      root.getChildren().add(powerUp.getImageView());
+
     }
     return powerUps;
   }
@@ -209,7 +224,7 @@ public class Sprite extends Rectangle {
         }
         //DEDUCT LIVES WHEN HIT
 
-        createPowerUps(powerUps, (int) block.getX(), (int) block.getY());
+        createPowerUpsAndMissiles(powerUps, (int) block.getX(), (int) block.getY(), missile);
         block.lives--;
         if (block.lives <= 5) {
           block.getImageView().setImage(
@@ -237,7 +252,7 @@ public class Sprite extends Rectangle {
           if (this.getClassName().equals("missile")) {
             this.getImageView().setImage(null);
             missile.remove(this);
-            createPowerUps(powerUps, (int) boss_block.getX() + (int) boss_block.getWidth()/2, (int) boss_block.getY() + (int) boss_block.getHeight());
+            createPowerUpsAndMissiles(powerUps, (int) boss_block.getX() + (int) boss_block.getWidth()/2, (int) boss_block.getY() + (int) boss_block.getHeight(), missile);
           }
           if (this.getImageView().getBoundsInParent().getMinY() >= boss_block.getImageView()
               .getBoundsInParent().getMinY()
@@ -272,7 +287,10 @@ public class Sprite extends Rectangle {
       this.getImageView().setImage(null);
       if(this.IMAGE.equals(LEVEL_UP_POWER_UP) && (myPaddle.getWidth() < 250||myPaddle.getWidth() > 299)){
         myPaddle.setWidth(myPaddle.getWidth() * 1.2);
-      }else{
+      }else if(this.IMAGE.equals(MISSILE_IMAGE)){
+          System.out.println("DAMAGE");
+          missilePaddles.get(0).lives--;
+        }else{
         ball.getImageView().setFitWidth(ball.getImageView().getFitWidth() + 10);
         ball.getImageView().setFitHeight(ball.getImageView().getFitHeight() + 10);
         if(ball.getImageView().getFitHeight() > 20){
@@ -281,10 +299,6 @@ public class Sprite extends Rectangle {
       }
       powerUps.remove(this);
     }
-  }
-
-  public void setPaddleLevel(){
-
   }
 }
 

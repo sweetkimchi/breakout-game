@@ -87,7 +87,7 @@ public class BreakoutApp extends Application {
     jFrame.setSize(400, 500);
 //    jFrame.setLocationRelativeTo(null);
     jFrame.add(new JLabel(
-        "<html><h1 style=\"color:blue;\">Basic Abilities</h1><p>LEFT - move left<br> RIGHT - move right <br> SPACE - shoot missiles <br> N - increase speed of paddle by 4 <br> B - return to default paddle speed <h1 style=\"color:Red;\">Settings </h1><p>R - restart game left<br> P - pause right <h1 style=\"color:green;\">Cheat Code</h1> L - add one life <br> M - 10 more missiles <br> F - make ball bigger and go through blocks <br> D - decrease ball size <br> G - level up paddle/no level up limit <br> V - decrease size of paddle </html>",
+        "<html><h1 style=\"color:blue;\">Basic Abilities</h1><p>LEFT - move left<br> RIGHT - move right <br> SPACE - shoot missiles <br> N - increase speed of paddle by 4 <br> B - return to default paddle speed <h1 style=\"color:Red;\">Settings </h1><p>R - restart game left<br> P - pause right <h1 style=\"color:green;\">Cheat Code</h1> L - add one life <br> M - 10 more missiles <br> F - make ball bigger and go through blocks <br> D - decrease ball size <br> G - level up paddle/no level up limit <br> V - decrease size of paddle <br> 0 ~ 9 - jump to level indicated by the number (or the maximum level) </html>",
         SwingConstants.CENTER), BorderLayout.CENTER);
 
     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

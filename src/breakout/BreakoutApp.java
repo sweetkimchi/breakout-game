@@ -2,12 +2,10 @@ package breakout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.ImagePattern;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -33,7 +31,7 @@ public class BreakoutApp extends Application {
 
   //image files
   private static final String postFix = "-Breakout-Tiles.png";
-  public static final String PADDLE_IMAGE = "325" + postFix;
+  public static final String MISSILE_PADDLE_IMAGE = "325" + postFix;
   public static final String TILE_IMAGE = "102" + postFix;
   public static final String BROKEN_TILE_IMAGE = "110" + postFix;
   public static final String BALL_IMAGE = "339" + postFix;
@@ -62,6 +60,7 @@ public class BreakoutApp extends Application {
   private Text winMessage;
   private Text livesLeft;
   private Text loseMessage;
+  private Text credit;
 
 
   private ArrayList<String> image_files;
@@ -102,15 +101,15 @@ public class BreakoutApp extends Application {
 
     //constructors
     image_strings = new String[10];
-    image_strings[0] = PADDLE_IMAGE;
+    image_strings[0] = MISSILE_PADDLE_IMAGE;
     image_files = new ArrayList<>();
-    image_files.add(PADDLE_IMAGE);
+    image_files.add(MISSILE_PADDLE_IMAGE);
     image_files.add(TILE_IMAGE);
 
     //DISPLAY TEXT
-    missileLeft = displayText(50, 50, "Missiles Left: " + Integer.toString(amount_missiles), 30, Color.GOLD);
-    livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + Integer.toString(number_of_lives), 30, Color.GOLD);
-
+    missileLeft = displayText(50, 50, "Missiles Left: " + Integer.toString(amount_missiles), 20, Color.GOLD);
+    livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + Integer.toString(number_of_lives), 20, Color.GOLD);
+    credit = displayText(50, 950, "Breakout v1.0\nby Jiyun Hyo", 15, Color.GREENYELLOW);
     //what I need to do here is that I need to make a method in Sprite for each object and
     /*
     ROW COL TYPE IMAGE
@@ -154,12 +153,12 @@ public class BreakoutApp extends Application {
 
     myPaddle = new Rectangle(x, y, 150, 20);
     //create Paddle
-    Paddle paddle = new Paddle(x, y, 150,
-        20, image_files.get(0), 3, myPaddle);
+    MissilePaddle missilePaddle = new MissilePaddle(x, y, 150,
+        20, MISSILE_PADDLE_IMAGE, 3, myPaddle);
 
 
 
-    root.getChildren().add(paddle.getRectangle());
+    root.getChildren().add(missilePaddle.getRectangle());
 
     // create a place to see the shapes
     handleKeyInput(scene_set_up, stage);

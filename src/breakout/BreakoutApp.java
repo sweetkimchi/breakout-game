@@ -46,6 +46,7 @@ public class BreakoutApp extends Application {
   private int x = SIZE / 2 - 30;
   private int y = SIZE - 50;
   private int amount_missiles = 50;
+  private int number_of_lives = 4;
   private Scene scene_set_up;
   private Scene scene_start;
   private ArrayList<ImageView> image_view;
@@ -59,6 +60,7 @@ public class BreakoutApp extends Application {
   private int currentLevel = 1;
   private Text missileLeft;
   private Text winMessage;
+  private Text livesLeft;
   private Text loseMessage;
 
 
@@ -107,8 +109,8 @@ public class BreakoutApp extends Application {
 
     //DISPLAY TEXT
     missileLeft = displayText(50, 50, "Missiles Left: " + Integer.toString(amount_missiles), 30);
+    livesLeft = displayText(SIZE - 100, 50, "Lives Left: " + Integer.toString(number_of_lives), 30);
 
-    root.getChildren().add(missileLeft);
     //what I need to do here is that I need to make a method in Sprite for each object and
     /*
     ROW COL TYPE IMAGE
@@ -151,15 +153,14 @@ public class BreakoutApp extends Application {
     System.out.println(spriteMap.size());
     ballMap.add(ball);
 
+    myPaddle = new Rectangle(SIZE / 2, SIZE - 100, 150, 20);
     //create Paddle
-    myPaddle = new Rectangle(SIZE / 2, SIZE - 100, 150,
-        20);
-    Image image_baby = new Image(
-        Objects.requireNonNull(
-            this.getClass().getClassLoader().getResourceAsStream(image_files.get(0))));
+    Paddle paddle = new Paddle(SIZE / 2, SIZE - 100, 150,
+        20, image_files.get(0), 3, myPaddle);
 
-    myPaddle.setFill(new ImagePattern(image_baby));
-    root.getChildren().add(myPaddle);
+
+
+    root.getChildren().add(paddle.getRectangle());
 
     // create a place to see the shapes
     handleKeyInput(scene_set_up, stage);
@@ -214,6 +215,7 @@ public class BreakoutApp extends Application {
     text.setText(message);
     text.setFill(Color.GOLD);
     text.setFont(new Font("SansSerif", fontSize));
+    root.getChildren().add(text);
     return text;
   }
 

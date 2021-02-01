@@ -17,6 +17,7 @@ public class Sprite extends Rectangle {
   private int speed;
   private int amount_missile;
   private ImageView imageView;
+  private int number_of_lives;
 
   public Sprite() {
     super();
@@ -31,6 +32,7 @@ public class Sprite extends Rectangle {
     xDirection = 1;
     yDirection = 1;
     this.upload_image_files();
+    this.number_of_lives = 3;
   }
 
   public ImageView setImageView(String IMAGE) {
@@ -65,8 +67,9 @@ public class Sprite extends Rectangle {
   }
 
 
-  public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss, List<Missile> missile) {
-    if(getClassName().equals("missile")){
+  public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
+      List<Missile> missile) {
+    if (getClassName().equals("missile")) {
       this.getImageView()
           .setY(this.getImageView().getY() - this.speed * 2 * elapsedTime);
     }
@@ -91,7 +94,8 @@ public class Sprite extends Rectangle {
     checkBoundary(myPaddle, blocks, boss, missile);
   }
 
-  public void checkBoundary(Rectangle myPaddle, List<Block> blocks, List<Boss> boss, List<Missile> missile) {
+  public void checkBoundary(Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
+      List<Missile> missile) {
     double xPos = this.getImageView().getX();
     double yPos = this.getImageView().getY();
     checkX(xPos);
@@ -100,15 +104,16 @@ public class Sprite extends Rectangle {
   }
 
   private void checkX(double xPos) {
-    if(this.getClassName().equals("block") || this.getClassName().equals("boss")) {
+    if (this.getClassName().equals("block") || this.getClassName().equals("boss")) {
       if (this.getImageView().getBoundsInParent().getMinX() <= 10) {
         this.xDirection = 1;
       } else if (this.getImageView().getBoundsInParent().getMaxX() >= 980) {
         this.xDirection = -1;
       }
       //THIS IS VERY IMPORTANT - NEEDED IN ORDER TO FIX THE BUG WHERE THE BLOCKS GET TRAPPED AT THE EDGES
-    }else {
-      if(this.getImageView().getBoundsInParent().getMinX() <= 10 || this.getImageView().getBoundsInParent().getMaxX() >= 980){
+    } else {
+      if (this.getImageView().getBoundsInParent().getMinX() <= 10
+          || this.getImageView().getBoundsInParent().getMaxX() >= 980) {
         this.xDirection *= -1;
       }
     }
@@ -118,18 +123,20 @@ public class Sprite extends Rectangle {
     if (this.getImageView().getBoundsInParent().getMinY() <= 0) {
       this.yDirection *= -1;
     }
-    if( this.getClassName().equals("ball") && this.getImageView().getBoundsInParent().getMaxY() >= 1000 || this.imageView
+    if (this.getClassName().equals("ball") && this.imageView
         .getBoundsInParent()
-        .intersects(myPaddle.getBoundsInParent())){
-        this.yDirection *= -1;
-        System.out.println(this.getImageView().getBoundsInParent().getMinX());
-        System.out.println(myPaddle.getX() + myPaddle.getWidth()/2);
-        if(this.getImageView().getBoundsInParent().getCenterX() < myPaddle.getX() + myPaddle.getWidth()/2){
-          this.xDirection = 1;
-        }
-        else{
-          this.xDirection = -1;
-        }
+        .intersects(myPaddle.getBoundsInParent())) {
+      this.yDirection *= -1;
+      if (this.getImageView().getBoundsInParent().getCenterX()
+          < myPaddle.getX() + myPaddle.getWidth() / 2) {
+        this.xDirection = 1;
+      } else {
+        this.xDirection = -1;
+      }
+    }
+    if (this.getClassName().equals("ball")
+        && this.getImageView().getBoundsInParent().getMaxY() >= 1000) {
+
     }
 
 
@@ -139,7 +146,8 @@ public class Sprite extends Rectangle {
     for (Block block : blocks) {
       double xBlockBoundaryMax = block.getBoundsInLocal().getWidth();
       double yBlockBoundary = block.getBoundsInLocal().getHeight();
-      if ((this.getClassName().equals("ball") || this.getClassName().equals("missile")) && block.getImageView().getBoundsInParent()
+      if ((this.getClassName().equals("ball") || this.getClassName().equals("missile")) && block
+          .getImageView().getBoundsInParent()
           .intersects(this.getImageView().getBoundsInParent())) {
 //        if (this.getImageView().getBoundsInParent().getMinX() >= block.getImageView()
 //            .getBoundsInParent().getMinX()
@@ -147,8 +155,9 @@ public class Sprite extends Rectangle {
 //            .getBoundsInParent().getMaxX()) {
 //          this.xDirection *= -1;
 //        }
-        if (block.getImageView().getBoundsInParent().intersects(this.getImageView().getBoundsInParent())) {
-          if(this.getClassName().equals("missile")){
+        if (block.getImageView().getBoundsInParent()
+            .intersects(this.getImageView().getBoundsInParent())) {
+          if (this.getClassName().equals("missile")) {
             this.getImageView().setImage(null);
             missile.remove(this);
           }
@@ -162,9 +171,11 @@ public class Sprite extends Rectangle {
 
         //DEDUCT LIVES WHEN HIT
         block.lives--;
-      //  System.out.println(block.lives);
-        if(block.lives <= 5){
-          block.getImageView().setImage(new Image(getClass().getClassLoader().getResourceAsStream("110-Breakout-Tiles.png")));
+        //  System.out.println(block.lives);
+        if (block.lives <= 5) {
+          block.getImageView().setImage(
+              new Image(Objects.requireNonNull(
+                  getClass().getClassLoader().getResourceAsStream("110-Breakout-Tiles.png"))));
         }
         if (block.lives <= 0) {
           block.getImageView().setImage(null);
@@ -197,12 +208,6 @@ public class Sprite extends Rectangle {
   private void checkCollision(List<Block> blocks, List<Boss> boss, List<Missile> missile) {
     checkBlockCollision(blocks, missile);
     checkBossCollision(boss);
-  }
-
-  public void shoot(Rectangle myPaddle){
-      if(this.getClassName().equals("missile")){
-
-      }
   }
 }
 

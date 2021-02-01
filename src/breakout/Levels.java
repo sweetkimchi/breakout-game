@@ -21,7 +21,7 @@ public class Levels {
 
   public void launchLevel(int currentLevel){
     BreakoutApp breakout = new BreakoutApp();
-    Scene scene = breakout.setupGame(SIZE, SIZE, BACKGROUND, stage);
+    Scene scene = breakout.setupGame(SIZE, SIZE, stage, currentLevel);
     stage.setScene(scene);
     stage.setTitle(TITLE);
     stage.show();

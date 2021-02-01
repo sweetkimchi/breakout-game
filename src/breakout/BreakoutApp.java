@@ -1,5 +1,9 @@
 package breakout;
 
+import java.awt.Graphics2D;
+import java.awt.SplashScreen;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.AnimationTimer;
@@ -12,11 +16,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JWindow;
+import javax.swing.SwingConstants;
 
 
 public class BreakoutApp extends Application {
@@ -25,9 +33,6 @@ public class BreakoutApp extends Application {
   public static final int SIZE = 1000;
   public static final int FRAMES_PER_SECOND = 60;
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
-  public static final Paint BACKGROUND = Color.WHITE;
-  public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
-  public static final double INERTIA = 5;
 
   //image files
   private static final String postFix = "-Breakout-Tiles.png";
@@ -47,10 +52,8 @@ public class BreakoutApp extends Application {
   private int number_of_lives = 1;
   private Scene scene_set_up;
   private Scene scene_start;
-  private ArrayList<ImageView> image_view;
   private ImageView myBackGround;
   private Rectangle myPaddle;
-  private String[] image_strings;
   private Pane root;
   private AnimationTimer animation;
   private boolean paused = false;
@@ -59,9 +62,7 @@ public class BreakoutApp extends Application {
   private Text winMessage;
   private Text livesLeft;
   private Text loseMessage;
-  private Text credit;
   private Text pauseMessage;
-  private Text currentLevelText;
 
 
   private ArrayList<String> image_files;
@@ -79,7 +80,7 @@ public class BreakoutApp extends Application {
   public void start(Stage stage) {
 
     //initialize maps
-    scene_start = setupGame(SIZE, SIZE, BACKGROUND, stage);
+    scene_start = setupGame(SIZE, SIZE, stage, 1);
     stage.setScene(scene_start);
     stage.setTitle(TITLE);
     stage.show();
@@ -87,46 +88,15 @@ public class BreakoutApp extends Application {
   }
 
 
-  public Scene setupGame(int width, int height, Paint background, Stage stage) {
-
+  public Scene setupGame(int width, int height, Stage stage, int currentLevel) {
     // create one top level collection to organize the things in the scene
+    this.currentLevel = currentLevel;
     root = new Pane();
     scene_set_up = new Scene(root, width, height, null);
     setBackgroundImage();
     initializeMaps();
     displayStartingText();
-
-    //MAKE MISSILES
-    //makes sprite objects and images
-    //LEVEL 1
-    // 1 10 5 10 80 100 80 20 102 0 10 (ten total)
-    //col row3rd and 4th are constants for y coordinate, width, height, prefix of image,
-    for (int row = 0; row < 10; row++) {
-      for (int column = 0; column < 5; column++) {
-        Block block = new Block(10 + row * (SIZE / 10), 80 * column + 100, 80, 20, TILE_IMAGE, BROKEN_TILE_IMAGE,"block", 10);
-        block.upload_image_files();
-        root.getChildren().add(block.getImageView());
-        blockMap.add(block);
-      }
-    }
-
-    //LEVEL 1
-    //1 10 5 10 80 100 80 20 102 0 10 (ten total)
-    //col row3rd and 4th are constants for y coordinate, width, height, prefix of image,
-//    LEVEL 2
-//    2 10 3 200 0
-    //row col row col
-    //LEVEL3
-//    //3 1 1 200 100 600 600 000 1 10000 (ten total)
-
-
-
-    //LEVEL3
-    //3 1 1 200 100 600 600 000 1 10000 (ten total)
-//    Boss boss = new Boss(200, 100, 600, 600, BOSS_IMAGE, "boss", 10000);
-//    boss.upload_image_files();
-//    root.getChildren().add(boss.getImageView());
-//    bossMap.add(boss);
+    loadLevelFromFile(currentLevel);
     makeBall();
     makePaddle();
     handleKeyInput(scene_set_up, stage);
@@ -147,8 +117,8 @@ public class BreakoutApp extends Application {
         Color.GREENYELLOW);
     livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + Integer.toString(number_of_lives), 20,
         Color.GREENYELLOW);
-    credit = displayText(50, 950, "Breakout v1.0\nby Jiyun Hyo", 15, Color.GREENYELLOW);
-    currentLevelText = displayText(460, 50, "Level " + currentLevel, 30,Color.GOLD);
+    Text credit = displayText(50, 950, "Breakout v1.0\nby Jiyun Hyo", 15, Color.GREENYELLOW);
+    Text currentLevelText = displayText(460, 50, "Level " + currentLevel, 30, Color.GOLD);
   }
 
   private void makeBall(){
@@ -214,6 +184,19 @@ public class BreakoutApp extends Application {
     if (event.getCode() == KeyCode.M) {
       amount_missiles += 10;
     }
+
+  }
+
+  private void handleNumberInput(KeyEvent event, Stage stage){
+    try
+    {
+      currentLevel = Math.max(1, Math.min(3, Integer.parseInt(event.getCode().toString().substring(5))));
+      cleanUpAndRestart(stage);
+    }
+    catch(NumberFormatException integerException)
+    {
+      return;
+    }
   }
 
   private Text displayText(int xCoord, int yCoord, String message, int fontSize, Color color) {
@@ -239,6 +222,7 @@ public class BreakoutApp extends Application {
         handleShortCuts(event, stage);
         handleCheatCode(event);
         handleShoot(event);
+        handleNumberInput(event, stage);
 
       }
     });
@@ -308,7 +292,7 @@ public class BreakoutApp extends Application {
     animation.stop();
   }
 
-  private void loadLevelFromFile(){
+  private void loadLevelFromFile(int levelTemplate){
     //LEVEL 1
     // 1 10 5 10 80 100 80 20 102 0 10 (ten total)
     //col row3rd and 4th are constants for y coordinate, width, height, prefix of image,
@@ -317,6 +301,32 @@ public class BreakoutApp extends Application {
     //row col row col
     //LEVEL3
     //3 1 1 200 100 600 600 000 1 10000 (ten total)
+    if(levelTemplate == 1) {
+      for (int row = 0; row < 10; row++) {
+        for (int column = 0; column < 5; column++) {
+          Block block = new Block(10 + row * (SIZE / 10), 80 * column + 100, 80, 20, TILE_IMAGE, BROKEN_TILE_IMAGE,"block", 10);
+          block.upload_image_files();
+          root.getChildren().add(block.getImageView());
+          blockMap.add(block);
+        }
+      }
+    }else if(levelTemplate == 2){
+      for (int col = 0; col < 10; col++) {
+        for (int row = 0; row < 3; row++) {
+          Block block = new Block(200 + (SIZE / 10) * col + row * (SIZE / 10),
+              100 * row + 100 + col * 60, 80, 20, TILE_IMAGE, BROKEN_TILE_IMAGE,"block", 5);
+
+          block.upload_image_files();
+          root.getChildren().add(block.getImageView());
+          blockMap.add(block);
+        }
+      }
+    } else if (levelTemplate <= 9){
+      Boss boss = new Boss(200, 100, 600, 600, BOSS_IMAGE, "boss", 10000);
+      boss.upload_image_files();
+      root.getChildren().add(boss.getImageView());
+      bossMap.add(boss);
+    }
   }
 
   private void pause() {
@@ -334,28 +344,28 @@ public class BreakoutApp extends Application {
 
   private void updateAllSprites() {
     for (Sprite sprite : spriteMap) {
-      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
+      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
     }
     for (Block block : blockMap) {
-      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
+      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
     }
     for (Ball ball : ballMap) {
-      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
+      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
     }
     for (Boss boss : bossMap) {
-      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
+      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
     }
     for (Missile missile : missileMap) {
-      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
+      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
     }
     for (DotPaddle dotPaddle : dotPaddleMap) {
-      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
+      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
     }
     for (PowerUp powerUp : powerUpsMap) {
-      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
+      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
     }
     for (MissilePaddle missilePaddle : missilePaddleMap) {
-      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
+      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
     }
   }
 

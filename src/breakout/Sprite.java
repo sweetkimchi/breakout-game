@@ -22,6 +22,7 @@ public class Sprite extends Rectangle {
   private int yCoord;
   private boolean alive = true;
   private String LOW_HEALTH_IMAGE;
+  private int currentLevel;
 
   public Sprite() {
     super();
@@ -68,7 +69,7 @@ public class Sprite extends Rectangle {
   }
 
   public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
-      List<Missile> missile) {
+      List<Missile> missile, int currentLevel) {
     if (getClassName().equals("missile")) {
       this.getImageView()
           .setY(this.getImageView().getY() - this.speed * 2 * elapsedTime);
@@ -82,7 +83,7 @@ public class Sprite extends Rectangle {
           .setX(this.getImageView().getX() - this.speed * elapsedTime * this.xDirection);
       this.getImageView()
           .setY(this.getImageView().getY() - this.speed * elapsedTime * this.yDirection);
-    } else if (getClassName().equals("block")) {
+    } else if (getClassName().equals("block") && currentLevel > 1) {
       if (Math.random() < 0.005) {
         xDirection *= -1;
       }

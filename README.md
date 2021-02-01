@@ -4,7 +4,7 @@ This project implements the game of Breakout.
 
 Name: Ji Yun Hyo
 
-###Please Note: 24-Exnteion Requested and Granted by Professor Duvall.
+### Please Note : 24-Exnteion Requested and Granted by Professor Duvall.
 
 ### Timeline
 

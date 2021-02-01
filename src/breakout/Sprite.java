@@ -9,6 +9,12 @@ import javafx.scene.shape.Rectangle;
 
 public class Sprite extends Rectangle {
 
+  private final String LEVEL_UP_POWER_UP = "344-Breakout-Tiles.png";
+  private final String BIGGER_SIZED_BALL = "403-Breakout-Tiles.png";
+  private final String MISSILE_IMAGE = "346-Breakout-Tiles.png";
+  private final double powerUPProbability = 0.05;
+  private final double changeDirectionProbability = 0.005;
+  private final double missileProbability = 0.1;
   public boolean alive = true;
   private Image image;
   private String IMAGE;
@@ -20,14 +26,8 @@ public class Sprite extends Rectangle {
   private int xCoord;
   private int yCoord;
   private String LOW_HEALTH_IMAGE;
-  private final String LEVEL_UP_POWER_UP = "344-Breakout-Tiles.png";
-  private final String BIGGER_SIZED_BALL = "403-Breakout-Tiles.png";
-  private final String MISSILE_IMAGE = "346-Breakout-Tiles.png";
   private Pane root;
   private int paddleLevel;
-  private final double powerUPProbability = 0.05;
-  private final double changeDirectionProbability = 0.005;
-  private final double missileProbability = 0.1;
   private List<MissilePaddle> missilePaddles;
 
   public Sprite() {

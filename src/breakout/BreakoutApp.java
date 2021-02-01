@@ -41,11 +41,11 @@ public class BreakoutApp extends Application {
   public static final String BACKGROUND_IMAGE = "400" + postFix;
   public static final String MISSILE_IMAGE = "346" + postFix;
   private final int yPaddleVelocity = 0;
+  private final int numberOfLives = 3;
   private int xPaddleVelocity = 0;
   private int x = SIZE / 2 - 30;
   private int y = SIZE - 50;
   private int amount_missiles = 50;
-  private final int numberOfLives = 3;
   private Scene scene_set_up;
   private Scene startScene;
   private ImageView myBackGround;
@@ -87,7 +87,7 @@ public class BreakoutApp extends Application {
     jFrame.setSize(400, 600);
 //    jFrame.setLocationRelativeTo(null);
     jFrame.add(new JLabel(
-        "<html><h1 style=\"color:green;\">How to Play</h1> Destory all blocks. Maneuver the direction of the ball <br> by controlling where on the paddle it hits. <h1 style=\"color:blue;\">Basic Abilities</h1><p>LEFT - move left<br> RIGHT - move right <br> SPACE - shoot missiles <br> N - increase speed of paddle by 4 <br> B - return to default paddle speed <h1 style=\"color:Red;\">Settings </h1><p>R - restart game <br> P - pause <h1 style=\"color:green;\">Cheat Code</h1> L - add one life <br> M - 10 more missiles <br> F - make ball bigger and go through blocks <br> D - decrease ball size <br> G - level up paddle/no level up limit <br> V - decrease size of paddle <br> 0 ~ 9 - jump to level (or the maximum level) </html>",
+        "<html><h1 style=\"color:green;\">How to Play</h1> Destory all blocks. Maneuver the direction of the ball <br> by controlling where on the paddle it hits. <h1 style=\"color:blue;\">Basic Abilities</h1><p>LEFT - move left<br> RIGHT - move right <br> SPACE - shoot missiles <br> N - increase speed of paddle by 4 <br> B - return to default paddle speed <h1 style=\"color:Red;\">Settings </h1><p>R - restart game <br> P - pause/resume <h1 style=\"color:green;\">Cheat Code</h1> L - add one life <br> M - 10 more missiles <br> F - make ball bigger and go through blocks <br> D - decrease ball size <br> G - level up paddle/no level up limit <br> V - decrease size of paddle <br> 0 ~ 9 - jump to level (or the maximum level) </html>",
         SwingConstants.CENTER), BorderLayout.CENTER);
 
     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

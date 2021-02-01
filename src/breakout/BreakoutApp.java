@@ -39,14 +39,10 @@ public class BreakoutApp extends Application {
   //image files
   private static final String postFix = "-Breakout-Tiles.png";
   public static final String MISSILE_PADDLE_IMAGE = "325" + postFix;
-  public static final String TILE_IMAGE = "102" + postFix;
-  public static final String BROKEN_TILE_IMAGE = "110" + postFix;
   public static final String BALL_IMAGE = "340" + postFix;
-  public static final String BOSS_IMAGE = "000" + postFix;
   public static final String POWERFUL_BALL = "402" + postFix;
   public static final String BACKGROUND_IMAGE = "400" + postFix;
   public static final String MISSILE_IMAGE = "346" + postFix;
-  private String paddleType = "missilepaddle";
   private int xPaddleVelocity = 0;
   private int yPaddleVelocity = 0;
   private int x = SIZE / 2 - 30;
@@ -420,10 +416,6 @@ public class BreakoutApp extends Application {
 
   public void setxPaddleVelocity(int xPaddleVelocity) {
     this.xPaddleVelocity = xPaddleVelocity;
-  }
-
-  public void setyPaddleVelocity(int yPaddleVelocity) {
-    this.yPaddleVelocity = yPaddleVelocity;
   }
 
   public static void main(String[] args) {

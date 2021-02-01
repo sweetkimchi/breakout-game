@@ -43,7 +43,10 @@ public class Levels {
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
-    while (myReader.hasNext()) {
+    while (true) {
+      assert myReader != null;
+      if (!myReader.hasNext())
+        break;
       String data = myReader.next();
       parameters.add(data);
     }

@@ -53,6 +53,7 @@ public class BreakoutApp extends Application {
   private Text livesLeft;
   private Text loseMessage;
   private Text pauseMessage;
+  private Stage myStage;
 
 
   private ArrayList<String> image_files;
@@ -70,6 +71,7 @@ public class BreakoutApp extends Application {
   public void start(Stage stage) {
 
     //initialize maps
+    myStage = stage;
     scene_start = setupGame(SIZE, SIZE, stage, 1);
     stage.setScene(scene_start);
     stage.setTitle(TITLE);
@@ -163,7 +165,7 @@ public class BreakoutApp extends Application {
     }
   }
 
-  private void handleCheatCode(KeyEvent event) {
+  private void handleCheatCode(KeyEvent event, Stage stage) {
     if (event.getCode() == KeyCode.L) {
       if (number_of_lives == 0 && paused) {
         paused = false;
@@ -182,22 +184,40 @@ public class BreakoutApp extends Application {
     if (event.getCode() == KeyCode.D) {
       setBallImage(-10);
     }
-  }
 
-  private void setBallImage(int increment) {
-    ballMap.get(0).getImageView().setFitWidth(ballMap.get(0).getImageView().getFitWidth() + increment);
-    ballMap.get(0).getImageView().setFitHeight(ballMap.get(0).getImageView().getFitHeight() + increment);
-    if (ballMap.get(0).getImageView().getFitHeight() > 20) {
-      ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
-          getClass().getClassLoader().getResourceAsStream(POWERFUL_BALL))));
-    }else{
-      ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
-          getClass().getClassLoader().getResourceAsStream(BALL_IMAGE))));
+    if (event.getCode() == KeyCode.G){
+      myPaddle.setWidth(myPaddle.getWidth() * 1.2);
+    }
+    if (event.getCode() == KeyCode.V){
+      myPaddle.setWidth(myPaddle.getWidth() / 1.2);
+    }
+    if (event.getCode() == KeyCode.Y && blockMap.isEmpty() && bossMap.isEmpty()){
+      currentLevel++;
+      try {
+        cleanUpAndRestart(stage);
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }
     }
   }
 
+  private void setBallImage(int increment) {
+    if(ballMap.get(0).getImageView().getFitHeight() > 15 || increment > 0){
+      ballMap.get(0).getImageView().setFitWidth(ballMap.get(0).getImageView().getFitWidth() + increment);
+      ballMap.get(0).getImageView().setFitHeight(ballMap.get(0).getImageView().getFitHeight() + increment);
+      if (ballMap.get(0).getImageView().getFitHeight() > 20) {
+        ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
+            getClass().getClassLoader().getResourceAsStream(POWERFUL_BALL))));
+      }else{
+        ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
+            getClass().getClassLoader().getResourceAsStream(BALL_IMAGE))));
+      }
+    }
 
-  private void handleNumberInput(KeyEvent event, Stage stage) {
+  }
+
+
+  private void determineCurrentLevelFromFile(KeyEvent event, Stage stage) {
     try {
       currentLevel = Math
           .max(1, Math.min(3, Integer.parseInt(event.getCode().toString().substring(5))));
@@ -232,9 +252,9 @@ public class BreakoutApp extends Application {
         } catch (FileNotFoundException e) {
           e.printStackTrace();
         }
-        handleCheatCode(event);
+        handleCheatCode(event, stage);
         handleShoot(event);
-        handleNumberInput(event, stage);
+        determineCurrentLevelFromFile(event, stage);
 
       }
     });
@@ -275,7 +295,7 @@ public class BreakoutApp extends Application {
     }
     if (blockMap.isEmpty() && bossMap.isEmpty()) {
       animation.stop();
-      winMessage = displayText(300, 500, "YOU WON!!", 100, Color.GREENYELLOW);
+      winMessage = displayText(300, 500, "YOU WON!!\n Press 'Y' to go to next level", 50, Color.GREENYELLOW);
       root.getChildren().add(winMessage);
     }
     if (!ballMap.get(0).deadOrAlive()) {

@@ -1,10 +1,6 @@
 package breakout;
 
-import java.awt.Graphics2D;
-import java.awt.SplashScreen;
 import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,11 +18,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JWindow;
-import javax.swing.SwingConstants;
 
 
 public class BreakoutApp extends Application {
@@ -312,50 +303,70 @@ public class BreakoutApp extends Application {
   }
 
   private void loadLevelFromFile(int levelTemplate, Stage stage) {
-    //LEVEL 1
-    // 1 10 5 10 80 100 80 20 102 110 5 (ten total)
-    //col row3rd and 4th are constants for y coordinate, width, height, prefix of image,
-//    LEVEL 2
-//  2 10 3 200 100 100 60 80 20 102 110 5 (12 total)
-    //row col row col
-    //LEVEL3
-    //3 200 100 600 600 000 10000 (seven total)
     Levels launch_helper = new Levels(currentLevel, stage);
-    ArrayList<String> parameters = launch_helper.loadFromFiles();
-    if (levelTemplate == 1) {
-      for (int row = 0; row < Integer.parseInt(parameters.get(1)); row++) {
-        for (int column = 0; column < Integer.parseInt(parameters.get(2)); column++) {
-          Block block = new Block(Integer.parseInt(parameters.get(3)) + row * (SIZE / Integer
-              .parseInt(parameters.get(1))),
-              Integer.parseInt(parameters.get(4)) * column + Integer.parseInt(parameters.get(5)),
-              Integer.parseInt(parameters.get(6)), Integer.parseInt(parameters.get(7)),
-              parameters.get(8) + postFix, parameters.get(9) + postFix, "block",
-              Integer.parseInt(parameters.get(10)));
-          block.upload_image_files();
-          root.getChildren().add(block.getImageView());
-          blockMap.add(block);
-        }
-      }
-    } else if (levelTemplate == 2) {
-      for (int col = 0; col < Integer.parseInt(parameters.get(1)); col++) {
-        for (int row = 0; row < Integer.parseInt(parameters.get(2)); row++) {
-          Block block = new Block(
-              Integer.parseInt(parameters.get(3)) + (SIZE / 10) * col + row * (SIZE / 10),
-              Integer.parseInt(parameters.get(4)) * row + Integer.parseInt(parameters.get(5))
-                  + col * Integer.parseInt(parameters.get(6)), Integer.parseInt(parameters.get(7)),
-              Integer.parseInt(parameters.get(8)), parameters.get(9) + postFix, parameters.get(10) + postFix, "block", Integer.parseInt(parameters.get(11)));
+    ArrayList<String> levelDescriptionsFromFile = launch_helper.loadFromFiles();
 
-          block.upload_image_files();
-          root.getChildren().add(block.getImageView());
-          blockMap.add(block);
-        }
-      }
+    if (levelTemplate == 1) {
+      loadStationaryBlockLevels(levelDescriptionsFromFile);
+    } else if (levelTemplate == 2) {
+      loadMovingBlockLevels(levelDescriptionsFromFile);
     } else if (levelTemplate <= 9) {
-      Boss boss = new Boss(Integer.parseInt(parameters.get(1)), Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)), Integer.parseInt(parameters.get(4)), parameters.get(5) + postFix, "boss", Integer.parseInt(parameters.get(5)));
-      boss.upload_image_files();
-      root.getChildren().add(boss.getImageView());
-      bossMap.add(boss);
+      loadBossLevels(levelDescriptionsFromFile);
     }
+  }
+
+  private void loadStationaryBlockLevels(ArrayList<String> levelDescriptionsFromFile){
+    for (int row = 0; row < Integer.parseInt(levelDescriptionsFromFile.get(1)); row++) {
+      for (int column = 0; column < Integer.parseInt(levelDescriptionsFromFile.get(2));
+          column++) {
+        Block block = new Block(
+            Integer.parseInt(levelDescriptionsFromFile.get(3)) + row * (SIZE / Integer
+                .parseInt(levelDescriptionsFromFile.get(1))),
+            Integer.parseInt(levelDescriptionsFromFile.get(4)) * column + Integer
+                .parseInt(levelDescriptionsFromFile.get(5)),
+            Integer.parseInt(levelDescriptionsFromFile.get(6)),
+            Integer.parseInt(levelDescriptionsFromFile.get(7)),
+            levelDescriptionsFromFile.get(8) + postFix,
+            levelDescriptionsFromFile.get(9) + postFix, "block",
+            Integer.parseInt(levelDescriptionsFromFile.get(10)));
+        block.upload_image_files();
+        root.getChildren().add(block.getImageView());
+        blockMap.add(block);
+      }
+    }
+  }
+  private void loadMovingBlockLevels(ArrayList<String> levelDescriptionsFromFile){
+    for (int col = 0; col < Integer.parseInt(levelDescriptionsFromFile.get(1)); col++) {
+      for (int row = 0; row < Integer.parseInt(levelDescriptionsFromFile.get(2)); row++) {
+        Block block = new Block(
+            Integer.parseInt(levelDescriptionsFromFile.get(3)) + (SIZE / 10) * col + row * (
+                SIZE / 10),
+            Integer.parseInt(levelDescriptionsFromFile.get(4)) * row + Integer
+                .parseInt(levelDescriptionsFromFile.get(5))
+                + col * Integer.parseInt(levelDescriptionsFromFile.get(6)),
+            Integer.parseInt(levelDescriptionsFromFile.get(7)),
+            Integer.parseInt(levelDescriptionsFromFile.get(8)),
+            levelDescriptionsFromFile.get(9) + postFix,
+            levelDescriptionsFromFile.get(10) + postFix, "block",
+            Integer.parseInt(levelDescriptionsFromFile.get(11)));
+
+        block.upload_image_files();
+        root.getChildren().add(block.getImageView());
+        blockMap.add(block);
+      }
+    }
+  }
+
+  private void loadBossLevels(ArrayList<String> levelDescriptionsFromFile){
+    Boss boss = new Boss(Integer.parseInt(levelDescriptionsFromFile.get(1)),
+        Integer.parseInt(levelDescriptionsFromFile.get(2)),
+        Integer.parseInt(levelDescriptionsFromFile.get(3)),
+        Integer.parseInt(levelDescriptionsFromFile.get(4)),
+        levelDescriptionsFromFile.get(5) + postFix, "boss",
+        Integer.parseInt(levelDescriptionsFromFile.get(5)));
+    boss.upload_image_files();
+    root.getChildren().add(boss.getImageView());
+    bossMap.add(boss);
   }
 
   private void pause() {

@@ -15,8 +15,7 @@ public class Sprite extends Rectangle {
   private int xDirection;
   private int yDirection;
   private int speed;
-  private boolean move;
-
+  private int amount_missile;
   private ImageView imageView;
 
   public Sprite() {
@@ -31,7 +30,7 @@ public class Sprite extends Rectangle {
     this.speed = 300;
     xDirection = 1;
     yDirection = 1;
-    this.move = move;
+    this.upload_image_files();
   }
 
   public ImageView setImageView(String IMAGE) {
@@ -66,7 +65,11 @@ public class Sprite extends Rectangle {
   }
 
 
-  public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss) {
+  public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss, List<Missile> missile) {
+    if(getClassName().equals("missile")){
+      this.getImageView()
+          .setY(this.getImageView().getY() - this.speed * 2 * elapsedTime);
+    }
     if (getClassName().equals("ball")) {
       this.getImageView()
           .setX(this.getImageView().getX() - this.speed * elapsedTime * this.xDirection);
@@ -85,15 +88,15 @@ public class Sprite extends Rectangle {
       this.getImageView()
           .setX(this.getImageView().getX() + this.speed * this.xDirection * elapsedTime);
     }
-    checkBoundary(myPaddle, blocks, boss);
+    checkBoundary(myPaddle, blocks, boss, missile);
   }
 
-  public void checkBoundary(Rectangle myPaddle, List<Block> blocks, List<Boss> boss) {
+  public void checkBoundary(Rectangle myPaddle, List<Block> blocks, List<Boss> boss, List<Missile> missile) {
     double xPos = this.getImageView().getX();
     double yPos = this.getImageView().getY();
     checkX(xPos);
     checkY(yPos, myPaddle);
-    checkCollision(blocks, boss);
+    checkCollision(blocks, boss, missile);
   }
 
   private void checkX(double xPos) {
@@ -132,11 +135,11 @@ public class Sprite extends Rectangle {
 
   }
 
-  private void checkBlockCollision(List<Block> blocks) {
+  private void checkBlockCollision(List<Block> blocks, List<Missile> missile) {
     for (Block block : blocks) {
       double xBlockBoundaryMax = block.getBoundsInLocal().getWidth();
       double yBlockBoundary = block.getBoundsInLocal().getHeight();
-      if (this.getClassName().equals("ball") && block.getImageView().getBoundsInParent()
+      if ((this.getClassName().equals("ball") || this.getClassName().equals("missile")) && block.getImageView().getBoundsInParent()
           .intersects(this.getImageView().getBoundsInParent())) {
 //        if (this.getImageView().getBoundsInParent().getMinX() >= block.getImageView()
 //            .getBoundsInParent().getMinX()
@@ -144,8 +147,11 @@ public class Sprite extends Rectangle {
 //            .getBoundsInParent().getMaxX()) {
 //          this.xDirection *= -1;
 //        }
-        if (this.getClassName().equals("ball") && block.getImageView().getBoundsInParent()
-            .intersects(this.getImageView().getBoundsInParent())) {
+        if (block.getImageView().getBoundsInParent().intersects(this.getImageView().getBoundsInParent())) {
+          if(this.getClassName().equals("missile")){
+            this.getImageView().setImage(null);
+            missile.remove(this);
+          }
           if (this.getImageView().getBoundsInParent().getMinY() >= block.getImageView()
               .getBoundsInParent().getMinY()
               && this.getImageView().getBoundsInParent().getMaxY() <= block.getImageView()
@@ -188,9 +194,15 @@ public class Sprite extends Rectangle {
     }
   }
 
-  private void checkCollision(List<Block> blocks, List<Boss> boss) {
-    checkBlockCollision(blocks);
+  private void checkCollision(List<Block> blocks, List<Boss> boss, List<Missile> missile) {
+    checkBlockCollision(blocks, missile);
     checkBossCollision(boss);
+  }
+
+  public void shoot(Rectangle myPaddle){
+      if(this.getClassName().equals("missile")){
+
+      }
   }
 }
 

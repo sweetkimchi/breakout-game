@@ -27,6 +27,7 @@ public class BreakoutApp extends Application {
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
   public static final Paint BACKGROUND = Color.GREENYELLOW;
   public static final Paint HIGHLIGHT = Color.OLIVEDRAB;
+  public static final double INERTIA = 5;
 
   //image files
   private static final String postFix = "-Breakout-Tiles.png";
@@ -36,11 +37,13 @@ public class BreakoutApp extends Application {
   public static final String BALL_IMAGE = "339" + postFix;
   public static final String BOSS_IMAGE = "000" + postFix;
   public static final String BACKGROUND_IMAGE = "400" + postFix;
-
+  public static final String MISSILE_IMAGE = "346" + postFix;
+  private String paddleType = "missilepaddle";
   private int xPaddleVelocity = 0;
   private int yPaddleVelocity = 0;
   private int x = SIZE / 2 - 30;
   private int y = SIZE - 50;
+  private int amount_missiles = 50;
   private Scene scene_set_up_game;
   private Scene scene_start;
   private ArrayList<ImageView> image_view;
@@ -74,7 +77,7 @@ public class BreakoutApp extends Application {
     stage.requestFocus();
   }
 
-  public Scene setupGame(int width, int height, Paint background) throws InterruptedException {
+  public Scene setupGame(int width, int height, Paint background){
 
     // create one top level collection to organize the things in the scene
     root = new Pane();
@@ -92,11 +95,13 @@ public class BreakoutApp extends Application {
     image_files.add(PADDLE_IMAGE);
     image_files.add(TILE_IMAGE);
 
+
     //what I need to do here is that I need to make a method in Sprite for each object and
     /*
     ROW COL TYPE IMAGE
      */
 
+    //MAKE MISSILES
     //makes sprite objects and images
     //LEVEL 1
 //    for (int col = 0; col < 10; col++) {
@@ -112,7 +117,7 @@ public class BreakoutApp extends Application {
     for (int col = 0; col < 10; col++) {
       for (int row = 0; row < 3; row++) {
         Block block = new Block(200 + (SIZE / 10) * col + row * (SIZE / 10),
-            100 * row + 100 + col * 60, 80, 20, image_files.get(1), "block", 10);
+            100 * row + 100 + col * 60, 80, 20, image_files.get(1), "block", 1);
 
         block.upload_image_files();
         root.getChildren().add(block.getImageView());
@@ -177,20 +182,31 @@ public class BreakoutApp extends Application {
 //        if (event.getCode() == KeyCode.UP) {
 //          setVelY(-9);
 //        }
+        if (event.getCode() == KeyCode.SPACE) {
+          if(amount_missiles > 0){
+              amount_missiles--;
+              for(int i = 0; i <= 1; i++){
+                Missile missile = new Missile((int) myPaddle.getX() + (int) (myPaddle.getWidth() - 10) * i, (int) myPaddle.getY() , 3, 10, MISSILE_IMAGE);
+                missile.upload_image_files();
+                missileMap.add(missile);
+                root.getChildren().add(missile.getImageView());
+              }
+          }
+        }
       }
     });
     scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
       @Override
       public void handle(KeyEvent event) {
-        if (event.getCode() == KeyCode.LEFT) {
-          setxPaddleVelocity(0);
+        if ((event.getCode() == KeyCode.LEFT) || (event.getCode() == KeyCode.RIGHT)){
+            for(int i = 0; i < 2; i++){
+              xPaddleVelocity = 0;
+            }
         }
 //        if (event.getCode() == KeyCode.DOWN) {
 //          setVelY(0);
 //        }
-        if (event.getCode() == KeyCode.RIGHT) {
-          setxPaddleVelocity(0);
-        }
+
 //        if (event.getCode() == KeyCode.UP) {
 //          setVelY(0);
 //        }
@@ -210,31 +226,35 @@ public class BreakoutApp extends Application {
     animation.start();
   }
 
+  private void createMissile(){
+
+  }
+
 
   private void updateAllSprites() {
     for (Sprite sprite : spriteMap) {
-      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
+      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
     }
     for (Block block : blockMap) {
-      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
+      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
     }
     for (Ball ball : ballMap) {
-      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
+      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
     }
     for (Boss boss : bossMap) {
-      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
+      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
     }
     for (Missile missile : missileMap) {
-      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
+      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
     }
     for (DotPaddle dotPaddle : dotPaddleMap) {
-      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
+      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
     }
     for (PowerUp powerUp : powerUpsMap) {
-      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
+      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
     }
     for (MissilePaddle missilePaddle : missilePaddleMap) {
-      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap);
+      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap);
     }
   }
 

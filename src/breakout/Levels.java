@@ -2,6 +2,8 @@ package breakout;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -28,14 +30,24 @@ public class Levels {
     stage.requestFocus();
   }
 
-  public void loadFromFiles(int currentLevel) throws FileNotFoundException {
+  public ArrayList<String> loadFromFiles() {
+    ArrayList<String> parameters = new ArrayList<String>();
     String fileName = "level" + currentLevel + ".txt";
-    File myObj = new File("filename.txt");
-    Scanner myReader = new Scanner(myObj);
-    while (myReader.hasNextLine()) {
-      String data = myReader.nextLine();
+    System.out.println(fileName);
+    File myObj = new File(fileName);
+    Scanner myReader = null;
+    try {
+      myReader = new Scanner(myObj);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+    while (myReader.hasNext()) {
+      String data = myReader.next();
+      parameters.add(data);
       System.out.println(data);
     }
+    System.out.println(parameters.size());
     myReader.close();
+    return parameters;
   }
 }

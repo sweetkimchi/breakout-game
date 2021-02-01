@@ -2,6 +2,7 @@ package breakout;
 
 import java.awt.Graphics2D;
 import java.awt.SplashScreen;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class BreakoutApp extends Application {
   public static final String BROKEN_TILE_IMAGE = "110" + postFix;
   public static final String BALL_IMAGE = "340" + postFix;
   public static final String BOSS_IMAGE = "000" + postFix;
-  public static final String POWERFUL_BALL ="402" + postFix;
+  public static final String POWERFUL_BALL = "402" + postFix;
   public static final String BACKGROUND_IMAGE = "400" + postFix;
   public static final String MISSILE_IMAGE = "346" + postFix;
   private String paddleType = "missilepaddle";
@@ -98,7 +99,7 @@ public class BreakoutApp extends Application {
     setBackgroundImage();
     initializeMaps();
     displayStartingText();
-    loadLevelFromFile(currentLevel);
+    loadLevelFromFile(currentLevel, stage);
     makeBall();
     makePaddle();
     handleKeyInput(scene_set_up, stage);
@@ -106,7 +107,7 @@ public class BreakoutApp extends Application {
     return scene_set_up;
   }
 
-  private void setBackgroundImage(){
+  private void setBackgroundImage() {
     myBackGround = new ImageView(
         new Image(getClass().getClassLoader().getResourceAsStream(BACKGROUND_IMAGE)));
     myBackGround.setFitWidth(SIZE);
@@ -114,7 +115,7 @@ public class BreakoutApp extends Application {
     root.getChildren().add(myBackGround);
   }
 
-  private void displayStartingText(){
+  private void displayStartingText() {
     missileLeft = displayText(50, 50, "Missiles Left: " + Integer.toString(amount_missiles), 20,
         Color.GREENYELLOW);
     livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + Integer.toString(number_of_lives), 20,
@@ -123,14 +124,14 @@ public class BreakoutApp extends Application {
     Text currentLevelText = displayText(460, 50, "Level " + currentLevel, 30, Color.GOLD);
   }
 
-  private void makeBall(){
+  private void makeBall() {
     Ball ball = new Ball(SIZE / 2, SIZE - 100, 20, 20, BALL_IMAGE, "ball", number_of_lives);
     ball.upload_image_files();
     root.getChildren().add(ball.getImageView());
     ballMap.add(ball);
   }
 
-  private void makePaddle(){
+  private void makePaddle() {
     myPaddle = new Rectangle(x, y, 150, 20);
     //create Paddle
     MissilePaddle missilePaddle = new MissilePaddle(x, y, 150,
@@ -165,7 +166,7 @@ public class BreakoutApp extends Application {
     }
   }
 
-  private void handleShortCuts(KeyEvent event, Stage stage) {
+  private void handleShortCuts(KeyEvent event, Stage stage) throws FileNotFoundException {
     if (event.getCode() == KeyCode.R) {
       cleanUpAndRestart(stage);
     }
@@ -177,7 +178,7 @@ public class BreakoutApp extends Application {
 
   private void handleCheatCode(KeyEvent event) {
     if (event.getCode() == KeyCode.L) {
-      if(number_of_lives == 0 && paused){
+      if (number_of_lives == 0 && paused) {
         paused = false;
       }
       number_of_lives++;
@@ -187,34 +188,32 @@ public class BreakoutApp extends Application {
       amount_missiles += 10;
     }
     //make ball bigger and able to go through bricks (stronger damage)
-    if (event.getCode() == KeyCode.F){
+    if (event.getCode() == KeyCode.F) {
       ballMap.get(0).getImageView().setFitWidth(ballMap.get(0).getImageView().getFitWidth() + 10);
       ballMap.get(0).getImageView().setFitHeight(ballMap.get(0).getImageView().getFitHeight() + 10);
-      if(ballMap.get(0).getImageView().getFitHeight() >= 30){
+      if (ballMap.get(0).getImageView().getFitHeight() >= 30) {
         ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
             getClass().getClassLoader().getResourceAsStream(POWERFUL_BALL))));
       }
     }
     //decrease ball size and weaker (lower damage)
-    if (event.getCode() == KeyCode.D){
+    if (event.getCode() == KeyCode.D) {
 
       ballMap.get(0).getImageView().setFitWidth(ballMap.get(0).getImageView().getFitWidth() - 10);
       ballMap.get(0).getImageView().setFitHeight(ballMap.get(0).getImageView().getFitHeight() - 10);
-      if(ballMap.get(0).getImageView().getFitHeight() <= 20){
+      if (ballMap.get(0).getImageView().getFitHeight() <= 20) {
         ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
             getClass().getClassLoader().getResourceAsStream(BALL_IMAGE))));
       }
     }
   }
 
-  private void handleNumberInput(KeyEvent event, Stage stage){
-    try
-    {
-      currentLevel = Math.max(1, Math.min(3, Integer.parseInt(event.getCode().toString().substring(5))));
+  private void handleNumberInput(KeyEvent event, Stage stage) {
+    try {
+      currentLevel = Math
+          .max(1, Math.min(3, Integer.parseInt(event.getCode().toString().substring(5))));
       cleanUpAndRestart(stage);
-    }
-    catch(NumberFormatException integerException)
-    {
+    } catch (NumberFormatException | FileNotFoundException integerException) {
       return;
     }
   }
@@ -239,7 +238,11 @@ public class BreakoutApp extends Application {
           animation.start();
         }
         handlePaddleVelocity(event);
-        handleShortCuts(event, stage);
+        try {
+          handleShortCuts(event, stage);
+        } catch (FileNotFoundException e) {
+          e.printStackTrace();
+        }
         handleCheatCode(event);
         handleShoot(event);
         handleNumberInput(event, stage);
@@ -258,7 +261,7 @@ public class BreakoutApp extends Application {
     });
   }
 
-  private void runAnimation(){
+  private void runAnimation() {
     animation = new AnimationTimer() {
       @Override
       public void handle(long now) {
@@ -270,7 +273,7 @@ public class BreakoutApp extends Application {
     };
   }
 
-  private void updatePaddleVelocity(){
+  private void updatePaddleVelocity() {
     x += xPaddleVelocity;
     myPaddle.setX(x);
     y += yPaddleVelocity;
@@ -278,7 +281,7 @@ public class BreakoutApp extends Application {
   }
 
   private void checkGameStatus() {
-    if (!paused && pauseMessage != null){
+    if (!paused && pauseMessage != null) {
       pauseMessage.setVisible(false);
     }
     if (blockMap.isEmpty() && bossMap.isEmpty()) {
@@ -306,43 +309,53 @@ public class BreakoutApp extends Application {
     }
   }
 
-  private void cleanUpAndRestart(Stage stage) {
+  private void cleanUpAndRestart(Stage stage) throws FileNotFoundException {
     Levels level = new Levels(currentLevel, stage);
     level.launchLevel(currentLevel);
     animation.stop();
   }
 
-  private void loadLevelFromFile(int levelTemplate){
+  private void loadLevelFromFile(int levelTemplate, Stage stage) {
     //LEVEL 1
-    // 1 10 5 10 80 100 80 20 102 0 10 (ten total)
+    // 1 10 5 10 80 100 80 20 102 110 5 (ten total)
     //col row3rd and 4th are constants for y coordinate, width, height, prefix of image,
 //    LEVEL 2
-//  2 10 3 200 0
+//  2 10 3 200 100 100 60 80 20 102 110 5 (12 total)
     //row col row col
     //LEVEL3
-    //3 1 1 200 100 600 600 000 1 10000 (ten total)
-    if(levelTemplate == 1) {
-      for (int row = 0; row < 10; row++) {
-        for (int column = 0; column < 5; column++) {
-          Block block = new Block(10 + row * (SIZE / 10), 80 * column + 100, 80, 20, TILE_IMAGE, BROKEN_TILE_IMAGE,"block", 10);
+    //3 200 100 600 600 000 10000 (seven total)
+    Levels launch_helper = new Levels(currentLevel, stage);
+    ArrayList<String> parameters = launch_helper.loadFromFiles();
+    if (levelTemplate == 1) {
+      for (int row = 0; row < Integer.parseInt(parameters.get(1)); row++) {
+        for (int column = 0; column < Integer.parseInt(parameters.get(2)); column++) {
+          Block block = new Block(Integer.parseInt(parameters.get(3)) + row * (SIZE / Integer
+              .parseInt(parameters.get(1))),
+              Integer.parseInt(parameters.get(4)) * column + Integer.parseInt(parameters.get(5)),
+              Integer.parseInt(parameters.get(6)), Integer.parseInt(parameters.get(7)),
+              parameters.get(8) + postFix, parameters.get(9) + postFix, "block",
+              Integer.parseInt(parameters.get(10)));
           block.upload_image_files();
           root.getChildren().add(block.getImageView());
           blockMap.add(block);
         }
       }
-    }else if(levelTemplate == 2){
-      for (int col = 0; col < 10; col++) {
-        for (int row = 0; row < 3; row++) {
-          Block block = new Block(200 + (SIZE / 10) * col + row * (SIZE / 10),
-              100 * row + 100 + col * 60, 80, 20, TILE_IMAGE, BROKEN_TILE_IMAGE,"block", 5);
+    } else if (levelTemplate == 2) {
+      for (int col = 0; col < Integer.parseInt(parameters.get(1)); col++) {
+        for (int row = 0; row < Integer.parseInt(parameters.get(2)); row++) {
+          Block block = new Block(
+              Integer.parseInt(parameters.get(3)) + (SIZE / 10) * col + row * (SIZE / 10),
+              Integer.parseInt(parameters.get(4)) * row + Integer.parseInt(parameters.get(5))
+                  + col * Integer.parseInt(parameters.get(6)), Integer.parseInt(parameters.get(7)),
+              Integer.parseInt(parameters.get(8)), parameters.get(9) + postFix, parameters.get(10) + postFix, "block", Integer.parseInt(parameters.get(11)));
 
           block.upload_image_files();
           root.getChildren().add(block.getImageView());
           blockMap.add(block);
         }
       }
-    } else if (levelTemplate <= 9){
-      Boss boss = new Boss(200, 100, 600, 600, BOSS_IMAGE, "boss", 10000);
+    } else if (levelTemplate <= 9) {
+      Boss boss = new Boss(Integer.parseInt(parameters.get(1)), Integer.parseInt(parameters.get(2)), Integer.parseInt(parameters.get(3)), Integer.parseInt(parameters.get(4)), parameters.get(5) + postFix, "boss", Integer.parseInt(parameters.get(5)));
       boss.upload_image_files();
       root.getChildren().add(boss.getImageView());
       bossMap.add(boss);
@@ -352,7 +365,7 @@ public class BreakoutApp extends Application {
   private void pause() {
     if (!paused) {
       animation.stop();
-      pauseMessage = displayText(300, 400, "PAUSED\n\nPress 'P' to Continue",50,Color.GOLD);
+      pauseMessage = displayText(300, 400, "PAUSED\n\nPress 'P' to Continue", 50, Color.GOLD);
       paused = true;
     } else {
       animation.start();

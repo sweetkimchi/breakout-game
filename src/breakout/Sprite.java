@@ -1,11 +1,10 @@
 package breakout;
 
-import java.util.concurrent.TimeUnit;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.util.*;
-import org.w3c.dom.css.Rect;
 
 public class Sprite extends Rectangle {
 
@@ -20,6 +19,9 @@ public class Sprite extends Rectangle {
   private int yCoord;
   private boolean alive = true;
   private String LOW_HEALTH_IMAGE;
+  private String LEVEL_UP_POWER_UP = "344-Breakout-Tiles.png";
+  private String BIGGER_SIZED_BALL = "403-Breakout-Tiles.png";
+  private Pane root;
 
   public Sprite() {
     super();
@@ -66,14 +68,15 @@ public class Sprite extends Rectangle {
   }
 
   public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
-      List<Missile> missile, int currentLevel) {
+      List<Missile> missile, List<PowerUp> powerUps, int currentLevel, Pane root) {
+    this.root = root;
     if (getClassName().equals("missile")) {
       this.getImageView()
           .setY(this.getImageView().getY() - this.speed * 2 * elapsedTime);
     }
     if (getClassName().equals("powerup")) {
       this.getImageView()
-          .setY(this.getImageView().getY() + this.speed * 2 * elapsedTime);
+          .setY(this.getImageView().getY() + this.speed * 0.5 * elapsedTime);
     }
     if (getClassName().equals("ball")) {
       this.getImageView()
@@ -93,16 +96,16 @@ public class Sprite extends Rectangle {
       this.getImageView()
           .setX(this.getImageView().getX() + this.speed * this.xDirection * elapsedTime);
     }
-    checkBoundary(myPaddle, blocks, boss, missile);
+    checkBoundary(myPaddle, blocks, boss, missile, powerUps);
   }
 
   public void checkBoundary(Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
-      List<Missile> missile) {
+      List<Missile> missile, List<PowerUp> powerUps) {
     double xPos = this.getImageView().getX();
     double yPos = this.getImageView().getY();
     checkX(xPos);
     checkY(yPos, myPaddle);
-    checkCollision(blocks, boss, missile);
+    checkCollision(blocks, boss, missile, powerUps, myPaddle);
   }
 
   private void checkX(double xPos) {
@@ -161,8 +164,26 @@ public class Sprite extends Rectangle {
     return this.LOW_HEALTH_IMAGE;
   }
 
+  public List<PowerUp> createPowerUps(List<PowerUp> powerUps, int xCoord, int yCoord){
+    double probability = Math.random();
+    if (probability < 0.05) {
+      PowerUp powerUp = new PowerUp(xCoord, yCoord, 30, 30, LEVEL_UP_POWER_UP, "", "powerup");
+      powerUp.upload_image_files();
+      powerUps.add(powerUp);
+      root.getChildren().add(powerUp.getImageView());
 
-  private void checkBlockCollision(List<Block> blocks, List<Missile> missile) {
+    }else if(probability < 0.1){
+      PowerUp powerUp = new PowerUp(xCoord, yCoord, 30, 30, BIGGER_SIZED_BALL, "", "powerup");
+      powerUp.upload_image_files();
+      powerUps.add(powerUp);
+      root.getChildren().add(powerUp.getImageView());
+    }
+    return powerUps;
+  }
+
+
+  private void checkBlockCollision(List<Block> blocks, List<Missile> missile,
+      List<PowerUp> powerUps) {
     for (Block block : blocks) {
       double xBlockBoundaryMax = block.getBoundsInLocal().getWidth();
       double yBlockBoundary = block.getBoundsInLocal().getHeight();
@@ -182,8 +203,9 @@ public class Sprite extends Rectangle {
             this.yDirection *= -1;
           }
         }
-
         //DEDUCT LIVES WHEN HIT
+
+        createPowerUps(powerUps, (int) block.getX(), (int) block.getY());
         block.lives--;
         if (block.lives <= 5) {
           block.getImageView().setImage(
@@ -230,9 +252,20 @@ public class Sprite extends Rectangle {
     }
   }
 
-  private void checkCollision(List<Block> blocks, List<Boss> boss, List<Missile> missile) {
-    checkBlockCollision(blocks, missile);
+  private void checkCollision(List<Block> blocks, List<Boss> boss, List<Missile> missile,
+      List<PowerUp> powerUps, Rectangle myPaddle) {
+    checkBlockCollision(blocks, missile, powerUps);
     checkBossCollision(boss, missile);
+    checkPowerUpCollision(powerUps, myPaddle);
+  }
+
+  private void checkPowerUpCollision(List<PowerUp> powerUps, Rectangle myPaddle) {
+    if (this.getClassName().equals("powerup") && this.imageView
+        .getBoundsInParent()
+        .intersects(myPaddle.getBoundsInParent())) {
+      this.getImageView().setImage(null);
+      powerUps.remove(this);
+    }
   }
 }
 

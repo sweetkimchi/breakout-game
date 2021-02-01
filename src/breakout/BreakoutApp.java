@@ -123,7 +123,7 @@ public class BreakoutApp extends Application {
     //create Paddle
     MissilePaddle missilePaddle = new MissilePaddle(x, y, 150,
         20, MISSILE_PADDLE_IMAGE, 3, myPaddle);
-
+    missilePaddleMap.add(missilePaddle);
     root.getChildren().add(missilePaddle.getRectangle());
   }
 
@@ -385,28 +385,28 @@ public class BreakoutApp extends Application {
 
   private void updateAllSprites() {
     for (Sprite sprite : spriteMap) {
-      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
+      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel, root);
     }
     for (Block block : blockMap) {
-      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
+      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
     }
     for (Ball ball : ballMap) {
-      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
+      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap,powerUpsMap, currentLevel, root);
     }
     for (Boss boss : bossMap) {
-      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
+      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
     }
     for (Missile missile : missileMap) {
-      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
+      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
     }
     for (DotPaddle dotPaddle : dotPaddleMap) {
-      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
+      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
     }
     for (PowerUp powerUp : powerUpsMap) {
-      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
+      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
     }
     for (MissilePaddle missilePaddle : missilePaddleMap) {
-      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, currentLevel);
+      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
     }
   }
 

@@ -176,24 +176,26 @@ public class BreakoutApp extends Application {
     }
     //make ball bigger and able to go through bricks (stronger damage)
     if (event.getCode() == KeyCode.F) {
-      ballMap.get(0).getImageView().setFitWidth(ballMap.get(0).getImageView().getFitWidth() + 10);
-      ballMap.get(0).getImageView().setFitHeight(ballMap.get(0).getImageView().getFitHeight() + 10);
-      if (ballMap.get(0).getImageView().getFitHeight() >= 30) {
-        ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
-            getClass().getClassLoader().getResourceAsStream(POWERFUL_BALL))));
-      }
+      setBallImage(10);
     }
     //decrease ball size and weaker (lower damage)
     if (event.getCode() == KeyCode.D) {
-
-      ballMap.get(0).getImageView().setFitWidth(ballMap.get(0).getImageView().getFitWidth() - 10);
-      ballMap.get(0).getImageView().setFitHeight(ballMap.get(0).getImageView().getFitHeight() - 10);
-      if (ballMap.get(0).getImageView().getFitHeight() <= 20) {
-        ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
-            getClass().getClassLoader().getResourceAsStream(BALL_IMAGE))));
-      }
+      setBallImage(-10);
     }
   }
+
+  private void setBallImage(int increment) {
+    ballMap.get(0).getImageView().setFitWidth(ballMap.get(0).getImageView().getFitWidth() + increment);
+    ballMap.get(0).getImageView().setFitHeight(ballMap.get(0).getImageView().getFitHeight() + increment);
+    if (ballMap.get(0).getImageView().getFitHeight() > 20) {
+      ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
+          getClass().getClassLoader().getResourceAsStream(POWERFUL_BALL))));
+    }else{
+      ballMap.get(0).getImageView().setImage(new Image(Objects.requireNonNull(
+          getClass().getClassLoader().getResourceAsStream(BALL_IMAGE))));
+    }
+  }
+
 
   private void handleNumberInput(KeyEvent event, Stage stage) {
     try {
@@ -315,6 +317,9 @@ public class BreakoutApp extends Application {
     }
   }
 
+
+  //not refactorable but is necessary because each template is unique and I want to save them
+  //as "maps" in possibly future versions
   private void loadStationaryBlockLevels(ArrayList<String> levelDescriptionsFromFile) {
     for (int row = 0; row < Integer.parseInt(levelDescriptionsFromFile.get(1)); row++) {
       for (int column = 0; column < Integer.parseInt(levelDescriptionsFromFile.get(2));
@@ -337,6 +342,10 @@ public class BreakoutApp extends Application {
   }
 
   private void loadMovingBlockLevels(ArrayList<String> levelDescriptionsFromFile) {
+    extracted(levelDescriptionsFromFile);
+  }
+
+  private void extracted(ArrayList<String> levelDescriptionsFromFile) {
     for (int col = 0; col < Integer.parseInt(levelDescriptionsFromFile.get(1)); col++) {
       for (int row = 0; row < Integer.parseInt(levelDescriptionsFromFile.get(2)); row++) {
         Block block = new Block(
@@ -385,28 +394,28 @@ public class BreakoutApp extends Application {
 
   private void updateAllSprites() {
     for (Sprite sprite : spriteMap) {
-      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel, root);
+      sprite.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap, currentLevel, root, ballMap.get(0));
     }
     for (Block block : blockMap) {
-      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
+      block.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
     }
     for (Ball ball : ballMap) {
-      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap,powerUpsMap, currentLevel, root);
+      ball.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap,powerUpsMap, currentLevel, root, ballMap.get(0));
     }
     for (Boss boss : bossMap) {
-      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
+      boss.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
     }
     for (Missile missile : missileMap) {
-      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
+      missile.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
     }
     for (DotPaddle dotPaddle : dotPaddleMap) {
-      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
+      dotPaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
     }
     for (PowerUp powerUp : powerUpsMap) {
-      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
+      powerUp.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
     }
     for (MissilePaddle missilePaddle : missilePaddleMap) {
-      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root);
+      missilePaddle.update(SECOND_DELAY, myPaddle, blockMap, bossMap, missileMap, powerUpsMap,currentLevel, root, ballMap.get(0));
     }
   }
 

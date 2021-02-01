@@ -22,6 +22,7 @@ public class Sprite extends Rectangle {
   private String LEVEL_UP_POWER_UP = "344-Breakout-Tiles.png";
   private String BIGGER_SIZED_BALL = "403-Breakout-Tiles.png";
   private Pane root;
+  private int paddleLevel;
 
   public Sprite() {
     super();
@@ -34,7 +35,7 @@ public class Sprite extends Rectangle {
     className = type;
     setImageView(this.IMAGE);
     this.speed = 400;
-
+    paddleLevel = 1;
     //necessary set up to ensure the paddle's movement is smooth
     xDirection = 1;
     yDirection = 1;
@@ -68,7 +69,7 @@ public class Sprite extends Rectangle {
   }
 
   public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
-      List<Missile> missile, List<PowerUp> powerUps, int currentLevel, Pane root) {
+      List<Missile> missile, List<PowerUp> powerUps, int currentLevel, Pane root, Ball ball) {
     this.root = root;
     if (getClassName().equals("missile")) {
       this.getImageView()
@@ -96,16 +97,16 @@ public class Sprite extends Rectangle {
       this.getImageView()
           .setX(this.getImageView().getX() + this.speed * this.xDirection * elapsedTime);
     }
-    checkBoundary(myPaddle, blocks, boss, missile, powerUps);
+    checkBoundary(myPaddle, blocks, boss, missile, powerUps, ball);
   }
 
   public void checkBoundary(Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
-      List<Missile> missile, List<PowerUp> powerUps) {
+      List<Missile> missile, List<PowerUp> powerUps, Ball ball) {
     double xPos = this.getImageView().getX();
     double yPos = this.getImageView().getY();
     checkX(xPos);
     checkY(yPos, myPaddle);
-    checkCollision(blocks, boss, missile, powerUps, myPaddle);
+    checkCollision(blocks, boss, missile, powerUps, myPaddle, ball);
   }
 
   private void checkX(double xPos) {
@@ -143,6 +144,9 @@ public class Sprite extends Rectangle {
         && this.getImageView().getBoundsInParent().getMaxY() >= 1000) {
       alive = false;
     }
+    if(this.getClassName().equals("powerup") && this.getImageView().getBoundsInParent().getMaxY() >= 1000){
+      root.getChildren().remove(this);
+    }
 
 
   }
@@ -166,13 +170,13 @@ public class Sprite extends Rectangle {
 
   public List<PowerUp> createPowerUps(List<PowerUp> powerUps, int xCoord, int yCoord){
     double probability = Math.random();
-    if (probability < 0.05) {
+    if (probability < 0.10) {
       PowerUp powerUp = new PowerUp(xCoord, yCoord, 30, 30, LEVEL_UP_POWER_UP, "", "powerup");
       powerUp.upload_image_files();
       powerUps.add(powerUp);
       root.getChildren().add(powerUp.getImageView());
 
-    }else if(probability < 0.1){
+    }else if(probability < 0.20){
       PowerUp powerUp = new PowerUp(xCoord, yCoord, 30, 30, BIGGER_SIZED_BALL, "", "powerup");
       powerUp.upload_image_files();
       powerUps.add(powerUp);
@@ -255,19 +259,32 @@ public class Sprite extends Rectangle {
   }
 
   private void checkCollision(List<Block> blocks, List<Boss> boss, List<Missile> missile,
-      List<PowerUp> powerUps, Rectangle myPaddle) {
+      List<PowerUp> powerUps, Rectangle myPaddle, Ball ball) {
     checkBlockCollision(blocks, missile, powerUps);
     checkBossCollision(boss, missile, powerUps);
-    checkPowerUpCollision(powerUps, myPaddle);
+    checkPowerUpCollision(powerUps, myPaddle, ball);
   }
 
-  private void checkPowerUpCollision(List<PowerUp> powerUps, Rectangle myPaddle) {
+  private void checkPowerUpCollision(List<PowerUp> powerUps, Rectangle myPaddle, Ball ball) {
     if (this.getClassName().equals("powerup") && this.imageView
         .getBoundsInParent()
         .intersects(myPaddle.getBoundsInParent())) {
       this.getImageView().setImage(null);
+      if(this.IMAGE.equals(LEVEL_UP_POWER_UP) && (myPaddle.getWidth() < 250||myPaddle.getWidth() > 299)){
+        myPaddle.setWidth(myPaddle.getWidth() * 1.2);
+      }else{
+        ball.getImageView().setFitWidth(ball.getImageView().getFitWidth() + 10);
+        ball.getImageView().setFitHeight(ball.getImageView().getFitHeight() + 10);
+        if(ball.getImageView().getFitHeight() > 20){
+          ball.getImageView().setImage(new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("402-Breakout-Tiles.png"))));
+        }
+      }
       powerUps.remove(this);
     }
+  }
+
+  public void setPaddleLevel(){
+
   }
 }
 

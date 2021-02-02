@@ -2,11 +2,10 @@ package breakout;
 
 /**
  * Levels class
- *
+ * <p>
  * Manage creating and switching levels of the game
  *
  * @author Ji Yun Hyo
- *
  */
 
 import java.awt.BorderLayout;
@@ -34,11 +33,10 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 
-
 public class BreakoutApp extends Application {
 
   public static final String TITLE = "Example JavaFX";
-  public static final int SIZE = 1000;
+  public static final int SIZE = 700;
   public static final int FRAMES_PER_SECOND = 60;
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
@@ -93,12 +91,10 @@ public class BreakoutApp extends Application {
   private static void displaySplashScreen() {
     JFrame jFrame = new JFrame();
     jFrame.setTitle("Breakout Game");
-    jFrame.setSize(400, 800);
-//    jFrame.setLocationRelativeTo(null);
+    jFrame.setSize(400, 900);
     jFrame.add(new JLabel(
-        "<html><h1 style=\"color:green;\">How to Play</h1> Destory all blocks. Maneuver the direction of the ball <br> by controlling where on the paddle it hits. <br><br> Challenge: Try to get through all levels without <br> cheat code. <br><br> Tip 1: When fighting the boss, try to make the ball <br> approach the boss from the sides because <br>sides are the boss's vulnerability.<br><br> Tip 2: Try to power up the ball with carrots. <br><br> SECRET TIP: Try to level up the paddle with 'G' to <br>the fullest so that the paddle covers the entire <br>bottom. Then, keep pressing 'L' <br>to replesh lives. Sit back and watch. <h1 style=\"color:blue;\">Basic Abilities</h1><p>LEFT - move left<br> RIGHT - move right <br> SPACE - shoot missiles <br> N - increase speed of paddle by 4 <br> B - return to default paddle speed <h1 style=\"color:Red;\">Settings </h1><p>R - restart game <br> P - pause/resume <h1 style=\"color:green;\">Cheat Code</h1> L - add one life <br> M - 10 more missiles <br> F - power up the ball <br> D - decrease ball size <br> G - level up paddle/no level up limit <br> V - decrease size of paddle <br> 0 ~ 9 - jump to level (or the maximum level) </html>",
+        "<html>Note: Bigger monitor (16 inches or above) or<br> full-screen recommended<h1 style=\"color:green;\">How to Play</h1> Destory all blocks. Maneuver the direction of the ball <br> by controlling where on the paddle it hits. <br><br> Challenge: Try to get through all levels without <br> cheat code. <br><br> Tip 1: When fighting the boss, try to make the ball <br> approach the boss from the sides because <br>sides are the boss's vulnerability.<br><br> Tip 2: Try to power up the ball with carrots. <br><br> SECRET TIP: Try to level up the paddle with 'G' to <br>the fullest so that the paddle covers the entire <br>bottom. Then, keep pressing 'L' <br>to replesh lives. Sit back and watch. <h1 style=\"color:blue;\">Basic Abilities</h1><p>LEFT - move left<br> RIGHT - move right <br> SPACE - shoot missiles <br> N - increase speed of paddle by 4 <br> B - return to default paddle speed <h1 style=\"color:Red;\">Settings </h1><p>R - restart game <br> P - pause/resume <h1 style=\"color:green;\">Cheat Code</h1> L - add one life <br> M - 10 more missiles <br> F - power up the ball <br> D - decrease ball size <br> G - level up paddle/no level up limit <br> V - decrease size of paddle <br> 0 ~ 9 - jump to level (or the maximum level) </html>",
         SwingConstants.CENTER), BorderLayout.CENTER);
-
     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     jFrame.setVisible(true);
 
@@ -106,9 +102,6 @@ public class BreakoutApp extends Application {
 
   @Override
   public void start(Stage stage) {
-
-    //initialize maps
-
     myStage = stage;
     startScene = setupGame(SIZE, SIZE, stage, 1);
     stage.setScene(startScene);

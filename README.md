@@ -36,7 +36,7 @@ All image files are under 'data' folder. All txt files containing level informat
 
 Main class: BreakoutApp.java
 
-Data files needed: All the png files under folder 'data'
+Data files needed: All the png files under folder 'data.' 
 
 Key/Mouse inputs:
 

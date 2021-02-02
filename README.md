@@ -79,7 +79,9 @@ also tried different implementations to make sure that the paddle bounces the ba
 depending on where on the paddle the ball hits. I tried my best to make the game look pleaseing to look at.
 UI/UX is key for gaming experience. As an avid gamer and an investor in a e-sports startup, I hold high standards
 when it comes to gaming experience. So even though I knew I wouldn't be graded on how "smooth" or enjoyable the 
-game is, I couldn't resist but to try to make the experience as good as possible.
+game is, I couldn't resist but to try to make the experience as good as possible. I also made the blocks at Level 2
+move in random directions according to a pre-determined probability. So if you run Level 2 multiple times,
+you'll get a different block movement throughout the game.
 
 I created a BreakoutAPP class that handles everything that is displayed on the screen. BreakoutApp
 keeps track of all revelant "game data" such as lists that contain all sprites that are created in the game. 

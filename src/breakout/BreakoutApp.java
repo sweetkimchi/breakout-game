@@ -148,7 +148,7 @@ public class BreakoutApp extends Application {
         Color.GREENYELLOW);
     livesLeft = displayText(SIZE - 200, 50, "Lives Left: " + numberOfLives, 20,
         Color.GREENYELLOW);
-    Text credit = displayText(50, 950, "Breakout v2.0\nby Jiyun Hyo", 15, Color.GREENYELLOW);
+    Text credit = displayText(50, 950, "Breakout v1.0\nby Jiyun Hyo", 15, Color.GREENYELLOW);
     Text currentLevelText = displayText(460, 50, "Level " + currentLevel, 30, Color.GOLD);
   }
 

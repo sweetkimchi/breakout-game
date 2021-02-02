@@ -77,7 +77,7 @@ I spent a lot of time trying to get rid of things that made the game not enjoyab
 a specific way of implementing the paddle velocity that would result in much smoother paddle movement. I 
 also tried different implementations to make sure that the paddle bounces the ball off at different angles
 depending on where on the paddle the ball hits. I tried my best to make the game look pleaseing to look at.
-UI/UX is key for gaming experience. As an avid gamer and an investor in a e-sports startup, I hold high standards
+UI/UX is key for gaming experience. As an avid gamer, I hold high standards
 when it comes to gaming experience. So even though I knew I wouldn't be graded on how "smooth" or enjoyable the 
 game is, I couldn't resist but to try to make the experience as good as possible. I also made the blocks at Level 2
 move in random directions according to a pre-determined probability. So if you run Level 2 multiple times,

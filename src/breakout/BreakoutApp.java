@@ -36,7 +36,7 @@ import javax.swing.SwingConstants;
 public class BreakoutApp extends Application {
 
   public static final String TITLE = "Example JavaFX";
-  public static final int SIZE = 700;
+  public static final int SIZE = 1000;
   public static final int FRAMES_PER_SECOND = 60;
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 

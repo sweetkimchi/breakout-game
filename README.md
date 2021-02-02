@@ -65,7 +65,10 @@ with "get lives" cheat code. I also decided not to implement the "indestructible
 because when I did implement it, the game was super boring. I wanted the game to be fun and engaging.
 I also wanted to be of decent quality that I would want to play it from time to time. 
 
-Known Bugs: No bugs but lags a little when too many sprites are created all at once. I spent a lot of time fixing these bugs
+Known Bugs: 1. The ball might get stuck at the edges (left and right). If this happens try to take the paddle
+out of the screen and hit the ball with the very edge of the paddle. That knocks the ball back in the game for now.
+
+Lags a little when too many sprites are created all at once. I spent a lot of time fixing these bugs
 because bugs are the things that make the gaming experience terrible. Some bugs I encountered were 1) choppy movement of paddles,
 2) the blocks getting stuck on the edge while trying to change directions, 3) missiles fired by enemy not doing damage, 
 and so many more. I fixed all bugs I encountered.

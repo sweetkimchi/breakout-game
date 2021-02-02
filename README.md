@@ -81,7 +81,14 @@ UI/UX is key for gaming experience. As an avid gamer, I hold high standards
 when it comes to gaming experience. So even though I knew I wouldn't be graded on how "smooth" or enjoyable the 
 game is, I couldn't resist but to try to make the experience as good as possible. I also made the blocks at Level 2
 move in random directions according to a pre-determined probability. So if you run Level 2 multiple times,
-you'll get a different block movement throughout the game.
+you'll get a different block movement throughout the game. 
+
+Another thing is that I purposefully decided that damage
+done by the ball on the boss will not drop power ups. In this level, only the missiles drop power ups. The reason
+is that I wanted to make the left and right sides of the boss its vulnerable spot. So once the ball enters
+from the sides, the ball does "super attack" and damages the boss a lot. This lead to excessive dropping of
+power ups which caused immense lag that rendered the game unplayable. So I decided to leave that out despite
+the fact that the could go against my original plan.
 
 I created a BreakoutAPP class that handles everything that is displayed on the screen. BreakoutApp
 keeps track of all revelant "game data" such as lists that contain all sprites that are created in the game. 

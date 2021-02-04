@@ -35,7 +35,7 @@ import javax.swing.SwingConstants;
 
 public class BreakoutApp extends Application {
 
-  public static final String TITLE = "Example JavaFX";
+  public static final String TITLE = "Breakout Game";
   public static final int SIZE = 1000;
   public static final int FRAMES_PER_SECOND = 60;
   public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
@@ -161,7 +161,7 @@ public class BreakoutApp extends Application {
     root.getChildren().add(missilePaddle.getRectangle());
   }
 
-  public void initializeMaps() {
+  private void initializeMaps() {
     spriteMap = new ArrayList<Sprite>();
     ballMap = new ArrayList<Ball>();
     blockMap = new ArrayList<Block>();
@@ -250,7 +250,7 @@ public class BreakoutApp extends Application {
 
   }
 
-  private void determineCurrentLevelFromFile(KeyEvent event, Stage stage) {
+  private void skipToLevelIndicatedByKeyInput(KeyEvent event, Stage stage) {
     try {
       currentLevel = Math
           .max(1, Math.min(3, Integer.parseInt(event.getCode().toString().substring(5))));
@@ -286,7 +286,7 @@ public class BreakoutApp extends Application {
         }
         handleCheatCode(event, stage);
         gameControlKeys(event);
-        determineCurrentLevelFromFile(event, stage);
+        skipToLevelIndicatedByKeyInput(event, stage);
 
       }
     });
@@ -371,6 +371,7 @@ public class BreakoutApp extends Application {
       loadBossLevels(levelDescriptionsFromFile);
     }
   }
+
 
   //not refactorable but is necessary because each template is unique and I want to save them
   //as "maps" in possibly future versions
@@ -520,7 +521,7 @@ public class BreakoutApp extends Application {
     }
   }
 
-  public void setxPaddleVelocity(int xPaddleVelocity) {
+  private void setxPaddleVelocity(int xPaddleVelocity) {
     this.xPaddleVelocity = xPaddleVelocity;
   }
 }

@@ -5,14 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class Levels {
 
-  public static final String TITLE = "Example JavaFX";
-  public static final Paint BACKGROUND = Color.WHITE;
+  public static final String TITLE = "Breakout Game";
   private final int currentLevel;
   private final Stage stage;
   private final int SIZE = 1000;
@@ -34,7 +31,6 @@ public class Levels {
   public ArrayList<String> loadFromFiles() {
     ArrayList<String> parameters = new ArrayList<String>();
     String fileName = "level" + currentLevel + ".txt";
-    System.out.println(fileName);
     File myObj = new File(fileName);
     Scanner myReader = null;
     try {

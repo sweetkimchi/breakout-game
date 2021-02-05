@@ -2,11 +2,11 @@ package breakout;
 
 /**
  * Purpose: Loads information about each level from files. Populates the 'root' variable with the
- * sprites indicated by the data and the templates.
+ * sprites indicated by the data and the templates.<br>
  * Assumption: Assumes the files that are read are correctly formatted. Assumes the files contain
- * correct number of inputs.
+ * correct number of inputs.<br>
  * Dependencies: Used to have dependency on BreakoutApp but I got rid of that. No known dependency.
- * Example: Used to launch the game as shown below.
+ * Example: Used to launch the game as shown below.<br>
  * ```
  * private void
  * skipToLevelIndicatedByKeyInput(KeyEvent event, Stage stage) { try { currentLevel = Math .max(1,
@@ -14,7 +14,7 @@ package breakout;
  * cleanUpAndRestart(stage); } catch (NumberFormatException | FileNotFoundException
  * integerException) { return; } }
  * ```
- * <p>
+ * <p><br>
  * Why I think is a good design: Levels class does not need to know anything about the BreakoutApp.
  * It does not care about which class calls the methods as long as the inputs are valid.
  * This would be useful if we were to develop a second type of game that is
@@ -23,12 +23,12 @@ package breakout;
  * way where all the Levels class needs is the current level in order to launch a level. It keeps
  * itself SHY from all other classes, especially the BreakoutApp class. It also does not care about
  * the Sprite class and all its sub-classes because Levels class simply reads info from files and
- * populates the root.
+ * populates the root.<br>
  * <p>
  *
  * Anything else: I refactored loading of the different templates which were originally in
  * BreakoutApp into Levels class. This way, the game engine would not have to know anything about
- * the templates in order to use them.
+ * the templates in order to use them.<br>
  *
  * @author Ji Yun Hyo
  */
@@ -48,28 +48,17 @@ public class Levels {
 
   /**
    * Purpose: Allows other classes to create an object of Levels. Allows other classes to use the
-   * Levels object to launch a new level with new parameters.
+   * Levels object to launch a new level with new parameters.<br>
    * Assumptions: Assumes correct inputs. The calling class must already have a valid Stage
-   * object set up. The calling class must have away to discern the currentLevel of the game.
-   * Exceptions: No known exceptions.
+   * object set up. The calling class must have away to discern the currentLevel of the game.<br>
+   * Exceptions: No known exceptions.<br>
    *  @param currentLevel
-   *
    */
   public Levels(int currentLevel) {
     this.currentLevel = currentLevel;
   }
 
-  /**
-   * Purpose: Reads the level information from the appropriate file. Returns the ArrayList to
-   * BreakoutApp that creates the GUI map based on these parameters.
-   * Assumptions: Files contain correct inputs for each template. The class that uses the returned
-   * knows the template of the map and is able to use the data from the files to create new
-   * levels with necessary sprites.
-   * Exceptions: File may not exist. Handled by try and catch.
-   *
-   * @return an ArrayList that contains the string values of data present in the file.
-   */
-  public ArrayList<String> loadDataFromFiles() {
+  private ArrayList<String> loadDataFromFiles() {
     ArrayList<String> parameters = new ArrayList<String>();
     String fileName = "level" + currentLevel + ".txt";
     File myObj = new File(fileName);
@@ -93,13 +82,12 @@ public class Levels {
 
   /**
    * Purpose: Loads level by using the appropriate template indicated by the first input from
-   * data in files.
-   * Assumption: All inputs are correctly formatted and are valid.
-   * Exception: 'parameters' might be null if data in the files are not valid.
-   *
-   * @param blockMap map of Block objects to be populated on root
-   * @param bossMap map of Boss objects to be populated on root
-   * @param root Pane object that displays sprites
+   * data in files. <br>
+   * Assumption: All inputs are correctly formatted and are valid.<br>
+   * Exception: 'parameters' might be null if data in the files are not valid.<br>
+   * @param blockMap map of Block objects to be populated on root<br>
+   * @param bossMap map of Boss objects to be populated on root<br>
+   * @param root Pane object that displays sprites<br>
    */
   public void loadLevel(List<Block> blockMap, List<Boss> bossMap, Pane root) {
     ArrayList<String> parameters = loadDataFromFiles();

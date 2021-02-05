@@ -37,6 +37,18 @@ public class Block extends Sprite {
   private final String LOW_HEALTH_IMAGE;
   public int lives;
 
+  /**
+   * Purpose: Initializes Block objects and stores all its info.
+   * Assumptions: All input parameters are correct.
+   * @param xCoord
+   * @param yCoord
+   * @param width
+   * @param height
+   * @param FULL_HEALTH_IMAGE image to be used when Sprite has close to full health
+   * @param LOW_HEALTH_IMAGE image to be used when Sprite has close to no health
+   * @param type name of class
+   * @param lives
+   */
   public Block(int xCoord, int yCoord, int width, int height, String FULL_HEALTH_IMAGE,
       String LOW_HEALTH_IMAGE, String type, int lives) {
 

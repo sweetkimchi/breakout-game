@@ -26,6 +26,17 @@ public class MissilePaddle extends Paddle {
 
   public int lives;
 
+  /**
+   * Purpose: Initializes MissilePaddle objects.
+   * Assumptions: All input parameters are correct.
+   * @param xCoord
+   * @param yCoord
+   * @param width
+   * @param height
+   * @param IMAGE image file name for full health
+   * @param lives image file name for low health
+   * @param paddle Rectangle object representing the paddle
+   */
   public MissilePaddle(int xCoord, int yCoord, int width, int height, String IMAGE, int lives,
       Rectangle paddle) {
     super(xCoord, yCoord, width, height, IMAGE, lives, paddle);

@@ -27,6 +27,17 @@ public class Boss extends Block {
 
   public int lives;
 
+  /**
+   * Purpose: Initializes Boss objects.
+   * Assumptions: All input parameters are correct.
+   * @param xCoord
+   * @param yCoord
+   * @param width
+   * @param height
+   * @param IMAGE name of the image file under 'doc' folder
+   * @param type name of class
+   * @param lives
+   */
   public Boss(int xCoord, int yCoord, int width, int height, String IMAGE, String type, int lives) {
     super(xCoord, yCoord, width, height, IMAGE, "", type, lives);
     this.lives = lives;

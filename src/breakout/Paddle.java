@@ -33,7 +33,8 @@ public class Paddle extends Sprite {
   public int experience;
 
   /**
-   *
+   * Purpose: Initializes Paddle objects.
+   * Assumptions: All input parameters are correct.
    * @param xCoord
    * @param yCoord
    * @param width

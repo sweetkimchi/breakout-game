@@ -36,6 +36,15 @@ package breakout;
 
 public class Missile extends Sprite {
 
+  /**
+   * Purpose: Initializes Missile objects.
+   * Assumptions: All input parameters are correct.
+   * @param xCoord
+   * @param yCoord
+   * @param width
+   * @param height
+   * @param IMAGE image file name for full health powerup
+   */
   public Missile(int xCoord, int yCoord, int width, int height, String IMAGE) {
     super(xCoord, yCoord, width, height, IMAGE, "", "missile");
   }

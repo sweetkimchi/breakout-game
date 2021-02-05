@@ -83,6 +83,11 @@ public class BreakoutApp extends Application {
   private List<PowerUp> powerUpsMap;
   private List<Boss> bossMap;
 
+  /**
+   * Purpose: Start of BreakoutApp
+   * Assumptions: Valid arguments are passed in.
+   * @param args
+   */
   public static void main(String[] args) {
     displaySplashScreen();
     launch(args);

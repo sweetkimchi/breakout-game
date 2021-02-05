@@ -24,6 +24,17 @@ import javafx.scene.shape.Rectangle;
 
 public class DotPaddle extends Paddle {
 
+  /**
+   * Purpose: Initializes DotPaddle objects.
+   * Assumptions: All input parameters are correct.
+   * @param xCoord
+   * @param yCoord
+   * @param width
+   * @param height
+   * @param IMAGE image file name for full health powerup
+   * @param lives
+   * @param paddle Rectangle object representing the paddle
+   */
   public DotPaddle(int xCoord, int yCoord, int width, int height, String IMAGE, int lives,
       Rectangle paddle) {
     super(xCoord, yCoord, width, height, IMAGE, lives, paddle);

@@ -55,26 +55,20 @@ public class BreakoutApp extends Application {
   public static final String POWERFUL_BALL = "402" + postFix;
   public static final String BACKGROUND_IMAGE = "400" + postFix;
   public static final String MISSILE_IMAGE = "346" + postFix;
-  private final int yPaddleVelocity = 0;
   private final int numberOfLives = 3;
   private int xPaddleVelocity = 0;
   private int x = SIZE / 2 - 30;
   private int y = SIZE - 50;
   private int amount_missiles = 50;
-  private Scene scene_set_up;
-  private Scene startScene;
-  private ImageView myBackGround;
   private Rectangle myPaddle;
   private Pane root;
   private AnimationTimer animation;
   private boolean paused = false;
   private int currentLevel = 1;
   private Text missileLeft;
-  private Text winMessage;
   private Text livesLeft;
   private Text loseMessage;
   private Text pauseMessage;
-  private Stage myStage;
   private int paddleSpeed = 9;
 
 
@@ -109,8 +103,7 @@ public class BreakoutApp extends Application {
 
   @Override
   public void start(Stage stage) {
-    myStage = stage;
-    startScene = setupGame(SIZE, SIZE, stage, 1);
+    Scene startScene = setupGame(SIZE, SIZE, stage, 1);
     stage.setScene(startScene);
     stage.setTitle(TITLE);
     stage.show();
@@ -121,7 +114,7 @@ public class BreakoutApp extends Application {
     // create one top level collection to organize the things in the scene
     this.currentLevel = currentLevel;
     root = new Pane();
-    scene_set_up = new Scene(root, width, height, null);
+    Scene scene_set_up = new Scene(root, width, height, null);
     setBackgroundImage();
     initializeMaps();
     displayStartingText();
@@ -135,7 +128,7 @@ public class BreakoutApp extends Application {
 
   private void setBackgroundImage() {
 
-    myBackGround = new ImageView(
+    ImageView myBackGround = new ImageView(
         new Image(getClass().getClassLoader().getResourceAsStream(BACKGROUND_IMAGE)));
     myBackGround.setFitWidth(SIZE);
     myBackGround.setFitHeight(SIZE);
@@ -325,6 +318,7 @@ public class BreakoutApp extends Application {
   private void updatePaddleVelocity() {
     x += xPaddleVelocity;
     myPaddle.setX(x);
+    int yPaddleVelocity = 0;
     y += yPaddleVelocity;
     myPaddle.setY(y);
   }
@@ -335,7 +329,7 @@ public class BreakoutApp extends Application {
     }
     if (blockMap.isEmpty() && bossMap.isEmpty()) {
       animation.stop();
-      winMessage = displayText(300, 500, "YOU WON!!\n Press 'Y' to go to next level", 50,
+      Text winMessage = displayText(300, 500, "YOU WON!!\n Press 'Y' to go to next level", 50,
           Color.GREENYELLOW);
       root.getChildren().add(winMessage);
     }

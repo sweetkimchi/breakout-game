@@ -1,20 +1,13 @@
 package breakout;
 
 /**
- * Purpose: Handles the main parts of the game: game engine, GUI, keyboard input control, and updating all sprites.<p>
- * Assumptions: Assumes that the user feeds correct input values to the program.
- * Dependencies: Declares Ball, MissilePaddle, Levels, Boss, and Block objects. Also creates Javafx objects such as Panel, JFrame, and Scene.
- * Example: Used to launch the game as shown below.
- * ```
- *  public void launchLevel(int currentLevel) {
- *     BreakoutApp breakout = new BreakoutApp();
- *     Scene scene = breakout.setupGame(SIZE, SIZE, stage, currentLevel);
- *     stage.setScene(scene);
- *     stage.setTitle(TITLE);
- *     stage.show();
- *     stage.requestFocus();
- *   }
- * ```
+ * Purpose: Handles the main parts of the game: game engine, GUI, keyboard input control, and
+ * updating all sprites.<p> Assumptions: Assumes that the user feeds correct input values to the
+ * program. Dependencies: Declares Ball, MissilePaddle, Levels, Boss, and Block objects. Also
+ * creates Javafx objects such as Panel, JFrame, and Scene. Example: Used to launch the game as
+ * shown below. ``` public void launchLevel(int currentLevel) { BreakoutApp breakout = new
+ * BreakoutApp(); Scene scene = breakout.setupGame(SIZE, SIZE, stage, currentLevel);
+ * stage.setScene(scene); stage.setTitle(TITLE); stage.show(); stage.requestFocus(); } ```
  *
  * @author Ji Yun Hyo
  */

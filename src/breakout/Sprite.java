@@ -348,12 +348,6 @@ public class Sprite extends Rectangle {
     }
   }
 
-  private void checkCollision(List<Block> blocks, List<Boss> boss, List<Missile> missile,
-      List<PowerUp> powerUps, Rectangle myPaddle, Ball ball) {
-    checkBlockCollision(blocks, missile, powerUps);
-    checkBossCollision(boss, missile, powerUps);
-    checkPowerUpCollision(powerUps, myPaddle, ball);
-  }
 
   private void checkPowerUpCollision(List<PowerUp> powerUps, Rectangle myPaddle, Ball ball) {
     if (this.getClassName().equals("powerup") && this.imageView
@@ -376,6 +370,13 @@ public class Sprite extends Rectangle {
       }
       powerUps.remove(this);
     }
+  }
+
+  private void checkCollision(List<Block> blocks, List<Boss> boss, List<Missile> missile,
+      List<PowerUp> powerUps, Rectangle myPaddle, Ball ball) {
+    checkBlockCollision(blocks, missile, powerUps);
+    checkBossCollision(boss, missile, powerUps);
+    checkPowerUpCollision(powerUps, myPaddle, ball);
   }
 }
 

@@ -82,7 +82,7 @@ public class Levels {
 
   /**
    * Purpose: Loads level by using the appropriate template indicated by the first input from
-   * data in files. <br>
+   * data in files. Allows each separate game to load its own levels by calling the method. <br>
    * Assumption: All inputs are correctly formatted and are valid.<br>
    * Exception: 'parameters' might be null if data in the files are not valid.<br>
    * @param blockMap map of Block objects to be populated on root<br>

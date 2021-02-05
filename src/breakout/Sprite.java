@@ -1,19 +1,17 @@
 /**
- * Purpose: Stores and updates sprite information. Creates and destroys sprites. Checks for collision
- * between sprites.
- * Assumptions: BreakoutApp is properly using root (a Pane object) to display GUI. Less than 20 total
- * sprites will be created.
- * Dependencies: Declares Ball, MissilePaddle, Levels, Boss, and Block objects. Also
- * creates Javafx objects such as Panel, JFrame, and Scene.
- * Example: Used to launch the game as shown below.
- * ``` public void launchLevel(int currentLevel) { BreakoutApp breakout = new
- * BreakoutApp(); Scene scene = breakout.setupGame(SIZE, SIZE, stage, currentLevel);
- * stage.setScene(scene); stage.setTitle(TITLE); stage.show(); stage.requestFocus(); }
- * ```
- * Any Other Detail: The longest class in the project.
+ * Purpose: Stores and updates sprite information. Creates and destroys sprites. Checks for
+ * collision between sprites. Assumptions: BreakoutApp is properly using root (a Pane object) to
+ * display GUI. Less than 20 total sprites will be created. Dependencies: Declares Ball,
+ * MissilePaddle, Levels, Boss, and Block objects. Also creates Javafx objects such as Panel,
+ * JFrame, and Scene. Example: Used to launch the game as shown below. ``` public void
+ * launchLevel(int currentLevel) { BreakoutApp breakout = new BreakoutApp(); Scene scene =
+ * breakout.setupGame(SIZE, SIZE, stage, currentLevel); stage.setScene(scene);
+ * stage.setTitle(TITLE); stage.show(); stage.requestFocus(); } ``` Any Other Detail: I feel like
+ * this class is somewhat well-designed (other than some duplicates) because it makes it easy for us
+ * to add more sprites. All one has to do is create a class and add the logic for the sprite.
+ *
  * @author Ji Yun Hyo
  */
-
 package breakout;
 
 import java.util.List;
@@ -26,11 +24,7 @@ import javafx.scene.shape.Rectangle;
 public class Sprite extends Rectangle {
 
   private final String LEVEL_UP_POWER_UP = "344-Breakout-Tiles.png";
-  private final String BIGGER_SIZED_BALL = "403-Breakout-Tiles.png";
   private final String MISSILE_IMAGE = "346-Breakout-Tiles.png";
-  private final double powerUPProbability = 0.05;
-  private final double changeDirectionProbability = 0.005;
-  private final double missileProbability = 0.1;
   public boolean alive = true;
   private Image image;
   private String IMAGE;
@@ -43,19 +37,18 @@ public class Sprite extends Rectangle {
   private int yCoord;
   private String LOW_HEALTH_IMAGE;
   private Pane root;
-  private int paddleLevel;
   private List<MissilePaddle> missilePaddles;
 
   /**
-   * Purpose: Initializes Sprite objects.
-   * Assumptions: All input parameters are correct.
+   * Purpose: Initializes Sprite objects. Assumptions: All input parameters are correct.
+   *
    * @param xCoord
    * @param yCoord
    * @param width
    * @param height
    * @param FULL_HEALTH_IMAGE image to be used when Sprite has close to full health
-   * @param LOW_HEALTH_IMAGE image to be used when Sprite has close to no health
-   * @param type name of sub-class that called the constructor
+   * @param LOW_HEALTH_IMAGE  image to be used when Sprite has close to no health
+   * @param type              name of sub-class that called the constructor
    */
   public Sprite(int xCoord, int yCoord, int width, int height, String FULL_HEALTH_IMAGE,
       String LOW_HEALTH_IMAGE, String type) {
@@ -64,8 +57,6 @@ public class Sprite extends Rectangle {
     className = type;
     setImageView(this.IMAGE);
     this.speed = 400;
-    paddleLevel = 1;
-    //necessary set up to ensure the paddle's movement is smooth
     xDirection = 1;
     yDirection = 1;
     this.xCoord = xCoord;
@@ -75,9 +66,10 @@ public class Sprite extends Rectangle {
   }
 
   /**
-   * Purpose: Allows Sprite objects to set a new ImageView in case an event in BreakoutApp finds it necessary.
-   * Assumption: IMAGE file is properly formatted and contains a valid image file name.
+   * Purpose: Allows Sprite objects to set a new ImageView in case an event in BreakoutApp finds it
+   * necessary. Assumption: IMAGE file is properly formatted and contains a valid image file name.
    * Exception: IMAGE may be Null. The image file name might not exist.
+   *
    * @param IMAGE name of the image file under 'doc' folder
    * @return imageView object with the new sprite image
    */
@@ -88,18 +80,16 @@ public class Sprite extends Rectangle {
   }
 
   /**
-   * Purpose: Assigns an image to this Sprite object.
-   * Assumption: imageView from this Sprite object exists.
-   * Exceptions: Null pointer exception if imageView does not exist
-   * @return image added to this Sprite
+   * Purpose: Assigns an image to this Sprite object. Assumption: imageView from this Sprite object
+   * exists. Exceptions: Null pointer exception if imageView does not exist
+   *
    */
-  public ImageView upload_image_files() {
+  public void upload_image_files() {
     this.imageView.setImage(this.image);
     this.imageView.setFitWidth(this.getWidth());
     this.imageView.setFitHeight(this.getHeight());
     this.imageView.setX(xCoord);
     this.imageView.setY(yCoord);
-    return imageView;
   }
 
   private String getClassName() {
@@ -108,8 +98,8 @@ public class Sprite extends Rectangle {
 
   /**
    * Purpose: Allows root in BreakoutApp to add imageView of this Sprite to be displayed using GUI.
-   * Assumption: imageView exists.
-   * Exception: No known exception.
+   * Assumption: imageView exists. Exception: No known exception.
+   *
    * @return
    */
   public ImageView getImageView() {
@@ -118,18 +108,18 @@ public class Sprite extends Rectangle {
 
   /**
    * Purposes: Allows BreakoutApp to loop through all sprites created and have each sprite object
-   * call its own update method.
-   * Assumption: There are no more than 20 types of sprites. 'root' and 'ball' have proper values.
-   * Exception: No known exception.
-   * @param elapsedTime Time for one frame.
-   * @param myPaddle Rectangle object defined in BreakoutApp as the paddle.
-   * @param blocks List containing pointers to Block objects that are created
-   * @param boss List containing pointers to Boss objects that are created
-   * @param missileMap List containing pointers to Missile objects that are created
-   * @param powerUps List containing pointers to PowerUp objects that are created
+   * call its own update method. Assumption: There are no more than 20 types of sprites. 'root' and
+   * 'ball' have proper values. Exception: No known exception.
+   *
+   * @param elapsedTime    Time for one frame.
+   * @param myPaddle       Rectangle object defined in BreakoutApp as the paddle.
+   * @param blocks         List containing pointers to Block objects that are created
+   * @param boss           List containing pointers to Boss objects that are created
+   * @param missileMap     List containing pointers to Missile objects that are created
+   * @param powerUps       List containing pointers to PowerUp objects that are created
    * @param currentLevel
-   * @param root Pane defined in BreakoutApp. Used to add sprites onto GUI.
-   * @param ball Ball created in BreakoutApp.
+   * @param root           Pane defined in BreakoutApp. Used to add sprites onto GUI.
+   * @param ball           Ball created in BreakoutApp.
    * @param missilePaddles List containing pointers to MissilePaddle objects that are created
    */
   public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
@@ -137,6 +127,11 @@ public class Sprite extends Rectangle {
       List<MissilePaddle> missilePaddles) {
     this.root = root;
     this.missilePaddles = missilePaddles;
+    checkSpriteTypeAndUpdate(elapsedTime, currentLevel);
+    checkBoundary(myPaddle, blocks, boss, missileMap, powerUps, ball);
+  }
+
+  private void checkSpriteTypeAndUpdate(double elapsedTime, int currentLevel) {
     if (getClassName().equals("missile")) {
       this.getImageView()
           .setY(this.getImageView().getY() - this.speed * 2 * elapsedTime);
@@ -145,6 +140,7 @@ public class Sprite extends Rectangle {
       this.getImageView()
           .setY(this.getImageView().getY() + this.speed * 0.5 * elapsedTime);
     }
+    double changeDirectionProbability = 0.005;
     if (getClassName().equals("ball")) {
       this.getImageView()
           .setX(this.getImageView().getX() - this.speed * elapsedTime * this.xDirection);
@@ -163,26 +159,24 @@ public class Sprite extends Rectangle {
       this.getImageView()
           .setX(this.getImageView().getX() + this.speed * this.xDirection * elapsedTime);
     }
-    checkBoundary(myPaddle, blocks, boss, missileMap, powerUps, ball);
   }
 
   private void checkBoundary(Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
       List<Missile> missile, List<PowerUp> powerUps, Ball ball) {
     double xPos = this.getImageView().getX();
     double yPos = this.getImageView().getY();
-    checkX(xPos);
-    checkY(yPos, myPaddle);
+    checkX();
+    checkY(myPaddle);
     checkCollision(blocks, boss, missile, powerUps, myPaddle, ball);
   }
 
-  private void checkX(double xPos) {
+  private void checkX() {
     if (this.getClassName().equals("block") || this.getClassName().equals("boss")) {
       if (this.getImageView().getBoundsInParent().getMinX() <= 10) {
         this.xDirection = 1;
       } else if (this.getImageView().getBoundsInParent().getMaxX() >= 980) {
         this.xDirection = -1;
       }
-      //THIS IS VERY IMPORTANT - NEEDED IN ORDER TO FIX THE BUG WHERE THE BLOCKS GET TRAPPED AT THE EDGES
     } else {
       if (this.getImageView().getBoundsInParent().getMinX() <= 10
           || this.getImageView().getBoundsInParent().getMaxX() >= 980) {
@@ -191,7 +185,7 @@ public class Sprite extends Rectangle {
     }
   }
 
-  private void checkY(double yPos, Rectangle myPaddle) {
+  private void checkY(Rectangle myPaddle) {
     if (this.getImageView().getBoundsInParent().getMinY() <= 0) {
       this.yDirection *= -1;
     }
@@ -216,8 +210,6 @@ public class Sprite extends Rectangle {
         && this.getImageView().getBoundsInParent().getMaxY() >= 1000) {
       root.getChildren().remove(this);
     }
-
-
   }
 
   private void handlePaddleDeflection(int num, double centerOfPaddle, double centerOfBall) {
@@ -226,12 +218,12 @@ public class Sprite extends Rectangle {
     } else {
       this.xDirection = -1 - Math.abs(centerOfBall - centerOfPaddle) / 100;
     }
-
   }
 
   /**
-   * Purpose: Returns the status of the ball so that BreakoutApp can determine whether to take one life away.
-   * Assumptions: Valid value for 'alive' exists
+   * Purpose: Returns the status of the ball so that BreakoutApp can determine whether to take one
+   * life away. Assumptions: Valid value for 'alive' exists
+   *
    * @return 'true' when alive and 'false' when dead.
    */
   public boolean deadOrAlive() {
@@ -241,26 +233,27 @@ public class Sprite extends Rectangle {
   /**
    * Purpose: Returns the image used for low health sprites to be used in collision updates.
    * Assumptions: Valid value for LOW_HEALTH_IMAGE exists.
+   *
    * @return image file name.
    */
   public String getLowHealthImage() {
     return this.LOW_HEALTH_IMAGE;
   }
 
-  private List<PowerUp> createPowerUpsAndMissiles(List<PowerUp> powerUps, int xCoord, int yCoord,
-      List<Missile> missileMap) {
+  private List<PowerUp> createPowerUpsAndMissiles(List<PowerUp> powerUps, int xCoord, int yCoord) {
     double probability = Math.random();
+    double powerUPProbability = 0.05;
+    String BIGGER_SIZED_BALL = "403-Breakout-Tiles.png";
     if (probability < powerUPProbability) {
       declarePowerUpObject(powerUps, xCoord, yCoord, 30, 30, LEVEL_UP_POWER_UP, "powerup");
-
     } else if (probability < powerUPProbability * 2) {
       declarePowerUpObject(powerUps, xCoord, yCoord, 30, 30, BIGGER_SIZED_BALL, "powerup");
     }
     probability = Math.random();
+    double missileProbability = 0.1;
     if (probability < missileProbability) {
       declarePowerUpObject(powerUps, (int) (xCoord + 500 * probability), yCoord, 12, 40,
           MISSILE_IMAGE, "missile");
-
     }
     return powerUps;
   }
@@ -273,12 +266,9 @@ public class Sprite extends Rectangle {
     root.getChildren().add(powerUp.getImageView());
   }
 
-
   private void checkBlockCollision(List<Block> blocks, List<Missile> missile,
       List<PowerUp> powerUps) {
     for (Block block : blocks) {
-      double xBlockBoundaryMax = block.getBoundsInLocal().getWidth();
-      double yBlockBoundary = block.getBoundsInLocal().getHeight();
       if ((this.getClassName().equals("ball") || this.getClassName().equals("missile")) && block
           .getImageView().getBoundsInParent()
           .intersects(this.getImageView().getBoundsInParent())) {
@@ -295,9 +285,7 @@ public class Sprite extends Rectangle {
             this.yDirection *= -1;
           }
         }
-        //DEDUCT LIVES WHEN HIT
-
-        createPowerUpsAndMissiles(powerUps, (int) block.getX(), (int) block.getY(), missile);
+        createPowerUpsAndMissiles(powerUps, (int) block.getX(), (int) block.getY());
         block.lives--;
         if (block.lives <= 5) {
           block.getImageView().setImage(
@@ -309,7 +297,6 @@ public class Sprite extends Rectangle {
           blocks.remove(block);
         }
       }
-
     }
   }
 
@@ -327,7 +314,7 @@ public class Sprite extends Rectangle {
             missile.remove(this);
             createPowerUpsAndMissiles(powerUps,
                 (int) boss_block.getX() + (int) boss_block.getWidth() / 2,
-                (int) boss_block.getY() + (int) boss_block.getHeight(), missile);
+                (int) boss_block.getY() + (int) boss_block.getHeight());
           }
           if (this.getImageView().getBoundsInParent().getMinY() >= boss_block.getImageView()
               .getBoundsInParent().getMinY()
@@ -336,10 +323,7 @@ public class Sprite extends Rectangle {
             this.yDirection *= -1;
           }
         }
-
-        //DEDUCT LIVES WHEN HIT
         boss_block.lives--;
-        //  System.out.println(block.lives);
         if (boss_block.lives <= 0) {
           boss_block.getImageView().setImage(null);
           boss.remove(boss_block);
@@ -347,7 +331,6 @@ public class Sprite extends Rectangle {
       }
     }
   }
-
 
   private void checkPowerUpCollision(List<PowerUp> powerUps, Rectangle myPaddle, Ball ball) {
     if (this.getClassName().equals("powerup") && this.imageView
@@ -379,4 +362,3 @@ public class Sprite extends Rectangle {
     checkPowerUpCollision(powerUps, myPaddle, ball);
   }
 }
-

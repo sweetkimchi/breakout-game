@@ -194,7 +194,7 @@ public class BreakoutApp extends Application {
 
   private void handleShortCuts(KeyEvent event, Stage stage) throws FileNotFoundException {
     if (event.getCode() == KeyCode.R) {
-      cleanUpAndRestart(stage);
+      loadLevelFromFile(currentLevel, stage);
     }
     if (event.getCode() == KeyCode.P) {
 
@@ -361,84 +361,17 @@ public class BreakoutApp extends Application {
 
   private void cleanUpAndRestart(Stage stage) throws FileNotFoundException {
     Levels level = new Levels(currentLevel, stage);
-    level.launchLevel(currentLevel);
+    level.rebootGameEngineWithCurrentLevel(currentLevel);
     animation.stop();
   }
 
   private void loadLevelFromFile(int levelTemplate, Stage stage) {
-    Levels launch_helper = new Levels(currentLevel, stage);
-    ArrayList<String> levelDescriptionsFromFile = launch_helper.loadFromFiles();
-
-    if (levelTemplate == 1) {
-      loadStationaryBlockLevels(levelDescriptionsFromFile);
-    } else if (levelTemplate == 2) {
-      loadMovingBlockLevels(levelDescriptionsFromFile);
-    } else if (levelTemplate <= 9) {
-      loadBossLevels(levelDescriptionsFromFile);
-    }
+    Levels launch_helper = new Levels(levelTemplate, stage);
+    launch_helper.loadLevel(blockMap, bossMap, root);
   }
-
 
   //not refactorable but is necessary because each template is unique and I want to save them
   //as "maps" in possibly future versions
-  private void loadStationaryBlockLevels(ArrayList<String> levelDescriptionsFromFile) {
-    for (int row = 0; row < Integer.parseInt(levelDescriptionsFromFile.get(1)); row++) {
-      for (int column = 0; column < Integer.parseInt(levelDescriptionsFromFile.get(2));
-          column++) {
-        Block block = new Block(
-            Integer.parseInt(levelDescriptionsFromFile.get(3)) + row * (SIZE / Integer
-                .parseInt(levelDescriptionsFromFile.get(1))),
-            Integer.parseInt(levelDescriptionsFromFile.get(4)) * column + Integer
-                .parseInt(levelDescriptionsFromFile.get(5)),
-            Integer.parseInt(levelDescriptionsFromFile.get(6)),
-            Integer.parseInt(levelDescriptionsFromFile.get(7)),
-            levelDescriptionsFromFile.get(8) + postFix,
-            levelDescriptionsFromFile.get(9) + postFix, "block",
-            Integer.parseInt(levelDescriptionsFromFile.get(10)));
-        block.upload_image_files();
-        root.getChildren().add(block.getImageView());
-        blockMap.add(block);
-      }
-    }
-  }
-
-  private void loadMovingBlockLevels(ArrayList<String> levelDescriptionsFromFile) {
-    extracted(levelDescriptionsFromFile);
-  }
-
-  private void extracted(ArrayList<String> levelDescriptionsFromFile) {
-    for (int col = 0; col < Integer.parseInt(levelDescriptionsFromFile.get(1)); col++) {
-      for (int row = 0; row < Integer.parseInt(levelDescriptionsFromFile.get(2)); row++) {
-        Block block = new Block(
-            Integer.parseInt(levelDescriptionsFromFile.get(3)) + (SIZE / 10) * col + row * (
-                SIZE / 10),
-            Integer.parseInt(levelDescriptionsFromFile.get(4)) * row + Integer
-                .parseInt(levelDescriptionsFromFile.get(5))
-                + col * Integer.parseInt(levelDescriptionsFromFile.get(6)),
-            Integer.parseInt(levelDescriptionsFromFile.get(7)),
-            Integer.parseInt(levelDescriptionsFromFile.get(8)),
-            levelDescriptionsFromFile.get(9) + postFix,
-            levelDescriptionsFromFile.get(10) + postFix, "block",
-            Integer.parseInt(levelDescriptionsFromFile.get(11)));
-
-        block.upload_image_files();
-        root.getChildren().add(block.getImageView());
-        blockMap.add(block);
-      }
-    }
-  }
-
-  private void loadBossLevels(ArrayList<String> levelDescriptionsFromFile) {
-    Boss boss = new Boss(Integer.parseInt(levelDescriptionsFromFile.get(1)),
-        Integer.parseInt(levelDescriptionsFromFile.get(2)),
-        Integer.parseInt(levelDescriptionsFromFile.get(3)),
-        Integer.parseInt(levelDescriptionsFromFile.get(4)),
-        levelDescriptionsFromFile.get(5) + postFix, "boss",
-        Integer.parseInt(levelDescriptionsFromFile.get(6)));
-    boss.upload_image_files();
-    root.getChildren().add(boss.getImageView());
-    bossMap.add(boss);
-  }
 
   private void pause() {
     if (!paused) {

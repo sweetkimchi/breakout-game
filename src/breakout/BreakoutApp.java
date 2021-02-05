@@ -194,7 +194,7 @@ public class BreakoutApp extends Application {
 
   private void handleShortCuts(KeyEvent event, Stage stage) throws FileNotFoundException {
     if (event.getCode() == KeyCode.R) {
-      loadLevelFromFile(currentLevel, stage);
+      cleanUpAndRestart(stage);
     }
     if (event.getCode() == KeyCode.P) {
 
@@ -360,13 +360,16 @@ public class BreakoutApp extends Application {
   }
 
   private void cleanUpAndRestart(Stage stage) throws FileNotFoundException {
-    Levels level = new Levels(currentLevel, stage);
-    level.rebootGameEngineWithCurrentLevel(currentLevel);
-    animation.stop();
+    BreakoutApp breakout = new BreakoutApp();
+    Scene scene = breakout.setupGame(SIZE, SIZE, stage, currentLevel);
+    stage.setScene(scene);
+    stage.setTitle(TITLE);
+    stage.show();
+    stage.requestFocus();
   }
 
   private void loadLevelFromFile(int levelTemplate, Stage stage) {
-    Levels launch_helper = new Levels(levelTemplate, stage);
+    Levels launch_helper = new Levels(levelTemplate);
     launch_helper.loadLevel(blockMap, bossMap, root);
   }
 

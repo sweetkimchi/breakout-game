@@ -1,12 +1,11 @@
 package breakout;
 
 /**
- * Purpose: Loads information about each level from files. Launches a new level by calling the
- * setupGame method from BreakoutApp.
+ * Purpose: Loads information about each level from files. Populates the 'root' variable with the
+ * sprites indicated by the data and the templates.
  * Assumption: Assumes the files that are read are correctly formatted. Assumes the files contain
  * correct number of inputs.
- * Dependencies: Declares a BreakoutApp object. BreakoutApp object calls setupGame with the
- * current level as parameter.
+ * Dependencies: Used to have dependency on BreakoutApp but I got rid of that. No known dependency.
  * Example: Used to launch the game as shown below.
  * ```
  * private void
@@ -16,20 +15,20 @@ package breakout;
  * integerException) { return; } }
  * ```
  * <p>
- * Why I think is a good design: I wanted to separate starting a game with the actual game engine
- * that runs the game. This would be useful if we were to develop a second type of game that is
+ * Why I think is a good design: Levels class does not need to know anything about the BreakoutApp.
+ * It does not care about which class calls the methods as long as the inputs are valid.
+ * This would be useful if we were to develop a second type of game that is
  * vastly different from a Breakout variant. Levels class would allow users to switch to and from
  * different games. Instead of having the Levels class store a lot of information, I designed in a
  * way where all the Levels class needs is the current level in order to launch a level. It keeps
  * itself SHY from all other classes, especially the BreakoutApp class. It also does not care about
  * the Sprite class and all its sub-classes because Levels class simply reads info from files and
- * sends it to BreakoutApp to be populated. Instead of the constructor automatically launching a new
- * level, I wanted the BreakoutApp to be able to call loadFromFiles directly because that made it so
- * much easier for theBreakoutApp to populate Pane root with all the sprites.
+ * populates the root.
  * <p>
  *
- * Anything else: I refactored loading of the different templates from BreakoutApp into Levels
- * class. This way, the game engine would not have to know
+ * Anything else: I refactored loading of the different templates which were originally in
+ * BreakoutApp into Levels class. This way, the game engine would not have to know anything about
+ * the templates in order to use them.
  *
  * @author Ji Yun Hyo
  */
@@ -39,16 +38,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
 public class Levels {
 
-  public static final String TITLE = "Breakout Game";
   private static final String postFix = "-Breakout-Tiles.png";
   private final int currentLevel;
-  private final Stage stage;
   private final int SIZE = 1000;
 
   /**
@@ -57,39 +52,19 @@ public class Levels {
    * Assumptions: Assumes correct inputs. The calling class must already have a valid Stage
    * object set up. The calling class must have away to discern the currentLevel of the game.
    * Exceptions: No known exceptions.
+   *  @param currentLevel
    *
-   * @param currentLevel
-   * @param stage        Stage object that is used to set the overall GUI
    */
-  public Levels(int currentLevel, Stage stage) {
+  public Levels(int currentLevel) {
     this.currentLevel = currentLevel;
-    this.stage = stage;
-  }
-
-  /**
-   * Purpose: Reboots the BreakoutApp game engine. BreakoutApp can start again from scratch.
-   * Allows a new BreakoutApp object to start the game over so it does not have to keep track of
-   * how many times it ran. Individual run of BreakoutApp has no information on any
-   * of the previous runs.
-   * Assumptions: BreakoutApp exists and functions correctly.
-   * Exceptions: If BreakoutApp is not properly implemented, could result in Null pointer exception.
-   *
-   * @param currentLevel
-   */
-  public void rebootGameEngineWithCurrentLevel(int currentLevel) {
-    BreakoutApp breakout = new BreakoutApp();
-    Scene scene = breakout.setupGame(SIZE, SIZE, stage, currentLevel);
-    stage.setScene(scene);
-    stage.setTitle(TITLE);
-    stage.show();
-    stage.requestFocus();
   }
 
   /**
    * Purpose: Reads the level information from the appropriate file. Returns the ArrayList to
-   * BreakoutApp that creates the GUI map based on these parameters. Assumptions: Files contain
-   * correct inputs for each template. The class that uses the returned knows the template of the
-   * map and is able to use the data from the files to create new levels with necessary sprites.
+   * BreakoutApp that creates the GUI map based on these parameters.
+   * Assumptions: Files contain correct inputs for each template. The class that uses the returned
+   * knows the template of the map and is able to use the data from the files to create new
+   * levels with necessary sprites.
    * Exceptions: File may not exist. Handled by try and catch.
    *
    * @return an ArrayList that contains the string values of data present in the file.
@@ -117,12 +92,14 @@ public class Levels {
   }
 
   /**
-   * Purpose: Handles request to loadLevel for a specific currentLevel without rebooting the game
-   * engine. Reboot may be helpful if there are problems with the root Pane.
+   * Purpose: Loads level by using the appropriate template indicated by the first input from
+   * data in files.
+   * Assumption: All inputs are correctly formatted and are valid.
+   * Exception: 'parameters' might be null if data in the files are not valid.
    *
-   * @param blockMap
-   * @param bossMap
-   * @param root
+   * @param blockMap map of Block objects to be populated on root
+   * @param bossMap map of Boss objects to be populated on root
+   * @param root Pane object that displays sprites
    */
   public void loadLevel(List<Block> blockMap, List<Boss> bossMap, Pane root) {
     ArrayList<String> parameters = loadDataFromFiles();

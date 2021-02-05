@@ -1,3 +1,34 @@
+/**
+ * Purpose: Loads information about each level from files. Launches a new level by calling the Breakoutapp.
+ * Assumptions: Assumes the files that are read are correctly formatted. Assumes the files contain correct number of inputs.
+ * Dependencies: Declares a BreakoutApp ojbect. BreakoutApp object calls setupGame with the current level as parameter.
+ * Example: Used to launch the game as shown below.
+ * ```
+ * private void cleanUpAndRestart(Stage stage) throws FileNotFoundException {
+ *     Levels level = new Levels(currentLevel, stage);
+ *     level.launchLevel(currentLevel);
+ *     animation.stop();
+ *   }
+ *
+ *   private void loadLevelFromFile(int levelTemplate, Stage stage) {
+ *     Levels launch_helper = new Levels(currentLevel, stage);
+ *     ArrayList<String> levelDescriptionsFromFile = launch_helper.loadFromFiles();
+ *
+ *     if (levelTemplate == 1) {
+ *       loadStationaryBlockLevels(levelDescriptionsFromFile);
+ *     } else if (levelTemplate == 2) {
+ *       loadMovingBlockLevels(levelDescriptionsFromFile);
+ *     } else if (levelTemplate <= 9) {
+ *       loadBossLevels(levelDescriptionsFromFile);
+ *     }
+ *   }
+ * ```
+ *
+ * @author Ji Yun Hyo
+ *
+ *
+ */
+
 package breakout;
 
 import java.io.File;
@@ -14,11 +45,16 @@ public class Levels {
   private final Stage stage;
   private final int SIZE = 1000;
 
+
   public Levels(int currentLevel, Stage stage) {
     this.currentLevel = currentLevel;
     this.stage = stage;
   }
 
+  /**
+   *
+   * @param currentLevel
+   */
   public void launchLevel(int currentLevel) {
     BreakoutApp breakout = new BreakoutApp();
     Scene scene = breakout.setupGame(SIZE, SIZE, stage, currentLevel);
@@ -28,6 +64,10 @@ public class Levels {
     stage.requestFocus();
   }
 
+  /**
+   * Purpose:
+   * @return parameters
+   */
   public ArrayList<String> loadFromFiles() {
     ArrayList<String> parameters = new ArrayList<String>();
     String fileName = "level" + currentLevel + ".txt";

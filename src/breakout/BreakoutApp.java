@@ -42,19 +42,19 @@ import javax.swing.SwingConstants;
 
 public class BreakoutApp extends Application {
 
-  public static final String TITLE = "Breakout Game";
-  public static final int SIZE = 1000;
-  public static final int FRAMES_PER_SECOND = 60;
-  public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
+  private static final String TITLE = "Breakout Game";
+  private static final int SIZE = 1000;
+  private static final int FRAMES_PER_SECOND = 60;
+  private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
   //image files
   private static final String postFix = "-Breakout-Tiles.png";
-  public static final String MISSILE_PADDLE_IMAGE = "325" + postFix;
-  public static final String FAST_PADDLE_IMAGE = "310" + postFix;
-  public static final String BALL_IMAGE = "340" + postFix;
-  public static final String POWERFUL_BALL = "402" + postFix;
-  public static final String BACKGROUND_IMAGE = "400" + postFix;
-  public static final String MISSILE_IMAGE = "346" + postFix;
+  private static final String MISSILE_PADDLE_IMAGE = "325" + postFix;
+  private static final String FAST_PADDLE_IMAGE = "310" + postFix;
+  private static final String BALL_IMAGE = "340" + postFix;
+  private static final String POWERFUL_BALL = "402" + postFix;
+  private static final String BACKGROUND_IMAGE = "400" + postFix;
+  private static final String MISSILE_IMAGE = "346" + postFix;
   private final int numberOfLives = 3;
   private int xPaddleVelocity = 0;
   private int x = SIZE / 2 - 30;
@@ -106,6 +106,11 @@ public class BreakoutApp extends Application {
 
   }
 
+  /**
+   * Purpose: starts the game engine.
+   * Assumptions: This is a method inherited directly from Application class.
+   * @param stage
+   */
   @Override
   public void start(Stage stage) {
     Scene startScene = setupGame(SIZE, SIZE, stage, 1);
@@ -115,8 +120,7 @@ public class BreakoutApp extends Application {
     stage.requestFocus();
   }
 
-  public Scene setupGame(int width, int height, Stage stage, int currentLevel) {
-    // create one top level collection to organize the things in the scene
+  private Scene setupGame(int width, int height, Stage stage, int currentLevel) {
     this.currentLevel = currentLevel;
     root = new Pane();
     Scene scene_set_up = new Scene(root, width, height, null);
@@ -323,8 +327,6 @@ public class BreakoutApp extends Application {
   private void updatePaddleVelocity() {
     x += xPaddleVelocity;
     myPaddle.setX(x);
-    int yPaddleVelocity = 0;
-    y += yPaddleVelocity;
     myPaddle.setY(y);
   }
 
@@ -372,9 +374,6 @@ public class BreakoutApp extends Application {
     Levels launch_helper = new Levels(levelTemplate);
     launch_helper.loadLevel(blockMap, bossMap, root);
   }
-
-  //not refactorable but is necessary because each template is unique and I want to save them
-  //as "maps" in possibly future versions
 
   private void pause() {
     if (!paused) {
@@ -428,7 +427,7 @@ public class BreakoutApp extends Application {
     }
   }
 
-  public void gameControlKeys(KeyEvent event) {
+  private void gameControlKeys(KeyEvent event) {
     if (event.getCode() == KeyCode.SPACE) {
       if (amount_missiles > 0) {
         amount_missiles--;

@@ -1,3 +1,19 @@
+/**
+ * Purpose: Stores and updates sprite information. Creates and destroys sprites. Checks for collision
+ * between sprites.
+ * Assumptions: BreakoutApp is properly using root (a Pane object) to display GUI. Less than 20 total
+ * sprites will be created.
+ * Dependencies: Declares Ball, MissilePaddle, Levels, Boss, and Block objects. Also
+ * creates Javafx objects such as Panel, JFrame, and Scene.
+ * Example: Used to launch the game as shown below.
+ * ``` public void launchLevel(int currentLevel) { BreakoutApp breakout = new
+ * BreakoutApp(); Scene scene = breakout.setupGame(SIZE, SIZE, stage, currentLevel);
+ * stage.setScene(scene); stage.setTitle(TITLE); stage.show(); stage.requestFocus(); }
+ * ```
+ * Any Other Detail: The longest class in the project.
+ * @author Ji Yun Hyo
+ */
+
 package breakout;
 
 import java.util.List;
@@ -30,10 +46,17 @@ public class Sprite extends Rectangle {
   private int paddleLevel;
   private List<MissilePaddle> missilePaddles;
 
-  public Sprite() {
-    super();
-  }
-
+  /**
+   * Purpose: Initializes Sprite objects.
+   * Assumptions: All input parameters are correct.
+   * @param xCoord
+   * @param yCoord
+   * @param width
+   * @param height
+   * @param FULL_HEALTH_IMAGE image to be used when Sprite has close to full health
+   * @param LOW_HEALTH_IMAGE image to be used when Sprite has close to no health
+   * @param type name of sub-class that called the constructor
+   */
   public Sprite(int xCoord, int yCoord, int width, int height, String FULL_HEALTH_IMAGE,
       String LOW_HEALTH_IMAGE, String type) {
     super(xCoord, yCoord, width, height);
@@ -51,12 +74,25 @@ public class Sprite extends Rectangle {
     this.upload_image_files();
   }
 
+  /**
+   * Purpose: Allows Sprite objects to set a new ImageView in case an event in BreakoutApp finds it necessary.
+   * Assumption: IMAGE file is properly formatted and contains a valid image file name.
+   * Exception: IMAGE may be Null. The image file name might not exist.
+   * @param IMAGE name of the image file under 'doc' folder
+   * @return imageView object with the new sprite image
+   */
   public ImageView setImageView(String IMAGE) {
     image = new Image(getClass().getClassLoader().getResourceAsStream(IMAGE));
     imageView = new ImageView();
     return imageView;
   }
 
+  /**
+   * Purpose: Assigns an image to this Sprite object.
+   * Assumption: imageView from this Sprite object exists.
+   * Exceptions: Null pointer exception if imageView does not exist
+   * @return image added to this Sprite
+   */
   public ImageView upload_image_files() {
     this.imageView.setImage(this.image);
     this.imageView.setFitWidth(this.getWidth());
@@ -70,10 +106,32 @@ public class Sprite extends Rectangle {
     return this.className;
   }
 
+  /**
+   * Purpose: Allows root in BreakoutApp to add imageView of this Sprite to be displayed using GUI.
+   * Assumption: imageView exists.
+   * Exception: No known exception.
+   * @return
+   */
   public ImageView getImageView() {
     return imageView;
   }
 
+  /**
+   * Purposes: Allows BreakoutApp to loop through all sprites created and have each sprite object
+   * call its own update method.
+   * Assumption: There are no more than 20 types of sprites. 'root' and 'ball' have proper values.
+   * Exception: No known exception.
+   * @param elapsedTime Time for one frame.
+   * @param myPaddle Rectangle object defined in BreakoutApp as the paddle.
+   * @param blocks List containing pointers to Block objects that are created
+   * @param boss List containing pointers to Boss objects that are created
+   * @param missileMap List containing pointers to Missile objects that are created
+   * @param powerUps List containing pointers to PowerUp objects that are created
+   * @param currentLevel
+   * @param root Pane defined in BreakoutApp. Used to add sprites onto GUI.
+   * @param ball Ball created in BreakoutApp.
+   * @param missilePaddles List containing pointers to MissilePaddle objects that are created
+   */
   public void update(double elapsedTime, Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
       List<Missile> missileMap, List<PowerUp> powerUps, int currentLevel, Pane root, Ball ball,
       List<MissilePaddle> missilePaddles) {
@@ -108,7 +166,7 @@ public class Sprite extends Rectangle {
     checkBoundary(myPaddle, blocks, boss, missileMap, powerUps, ball);
   }
 
-  public void checkBoundary(Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
+  private void checkBoundary(Rectangle myPaddle, List<Block> blocks, List<Boss> boss,
       List<Missile> missile, List<PowerUp> powerUps, Ball ball) {
     double xPos = this.getImageView().getX();
     double yPos = this.getImageView().getY();
@@ -171,39 +229,48 @@ public class Sprite extends Rectangle {
 
   }
 
+  /**
+   * Purpose: Returns the status of the ball so that BreakoutApp can determine whether to take one life away.
+   * Assumptions: Valid value for 'alive' exists
+   * @return 'true' when alive and 'false' when dead.
+   */
   public boolean deadOrAlive() {
     return alive;
   }
 
+  /**
+   * Purpose: Returns the image used for low health sprites to be used in collision updates.
+   * Assumptions: Valid value for LOW_HEALTH_IMAGE exists.
+   * @return image file name.
+   */
   public String getLowHealthImage() {
     return this.LOW_HEALTH_IMAGE;
   }
 
-  public List<PowerUp> createPowerUpsAndMissiles(List<PowerUp> powerUps, int xCoord, int yCoord,
+  private List<PowerUp> createPowerUpsAndMissiles(List<PowerUp> powerUps, int xCoord, int yCoord,
       List<Missile> missileMap) {
     double probability = Math.random();
     if (probability < powerUPProbability) {
-      PowerUp powerUp = new PowerUp(xCoord, yCoord, 30, 30, LEVEL_UP_POWER_UP, "", "powerup");
-      powerUp.upload_image_files();
-      powerUps.add(powerUp);
-      root.getChildren().add(powerUp.getImageView());
+      declarePowerUpObject(powerUps, xCoord, yCoord, 30, 30, LEVEL_UP_POWER_UP, "powerup");
 
     } else if (probability < powerUPProbability * 2) {
-      PowerUp powerUp = new PowerUp(xCoord, yCoord, 30, 30, BIGGER_SIZED_BALL, "", "powerup");
-      powerUp.upload_image_files();
-      powerUps.add(powerUp);
-      root.getChildren().add(powerUp.getImageView());
+      declarePowerUpObject(powerUps, xCoord, yCoord, 30, 30, BIGGER_SIZED_BALL, "powerup");
     }
     probability = Math.random();
     if (probability < missileProbability) {
-      PowerUp powerUp = new PowerUp((int) (xCoord + 500 * probability), yCoord, 12, 40,
-          MISSILE_IMAGE, "", "missile");
-      powerUp.upload_image_files();
-      powerUps.add(powerUp);
-      root.getChildren().add(powerUp.getImageView());
+      declarePowerUpObject(powerUps, (int) (xCoord + 500 * probability), yCoord, 12, 40,
+          MISSILE_IMAGE, "missile");
 
     }
     return powerUps;
+  }
+
+  private void declarePowerUpObject(List<PowerUp> powerUps, int xCoord, int yCoord, int i, int i2,
+      String level_up_power_up, String powerup) {
+    PowerUp powerUp = new PowerUp(xCoord, yCoord, i, i2, level_up_power_up, "", powerup);
+    powerUp.upload_image_files();
+    powerUps.add(powerUp);
+    root.getChildren().add(powerUp.getImageView());
   }
 
 

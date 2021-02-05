@@ -1,11 +1,12 @@
 /**
- * Purpose: Loads information about each level from files. Launches a new level by calling the
+ * Purpose: Loads information about each level from files. Launches a new level by calling the setupGame method from BreakoutApp.
  * Assumption: Assumes the files that are read are correctly formatted. Assumes the files contain correct number
  * of inputs.
- * Dependencies: Declares a BreakoutApp ojbect. BreakoutApp object calls setupGame with the current
+ * Dependencies: Declares a BreakoutApp object. BreakoutApp object calls setupGame with the current
  * level as parameter.
- * Example: Used to launch the game as shown below. ``` private void
- * cleanUpAndRestart(Stage stage) throws FileNotFoundException { Levels level = new
+ * Example: Used to launch the game as shown below.
+ * ```
+ *private void cleanUpAndRestart(Stage stage) throws FileNotFoundException { Levels level = new
  * Levels(currentLevel, stage); level.launchLevel(currentLevel); animation.stop(); }
  * <p>
  * private void loadLevelFromFile(int levelTemplate, Stage stage) { Levels launch_helper = new
@@ -14,7 +15,9 @@
  * <p>
  * if (levelTemplate == 1) { loadStationaryBlockLevels(levelDescriptionsFromFile); } else if
  * (levelTemplate == 2) { loadMovingBlockLevels(levelDescriptionsFromFile); } else if (levelTemplate
- * <= 9) { loadBossLevels(levelDescriptionsFromFile); } } ```
+ * <= 9) { loadBossLevels(levelDescriptionsFromFile); }
+ * }
+ * ```
  *
  * Why I think is a good design: I wanted to separate starting a game with the actual game engine
  * that runs the game. This would be useful if we were to develop a second type of game that is vastly

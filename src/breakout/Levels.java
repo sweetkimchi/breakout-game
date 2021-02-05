@@ -8,11 +8,10 @@ package breakout;
  * Dependencies: Used to have dependency on BreakoutApp but I got rid of that. No known dependency.
  * Example: Used to launch the game as shown below.<br>
  * ```
- * private void
- * skipToLevelIndicatedByKeyInput(KeyEvent event, Stage stage) { try { currentLevel = Math .max(1,
- * Math.min(3, Integer.parseInt(event.getCode().toString().substring(5))));
- * cleanUpAndRestart(stage); } catch (NumberFormatException | FileNotFoundException
- * integerException) { return; } }
+ * private void loadLevelFromFile(int levelTemplate, Stage stage) {
+ *     Levels launch_helper = new Levels(levelTemplate);
+ *     launch_helper.loadLevel(blockMap, bossMap, root);
+ *   }
  * ```
  * <p><br>
  * Why I think is a good design: Levels class does not need to know anything about the BreakoutApp.

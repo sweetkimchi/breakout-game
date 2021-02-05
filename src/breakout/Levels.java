@@ -2,8 +2,8 @@
  * Purpose: Loads information about each level from files. Launches a new level by calling the
  * Breakoutapp. Assumptions: Assumes the files that are read are correctly formatted. Assumes the
  * files contain correct number of inputs. Dependencies: Declares a BreakoutApp ojbect. BreakoutApp
- * object calls setupGame with the current level as parameter. Example: Used to launch the game as
- * shown below. ``` private void cleanUpAndRestart(Stage stage) throws FileNotFoundException {
+ * object calls setupGame with the current level as parameter. <br> Example: Used to launch the game
+ * as shown below. ``` private void cleanUpAndRestart(Stage stage) throws FileNotFoundException {
  * Levels level = new Levels(currentLevel, stage); level.launchLevel(currentLevel);
  * animation.stop(); }
  * <p>

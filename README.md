@@ -4,8 +4,6 @@ This project implements the game of Breakout.
 
 Name: Ji Yun Hyo
 
-### Please Note : 24-Exntension Granted by Professor Duvall.
-
 ### Timeline
 
 Start Date: January 22nd, 2021 @ 08:34PM
